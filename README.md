@@ -1,4 +1,4 @@
-# monopoly
+# Centrale Life
 
 ## Project setup
 ```

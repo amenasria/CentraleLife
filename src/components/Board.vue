@@ -111,6 +111,7 @@ export default {
         display: grid;
         grid-template-rows: 3fr 7fr 2fr;
         background-color: var(--color-case);
+        overflow: hidden;
     }
 
     .case_depart {
@@ -127,7 +128,8 @@ export default {
     .case .case-text {
         display: grid;
         justify-items: center;
-        padding: 10% 3%
+        padding: 10% 3%;
+        overflow: hidden;
     }
 
     .case .case-img img {

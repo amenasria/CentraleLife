@@ -1,0 +1,276 @@
+[
+    {
+        "id": 0,
+        "type": "tqt"
+    },
+    {
+        "id": 1,
+        "type": "depart",
+        "name": "Départ"
+    },
+    {
+        "id": 2,
+        "type": "rue",
+        "categorie_rue": 1,
+        "name": "Rue Basse",
+        "price": 60
+    },
+    {
+        "id": 3,
+        "type": "communaute",
+        "name": "CDC",
+        "img": "communaute.svg",
+        "alt": "Logo CDC"
+    },
+    {
+        "id": 4,
+        "type": "rue",
+        "categorie_rue": 1,
+        "name": "Rue Haute",
+        "price": 60
+    },
+    {
+        "id": 5,
+        "type": "taxe",
+        "name": "Cotisation BDE",
+        "img": "bde.png",
+        "alt": "Logo BDE"
+    },
+    {
+        "id": 6,
+        "type": "calanque",
+        "name": "Sugiton",
+        "price": 200
+    },
+    {
+        "id": 7,
+        "type": "rue",
+        "categorie_rue": 2,
+        "name": "Résidence Chateau Gombert",
+        "price": 100
+    },
+    {
+        "id": 8,
+        "type": "chance",
+        "name": "Chance"
+    },
+    {
+        "id": 9,
+        "type": "rue",
+        "categorie_rue": 2,
+        "name": "Résidence Oxford",
+        "price": 100
+    },
+    {
+        "id": 10,
+        "type": "rue",
+        "categorie_rue": 2,
+        "name": "Résidence Victoria Park",
+        "price": 100
+    },
+    {
+        "id": 11,
+        "type": "prison",
+        "name": "Prison",
+        "img": "chimie.png",
+        "alt": "Logo Prison"
+    },
+    {
+        "id": 12,
+        "type": "rue",
+        "categorie_rue": 3,
+        "name": "Le Panier",
+        "price": 140
+    },
+    {
+        "id": 13,
+        "type": "compagnie",
+        "name": "Centrale Marseille Alumni",
+        "img": "alumni.png",
+        "alt": "Logo Alumni",
+        "price": 150
+    },
+    {
+        "id": 14,
+        "type": "rue",
+        "categorie_rue": 3,
+        "name": "5 Avenues Longchamp",
+        "price": 140
+    },
+    {
+        "id": 15,
+        "type": "rue",
+        "categorie_rue": 3,
+        "name": "Noailles",
+        "price": 100
+    },
+    {
+        "id": 16,
+        "type": "calanque",
+        "name": "Sormiou",
+        "price": 200
+    },
+    {
+        "id": 17,
+        "type": "rue",
+        "categorie_rue": 4,
+        "name": "Le Panier",
+        "price": 180
+    },
+    {
+        "id": 19,
+        "type": "rue",
+        "categorie_rue": 4,
+        "name": "Le Prado",
+        "price": 180
+    },
+    {
+        "id": 20,
+        "type": "rue",
+        "categorie_rue": 4,
+        "name": "La Corniche",
+        "price": 180
+    },
+    {
+        "id": 21,
+        "type": "communaute",
+        "name": "Caisse de communauté",
+        "img": "communaute.svg",
+        "alt": "Logo CDC"
+    },
+    {
+        "id": 22,
+        "type": "parc",
+        "name": "KSI",
+        "img": "ksi.png",
+        "alt": "Logo Ksi"
+    },
+    {
+        "id": 23,
+        "type": "rue",
+        "categorie_rue": 5,
+        "name": "Notre Dame de la Garde",
+        "price": 220
+    },
+    {
+        "id": 24,
+        "type": "chance",
+        "name": "Chance"
+    },
+    {
+        "id": 25,
+        "type": "rue",
+        "categorie_rue": 5,
+        "name": "La Major",
+        "price": 220
+    },
+    {
+        "id": 26,
+        "type": "rue",
+        "categorie_rue": 5,
+        "name": "L'Eglise de Réformés",
+        "price": 220
+    },
+    {
+        "id": 27,
+        "type": "calanque",
+        "name": "Morgiou",
+        "price": 200
+    },
+    {
+        "id": 28,
+        "type": "rue",
+        "categorie_rue": 6,
+        "name": "Vélodrome",
+        "price": 260
+    },
+    {
+        "id": 29,
+        "type": "rue",
+        "categorie_rue": 6,
+        "name": "Centre Bourse",
+        "price": 260
+    },
+    {
+        "id": 30,
+        "type": "compagnie",
+        "name": "Barbu",
+        "img": "barbu.png",
+        "alt": "Logo Barbu",
+        "price": 150
+    },
+    {
+        "id": 31,
+        "type": "rue",
+        "categorie_rue": 6,
+        "name": "Terrasses du Port",
+        "price": 260
+    },
+    {
+        "id": 32,
+        "type": "prison",
+        "name": "Allez en prison",
+        "img": "poliste.png",
+        "alt": "Logo Poliste"
+    },
+    {
+        "id": 33,
+        "type": "rue",
+        "categorie_rue": 7,
+        "name": "Joliette",
+        "price": 300
+    },
+    {
+        "id": 34,
+        "type": "rue",
+        "categorie_rue": 7,
+        "name": "Castellane",
+        "price": 300
+    },
+    {
+        "id": 35,
+        "type": "communaute",
+        "name": "Caisse de communauté",
+        "img": "communaute.svg",
+        "alt": "Logo CDC"
+    },
+    {
+        "id": 36,
+        "type": "rue",
+        "categorie_rue": 7,
+        "name": "Saint-Charles",
+        "price": 300
+    },
+    {
+        "id": 37,
+        "type": "calanque",
+        "name": "En-Vau",
+        "price": 200
+    },
+    {
+        "id": 38,
+        "type": "chance",
+        "name": "Chance"
+    },
+    {
+        "id": 39,
+        "type": "rue",
+        "categorie_rue": 8,
+        "name": "Vieux-Port",
+        "price": 400
+    },
+    {
+        "id": 40,
+        "type": "taxe",
+        "name": "Frais de scolarité",
+        "img": "centrale.png",
+        "alt": "Logo Centrale"
+    },
+    {
+        "id": 41,
+        "type": "rue",
+        "categorie_rue": 8,
+        "name": "Canebière",
+        "price": 400
+    }
+]

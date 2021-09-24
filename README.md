@@ -1,4 +1,4 @@
-# monopoly
+# Centrale Life
 
 ## Project setup
 ```
@@ -22,5 +22,3 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
-
-## Réalisé par un boloss nommé Pilouf

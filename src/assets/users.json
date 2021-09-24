@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "Marie",
+        "color": "green",
+        "money": 2300
+    },
+    {
+        "id": 2,
+        "name": "Paul",
+        "color": "red",
+        "money": 800
+    },
+    {
+        "id": 3,
+        "name": "Pilouf",
+        "color": "orange",
+        "money": 1700
+    },
+    {
+        "id": 4,
+        "name": "Tina",
+        "color": "purple",
+        "money": 3000
+    }
+]

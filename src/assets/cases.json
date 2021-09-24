@@ -118,6 +118,13 @@
         "price": 180
     },
     {
+        "id": 18,
+        "type": "communaute",
+        "name": "Caisse de communauté",
+        "img": "communaute.svg",
+        "alt": "Logo CDC"
+    },
+    {
         "id": 19,
         "type": "rue",
         "categorie_rue": 4,
@@ -130,13 +137,6 @@
         "categorie_rue": 4,
         "name": "La Corniche",
         "price": 180
-    },
-    {
-        "id": 21,
-        "type": "communaute",
-        "name": "Caisse de communauté",
-        "img": "communaute.svg",
-        "alt": "Logo CDC"
     },
     {
         "id": 22,

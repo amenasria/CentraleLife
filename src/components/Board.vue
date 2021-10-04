@@ -5,25 +5,39 @@
         <liste-cases :cases="cases_haut" type_liste="monopoly_row"></liste-cases>
         <liste-cases :cases="coin_haut_droite" type_liste="monopoly_coin"></liste-cases>
         <liste-cases :cases="cases_gauche" type_liste="monopoly_col"></liste-cases>
-        <div class="case_centrale"></div>
+        <div class="case_centrale">
+            <div class="central_ui">
+                <div class="central_ui_dices">Dices</div>
+                <div class="central_ui_header"><h2>C'est à Paul de jouer.</h2></div>
+                <div class="central_ui_buttons">
+                    <button class="button_ui">Lancer les dés</button>
+                    <button class="button_ui">Voir mes cartes</button>
+                </div>
+                <div class="central_ui_display">
+                    <h3>Carte Chance</h3>
+                    <p>Vous êtes invité à une soirée, avancez jusqu'à la case Vieux Port</p>
+                    <button class="button_ui">Allez-y !</button>
+                </div>
+            </div>
+        </div>
         <liste-cases :cases="cases_droite" type_liste="monopoly_col"></liste-cases>
         <liste-cases :cases="coin_bas_gauche" type_liste="monopoly_coin"></liste-cases>
         <liste-cases :cases="cases_bas" type_liste="monopoly_row"></liste-cases>
         <div class="case_depart">🡸</div>
     </div>
     <div class="menu">
-        <h1>CENTRALE LIFE</h1>
+        <h1>CENTRALE <br>LIFE</h1>
         <h2>4 joueurs</h2>
         <div class="liste_joueurs">
             <div class="joueur" v-for="user in users" :key="user.id" :style="'--user-color: ' + user.color">
-                <span class="user_icon"><svg aria-hidden="true" focusable="false" role="img" alt="User" style="height: 4ch" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path :fill="[user.id === 2 ? 'white' : user.color]" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg></span>
+                <span class="user_icon"><svg aria-hidden="true" focusable="false" role="img" alt="User" style="height: 3.5ch" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path :fill="[user.id === 2 ? 'white' : user.color]" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg></span>
                 <span class="user_info">
                     <span class="user_name"><b>{{ user.name }}</b></span>
                     <span class="user_money">{{ user.money }}€</span>
                 </span>
             </div>
         </div>
-        <div>
+        <div class="player_buttons">
             <button class="button_ui">Mettre en pause</button>
             <button class="button_ui">Abandonner la partie</button>
         </div>
@@ -83,7 +97,57 @@ export default {
         filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
         border-radius: 50px;
         border-style: none;
-        padding: 2% 5%;
+        height: 6vh
+    }
+
+    .case_centrale {
+        display: grid;
+        align-items: center;
+        place-content: center;
+    }
+
+    .central_ui {
+        display: grid;
+        grid-template-rows: repeat(4, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+        height: 40vh;
+    }
+
+    .central_ui_dices {
+        grid-row: 1 / span 1;
+        grid-column: 1 / span 6
+    }
+
+    .central_ui_header {
+        grid-row: 2 / span 1;
+        grid-column: 1 / span 6
+    }
+
+    .central_ui_buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-row: 3 / span 1;
+        grid-column: 1 / span 6;
+        padding: 2% 0;
+    }
+
+    .centrale_ui_buttons .button_ui {
+        grid-column: span 3;
+    }
+
+    .central_ui_display {
+        background-color: var(--color-case);
+        grid-row: 4 / span 1;
+        grid-column: 1 / span 6;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 20px;
+        padding: 1% 12%;
+    }
+
+    .player_buttons {
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        padding: 5% 20%;
     }
 
     .user_money {
@@ -94,30 +158,41 @@ export default {
         color: var(--bleu-centrale);
     }
 
-    h1 {
-        font-size: 10vh;
+    .menu h1 {
+        font-size: 3.5vmax;
     }
 
-    h2 {
-        font-size: 4vh;
+    .menu h2 {
+        font-size: 1vmax;
     }
 
     .liste_joueurs {
         display: grid;
         grid-template-rows: repeat(4, 1fr);
+        grid-template-columns: repeat(5, 1fr);
         row-gap: 15px;
         padding: 5% 10%;
     }
-
+    
     .joueur {
         box-shadow: 0 0 0 0.5px var(--user-color);
         background-color: var(--color-case);
         border-radius: 3px;
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        column-gap: 10px;
-        padding: 2% 0;
+        grid-template-columns: 1fr 2fr;
+        align-items: center;
+        padding: 4% 0;
+        grid-column: 2 / span 3
     }
+
+    .user_name {
+        font-size: 1vmax;
+    }
+
+    .user_icon {
+        padding: 1%;
+    }
+
 
     .joueur.active {
         color: white;
@@ -131,11 +206,11 @@ export default {
     .joueur .user_info {
         display: grid;
         grid-template-rows: 1fr 1fr;
-        text-align: left
+        align-items: center;
     }
 
     .joueur .user_icon {
-        text-align: right;
+        text-align: center;
     }
 
     .bandeau_couleur {
@@ -156,11 +231,13 @@ export default {
 
     .interface_monopoly {
         display: grid;
-        grid-template-columns: 3fr 1fr;
+        grid-template-columns: repeat(5, 1fr);
+        padding: 1% 10%;
         place-items: center;
     }
 
     .board {
+        grid-column: 1 / span 3;
         display: grid;
         grid-template-rows: var(--case-length) auto var(--case-length);
         grid-template-columns: var(--case-length) auto var(--case-length);
@@ -170,11 +247,16 @@ export default {
         height: 45vw;
     }
 
+    .menu {
+        grid-column: 4 / span 2;
+        padding: 1% 5%;
+    }
+
 
     .case {
         box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
         border-radius: var(--case-border-radius);
-        font-size: 7px;
+        font-size: 0.5vmax;
         display: grid;
         grid-template-rows: 3fr 7fr 2fr;
         background-color: var(--color-case);

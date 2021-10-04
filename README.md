@@ -2,23 +2,33 @@
 
 ## Project setup
 ```
-npm install
+npm install    # Backend dependecencies installation
+cd front
+npm install    # Frontend dependecencies installation
 ```
 
-### Compiles and hot-reloads for development
+
+## Development
+
 ```
-npm run serve
+node server.js    # Run backend
+```
+```
+cd front
+npm run serve     # Starts a dev server (for the frontend)
 ```
 
-### Compiles and minifies for production
+## Production
+
+Build vue project to ./front/dist static folder:
 ```
+cd front
 npm run build
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
+Don't forget to uncomment the app.bind.... line which bind to the static front/dist folder
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Then:
+```
+node server.js
+```

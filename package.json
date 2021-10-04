@@ -9,8 +9,6 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "express": "^4.17.1",
-    "socket.io": "^4.2.0",
     "vue": "^2.6.11"
   },
   "devDependencies": {

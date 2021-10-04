@@ -14,7 +14,7 @@
                     <button class="button_ui">Voir mes cartes</button>
                 </div>
                 <div class="central_ui_display">
-                    <h3>Carte Chance</h3>
+                    <h3>Carte Chance {{ info }}</h3>
                     <p>Vous êtes invité à une soirée, avancez jusqu'à la case Vieux Port</p>
                     <button class="button_ui">Allez-y !</button>
                 </div>
@@ -49,6 +49,7 @@
 import casesData from "@/assets/cases.json";
 import usersData from "@/assets/users.json";
 import ListeCases from "@/components/ListeCases.vue";
+import axios from 'axios'
 
 export default {
     components: {
@@ -66,6 +67,11 @@ export default {
             cases_droite: casesData.slice(32, 41),
             users: usersData
         }
+    },
+    mounted() {
+        axios
+            .get('http://localhost:8081/baguette')
+            .then(response => (this.info = response))
     }
 }
 </script>

@@ -8,15 +8,18 @@
         <div class="case_centrale">
             <div class="central_ui">
                 <div class="central_ui_dices">Dices</div>
-                <div class="central_ui_header"><h2>C'est à Paul de jouer.</h2></div>
+                <div class="central_ui_header"><h2>C'est à {{users[player].name}} de jouer.</h2></div>
                 <div class="central_ui_buttons">
-                    <button class="button_ui">Lancer les dés</button>
+                    <button class="button_ui" v-on:click="rollDice(player)">Lancer les dés</button>
                     <button class="button_ui">Voir mes cartes</button>
                 </div>
-                <div class="central_ui_display">
-                    <h3>Carte Chance {{ info }}</h3>
-                    <p>Vous êtes invité à une soirée, avancez jusqu'à la case Vieux Port</p>
-                    <button class="button_ui">Allez-y !</button>
+                <div class="central_ui_display" id="show_game">
+                    <h3 id="name_case"></h3>
+                    <p id="message"></p>
+                    <div class="central_ui_buttons">
+                      <button class="button_ui" id="button_cancel">Refuser</button>
+                      <button class="button_ui" id="button_ok" v-on:click="ok(player)">Allez-y !</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -49,7 +52,8 @@
 import casesData from "@/assets/cases.json";
 import usersData from "@/assets/users.json";
 import ListeCases from "@/components/ListeCases.vue";
-import axios from 'axios'
+import axios from 'axios';
+import {rollDice, click_ok} from "../js/utils.js"
 
 export default {
     components: {
@@ -65,8 +69,17 @@ export default {
             cases_haut: casesData.slice(22, 31),
             coin_haut_droite: casesData.slice(31, 32),
             cases_droite: casesData.slice(32, 41),
-            users: usersData
+            users: usersData,
+            player: 0,
         }
+    },
+    methods: {
+      rollDice,
+      ok: function(player) {
+        click_ok(player);
+        this.player = (player + 1) % 4;
+      },
+
     },
     mounted() {
         axios
@@ -103,7 +116,8 @@ export default {
         filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
         border-radius: 50px;
         border-style: none;
-        height: 6vh
+        height: 6vh;
+        margin: 2%;
     }
 
     .case_centrale {
@@ -313,5 +327,9 @@ export default {
 
     .monopoly_coin {
         display: grid;
+    }
+
+    #show_game {
+      display: none;
     }
 </style>

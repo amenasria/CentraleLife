@@ -13,7 +13,8 @@
         "type": "rue",
         "categorie_rue": 1,
         "name": "Rue Basse",
-        "price": 60
+        "price": 60,
+        "rent": 2
     },
     {
         "id": 3,
@@ -27,27 +28,31 @@
         "type": "rue",
         "categorie_rue": 1,
         "name": "Rue Haute",
-        "price": 60
+        "price": 60,
+        "rent": 2
     },
     {
         "id": 5,
         "type": "taxe",
         "name": "Cotisation BDE",
         "img": "bde.png",
-        "alt": "Logo BDE"
+        "alt": "Logo BDE",
+        "price": 200
     },
     {
         "id": 6,
         "type": "calanque",
         "name": "Sugiton",
-        "price": 200
+        "price": 200,
+        "rent":  25
     },
     {
         "id": 7,
         "type": "rue",
         "categorie_rue": 2,
         "name": "Résidence Chateau Gombert",
-        "price": 100
+        "price": 100,
+        "rent": 6
     },
     {
         "id": 8,
@@ -59,14 +64,16 @@
         "type": "rue",
         "categorie_rue": 2,
         "name": "Résidence Oxford",
-        "price": 100
+        "price": 100,
+        "rent": 6
     },
     {
         "id": 10,
         "type": "rue",
         "categorie_rue": 2,
         "name": "Résidence Victoria Park",
-        "price": 100
+        "price": 100,
+        "rent": 6
     },
     {
         "id": 11,
@@ -80,7 +87,8 @@
         "type": "rue",
         "categorie_rue": 3,
         "name": "Le Panier",
-        "price": 140
+        "price": 140,
+        "rent": 10
     },
     {
         "id": 13,
@@ -95,27 +103,31 @@
         "type": "rue",
         "categorie_rue": 3,
         "name": "5 Avenues Longchamp",
-        "price": 140
+        "price": 140,
+        "rent": 10
     },
     {
         "id": 15,
         "type": "rue",
         "categorie_rue": 3,
         "name": "Noailles",
-        "price": 100
+        "price": 140,
+        "rent": 10
     },
     {
         "id": 16,
         "type": "calanque",
         "name": "Sormiou",
-        "price": 200
+        "price": 200,
+        "rent":  25
     },
     {
         "id": 17,
         "type": "rue",
         "categorie_rue": 4,
         "name": "Le Panier",
-        "price": 180
+        "price": 180,
+        "rent": 14
     },
     {
         "id": 18,
@@ -129,70 +141,78 @@
         "type": "rue",
         "categorie_rue": 4,
         "name": "Le Prado",
-        "price": 180
+        "price": 180,
+        "rent": 14
     },
     {
         "id": 20,
         "type": "rue",
         "categorie_rue": 4,
         "name": "La Corniche",
-        "price": 180
+        "price": 180,
+        "rent": 14
     },
     {
-        "id": 22,
+        "id": 21,
         "type": "parc",
         "name": "KSI",
         "img": "ksi.png",
         "alt": "Logo Ksi"
     },
     {
-        "id": 23,
+        "id": 22,
         "type": "rue",
         "categorie_rue": 5,
         "name": "Notre Dame de la Garde",
-        "price": 220
+        "price": 220,
+        "rent": 18
+    },
+    {
+        "id": 23,
+        "type": "chance",
+        "name": "Chance"
     },
     {
         "id": 24,
-        "type": "chance",
-        "name": "Chance"
+        "type": "rue",
+        "categorie_rue": 5,
+        "name": "La Major",
+        "price": 220,
+        "rent": 18
     },
     {
         "id": 25,
         "type": "rue",
         "categorie_rue": 5,
-        "name": "La Major",
-        "price": 220
+        "name": "L'Eglise de Réformés",
+        "price": 220,
+        "rent": 18
     },
     {
         "id": 26,
-        "type": "rue",
-        "categorie_rue": 5,
-        "name": "L'Eglise de Réformés",
-        "price": 220
+        "type": "calanque",
+        "name": "Morgiou",
+        "price": 200,
+        "rent":  25
     },
     {
         "id": 27,
-        "type": "calanque",
-        "name": "Morgiou",
-        "price": 200
+        "type": "rue",
+        "categorie_rue": 6,
+        "name": "Vélodrome",
+        "price": 260,
+        "rent": 24
     },
     {
         "id": 28,
         "type": "rue",
         "categorie_rue": 6,
-        "name": "Vélodrome",
-        "price": 260
+        "name": "Centre Bourse",
+        "price": 260,
+        "rent": 24
     },
     {
         "id": 29,
-        "type": "rue",
-        "categorie_rue": 6,
-        "name": "Centre Bourse",
-        "price": 260
-    },
-    {
-        "id": 30,
         "type": "compagnie",
         "name": "Barbu",
         "img": "barbu.png",
@@ -200,77 +220,85 @@
         "price": 150
     },
     {
-        "id": 31,
+        "id": 30,
         "type": "rue",
         "categorie_rue": 6,
         "name": "Terrasses du Port",
-        "price": 260
+        "price": 260,
+        "rent": 24
     },
     {
-        "id": 32,
-        "type": "prison",
+        "id": 31,
+        "type": "go_prison",
         "name": "Allez en prison",
         "img": "poliste.png",
         "alt": "Logo Poliste"
     },
     {
-        "id": 33,
+        "id": 32,
         "type": "rue",
         "categorie_rue": 7,
         "name": "Joliette",
-        "price": 300
+        "price": 300,
+        "rent": 26
     },
     {
-        "id": 34,
+        "id": 33,
         "type": "rue",
         "categorie_rue": 7,
         "name": "Castellane",
-        "price": 300
+        "price": 300,
+        "rent": 26
     },
     {
-        "id": 35,
+        "id": 34,
         "type": "communaute",
         "name": "Caisse de communauté",
         "img": "communaute.svg",
         "alt": "Logo CDC"
     },
     {
-        "id": 36,
+        "id": 35,
         "type": "rue",
         "categorie_rue": 7,
         "name": "Saint-Charles",
-        "price": 300
+        "price": 300,
+        "rent": 26
+    },
+    {
+        "id": 36,
+        "type": "calanque",
+        "name": "En-Vau",
+        "price": 200,
+        "rent":  25
     },
     {
         "id": 37,
-        "type": "calanque",
-        "name": "En-Vau",
-        "price": 200
-    },
-    {
-        "id": 38,
         "type": "chance",
         "name": "Chance"
     },
     {
-        "id": 39,
+        "id": 38,
         "type": "rue",
         "categorie_rue": 8,
         "name": "Vieux-Port",
-        "price": 400
+        "price": 400,
+        "rent": 50
     },
     {
-        "id": 40,
+        "id": 39,
         "type": "taxe",
         "name": "Frais de scolarité",
         "img": "centrale.png",
-        "alt": "Logo Centrale"
+        "alt": "Logo Centrale",
+        "price": 200
     },
     {
-        "id": 41,
+        "id": 40,
         "type": "rue",
         "categorie_rue": 8,
         "name": "Canebière",
-        "price": 400
+        "price": 400,
+        "rent": 50
     }
 ]

@@ -1,26 +1,35 @@
+
 [
     {
         "id": 1,
         "name": "Marie",
         "color": "green",
-        "money": 2300
+        "money": 2500,
+        "position": 1,
+        "properties": []
     },
     {
         "id": 2,
         "name": "Paul",
         "color": "red",
-        "money": 800
+        "money": 2500,
+        "position": 1,
+        "properties": []
     },
     {
         "id": 3,
         "name": "Pilouf",
         "color": "orange",
-        "money": 1700
+        "money": 2500,
+        "position": 1,
+        "properties": []
     },
     {
         "id": 4,
         "name": "Tina",
         "color": "purple",
-        "money": 3000
+        "money": 2500,
+        "position": 1,
+        "properties": []
     }
 ]

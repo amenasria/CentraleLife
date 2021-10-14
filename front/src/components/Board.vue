@@ -17,8 +17,8 @@
                     <h3 id="name_case"></h3>
                     <p id="message"></p>
                     <div class="central_ui_buttons">
-                      <button class="button_ui" id="button_cancel">Refuser</button>
-                      <button class="button_ui" id="button_ok" v-on:click="ok(player)">Allez-y !</button>
+                      <button class="button_ui" id="button_cancel" v-on:click="cancel()">Refuser</button>
+                      <button class="button_ui" id="button_ok" v-on:click="ok(player)"></button>
                     </div>
                 </div>
             </div>
@@ -88,7 +88,14 @@ export default {
         let button_dice = document.getElementById('button_dice');
         button_dice.style.background = '#000F9F';
       },
-
+      cancel: function() {
+        this.player = (this.player + 1) % 4;
+        this.blockdice = false;
+        let button_dice = document.getElementById('button_dice');
+        button_dice.style.background = '#000F9F';
+        let game = document.getElementById('show_game');
+        game.style.display = "none";
+      }
     },
     mounted() {
         axios
@@ -340,5 +347,9 @@ export default {
 
     #show_game {
       display: none;
+    }
+
+    #button_cancel {
+      background: #4D5F80;
     }
 </style>

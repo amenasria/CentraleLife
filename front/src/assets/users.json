@@ -6,6 +6,7 @@
         "color": "green",
         "money": 2500,
         "position": 1,
+        "in_prison": -1,
         "properties": []
     },
     {
@@ -14,6 +15,7 @@
         "color": "red",
         "money": 2500,
         "position": 1,
+        "in_prison": -1,
         "properties": []
     },
     {
@@ -22,6 +24,7 @@
         "color": "orange",
         "money": 2500,
         "position": 1,
+        "in_prison": -1,
         "properties": []
     },
     {
@@ -30,6 +33,7 @@
         "color": "purple",
         "money": 2500,
         "position": 1,
+        "in_prison": -1,
         "properties": []
     }
 ]

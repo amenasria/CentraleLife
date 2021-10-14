@@ -14,75 +14,89 @@ function rollDice(player){
 
     let lancer = lancer1 + lancer2;
 
-
-    users[player].position = (users[player].position + lancer)  ;
-    if(users[player].position > 40){
-        users[player].position = (users[player].position - 40);
-    }
-
-    //On recupère la case sur lequel le joueur vient d'arriver
-    let case1 = cases[users[player].position];
-    let game = document.getElementById('show_game');
-    game.style.display = "block";
-
-
-    console.log(case1.name, case1.type);
-
-
-    let name = document.getElementById('name_case');
     let message = document.getElementById('message');
     let ok = document.getElementById('button_ok');
     let cancel = document.getElementById('button_cancel');
-    name.innerHTML = "<b>" + case1.name + "</b>";
 
-    //Si c'est une case "taxe", on paye la taxe
-    if(case1.type === "taxe"){
-        message.innerHTML = "Vous devez payer " + case1.price + "€.";
-        ok.innerHTML = "Payer";
-        cancel.style.display = 'none';
-    }
 
-    if(case1.type === "rue" || case1.type === "calanque"){
-        if(case1.owner === -1){
-            message.innerHTML =  "Prix : " + case1.price + "€" + "<br/>" + "Loyer : " + case1.rent + "€";
-            ok.innerHTML = "Acheter";
-            cancel.style.display = "block";
-        }  else if (case1.owner === player) {
-            message.innerHTML =  "Vous êtes chez vous";
-            ok.innerHTML = "Ok";
-            cancel.style.display = 'none';
-        } else {
-            message.innerHTML =  "Vous devez payer " + case1.rent + "€" + " à " +  users[case1.owner].name;
+    let game = document.getElementById('show_game');
+    game.style.display = "block";
+
+    if(users[player].in_prison === -1){
+        users[player].position = (users[player].position + lancer)  ;
+        if(users[player].position > 40){
+            users[player].position = (users[player].position - 40);
+        }
+
+        //On recupère la case sur lequel le joueur vient d'arriver
+
+        let case1 = cases[users[player].position];
+
+
+        let name = document.getElementById('name_case');
+        name.innerHTML = "<b>" + case1.name + "</b>";
+
+        //Si c'est une case "taxe", on paye la taxe
+        if(case1.type === "taxe"){
+            message.innerHTML = "Vous devez payer " + case1.price + "€.";
             ok.innerHTML = "Payer";
             cancel.style.display = 'none';
         }
-    }
 
-    if(case1.type === "chance" || case1.type === "communaute"){
-        message.innerHTML =  "Message de la carte";
-        ok.innerHTML = "C'est parti !";
-        cancel.style.display = 'none';
-    }
+        if(case1.type === "rue" || case1.type === "calanque"){
+            if(case1.owner === -1){
+                message.innerHTML =  "Prix : " + case1.price + "€" + "<br/>" + "Loyer : " + case1.rent + "€";
+                ok.innerHTML = "Acheter";
+                cancel.style.display = "block";
+            }  else if (case1.owner === player) {
+                message.innerHTML =  "Vous êtes chez vous";
+                ok.innerHTML = "Ok";
+                cancel.style.display = 'none';
+            } else {
+                message.innerHTML =  "Vous devez payer " + case1.rent + "€" + " à " +  users[case1.owner].name;
+                ok.innerHTML = "Payer";
+                cancel.style.display = 'none';
+            }
+        }
 
-    if(case1.type === "prison"){
-        message.innerHTML =  "Vous faites une visite à la prison.";
-        ok.innerHTML = "Ok";
-        cancel.style.display = 'none';
-    }
+        if(case1.type === "chance" || case1.type === "communaute"){
+            message.innerHTML =  "Message de la carte";
+            ok.innerHTML = "C'est parti !";
+            cancel.style.display = 'none';
+        }
 
-    if(case1.type === "go_prison"){
-        message.innerHTML =  "Vous allez en prison.";
-        ok.innerHTML = "Y aller";
-        cancel.style.display = 'none';
-    }
+        if(case1.type === "prison"){
+            message.innerHTML =  "Vous faites une visite à la prison.";
+            ok.innerHTML = "Ok";
+            cancel.style.display = 'none';
+        }
 
-    if(case1.type === "parc"){
-        message.innerHTML =  "Vous avez fait une étude KSI, vous ramassez l'argent.";
-        ok.innerHTML = "Encaisser";
-        cancel.style.display = 'none';
-    }
+        if(case1.type === "go_prison"){
+            message.innerHTML =  "Vous allez en prison.";
+            ok.innerHTML = "Y aller";
+            cancel.style.display = 'none';
+        }
 
-    return case1.id;
+        if(case1.type === "parc"){
+            message.innerHTML =  "Vous avez fait une étude KSI, vous ramassez l'argent.";
+            ok.innerHTML = "Encaisser";
+            cancel.style.display = 'none';
+        }
+    } else {
+        let name = document.getElementById('name_case');
+        name.innerHTML = "<b> Prison </b>";
+        users[player].in_prison += 1;
+        if(lancer === 12 || users[player].in_prison === 3){
+            message.innerHTML =  "Vous sortez de prison !";
+            ok.innerHTML = "Ok";
+            users[player].in_prison = -1;
+            cancel.style.display = 'none';
+        } else {
+            message.innerHTML =  "Vous restez en prison. Il reste " + (3 - users[player].in_prison) + " tour(s) avant de pouvoir sortir.";
+            ok.innerHTML = "Ok";
+            cancel.style.display = 'none';
+        }
+    }
 
 }
 
@@ -104,6 +118,7 @@ function click_ok(player){
         users[player].money -= case1.price;
     } else if (case1.type === "go_prison") {
         users[player].position = 10;
+        users[player].in_prison = 0;
     }
 
     let game = document.getElementById('show_game');

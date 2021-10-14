@@ -36,6 +36,10 @@ function rollDice(player){
             message.innerHTML =  "Prix : " + case1.price + "€" + "<br/>" + "Loyer : " + case1.rent + "€";
             ok.innerHTML = "Acheter";
             cancel.style.display = "block";
+        }  else if (case1.owner === player) {
+            message.innerHTML =  "Vous êtes chez vous";
+            ok.innerHTML = "Ok";
+            cancel.style.display = 'none';
         } else {
             message.innerHTML =  "Vous devez payer " + case1.rent + "€" + " à " +  users[case1.owner].name;
             ok.innerHTML = "Payer";
@@ -51,6 +55,8 @@ function rollDice(player){
 
     if(case1.type === "prison"){
         message.innerHTML =  "Vous faites une visite à la prison.";
+        ok.innerHTML = "Ok";
+        cancel.style.display = 'none';
     }
 
     if(case1.type === "go_prison"){
@@ -76,7 +82,9 @@ function click_ok(player){
         if(case1.owner === -1){
             users[player].properties.push(case1.id);
             cases[users[player].position].owner = player;
-        } else {
+            let case_html = document.getElementById("case_" + case1.id);
+            case_html.classList.add("property" + player);
+        } else if (case1.owner !== player) {
             users[player].money -= case1.rent;
             users[case1.owner].money += case1.rent;
         }

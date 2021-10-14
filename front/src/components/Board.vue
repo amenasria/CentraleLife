@@ -21,7 +21,7 @@
                     <p id="message"></p>
                     <div class="central_ui_buttons">
                       <button class="button_ui" id="button_cancel" v-on:click="cancel()">Refuser</button>
-                      <button class="button_ui" id="button_ok" v-on:click="ok(player)"></button>
+                      <button class="button_ui" id="button_ok" v-on:click="ok(player, card)"></button>
                     </div>
                 </div>
             </div>
@@ -77,21 +77,23 @@ export default {
             users: usersData,
             player: 0,
             blockdice: false,
+            card: null,
         }
     },
     methods: {
       dice(player){
-        rollDice(player);
+        this.card = rollDice(player);
         this.blockdice = true;
         let button_dice = document.getElementById('button_dice');
         button_dice.style.background = '#CDCDCF';
       },
-      ok: function(player) {
-        click_ok(player);
+      ok: function(player, card) {
+        click_ok(player, card);
         this.player = (player + 1) % 4;
         this.blockdice = false;
         let button_dice = document.getElementById('button_dice');
         button_dice.style.background = '#000F9F';
+        this.card = null;
       },
       cancel: function() {
         this.player = (this.player + 1) % 4;

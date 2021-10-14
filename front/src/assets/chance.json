@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "message": "Vous allez au WEI vous payez 140 €.",
+    "money": -140,
+    "move": 0,
+    "prison": 0
+  },
+  {
+    "id": 2,
+    "message": "Vous devez remboursez le Bar'bu. Vous payez 60 €.",
+    "money": -60,
+    "move": 0,
+    "prison": 0
+  },
+  {
+    "id": 3,
+    "message": "Après 3 heures de queue au RU, vous vous épanouissez de faim. Payez vos frais d’hôpitaux s’élevant à 250 €.",
+    "money": -250,
+    "move": 0,
+    "prison": 0
+  },
+  {
+    "id": 4,
+    "message": "Vous êtes invité à une soirée, avancez jusqu’à la case Vieux Port.",
+    "money": 0,
+    "move": 38,
+    "prison": 0
+  },
+  {
+    "id": 5,
+    "message": "Vous devez aller à un mariage, allez à la Majore.",
+    "money": 0,
+    "move": 24,
+    "prison": 0
+  },
+  {
+    "id": 6,
+    "message": "Vous allez à la soirée retrouvailles 2A/3A du BDE, allez à la plage du Prado.",
+    "money": 0,
+    "move": 19,
+    "prison": 0
+  },
+  {
+    "id": 7,
+    "message": "La nuit dernière était un peu agitée. Vous vous réveillez à Castellane.",
+    "money": 0,
+    "move": 33,
+    "prison": 0
+  },
+  {
+    "id": 8,
+    "message": "Vous faites partie du GInfo. Après une étude KSI, vous gagnez 500 € !",
+    "money": 500,
+    "move": 0,
+    "prison": 0
+  },
+  {
+    "id": 9,
+    "message": "Vous ne trouvez pas de TFE et vous redoublez. Retournez sur la case départ sans toucher d'argent.",
+    "money": 0,
+    "move": 1,
+    "prison": 0
+  },
+  {
+    "id": 10,
+    "message": "La direction ne savait pas que vous étiez alternant. Vous récupérez vos frais de scolarité : 200 €.",
+    "money": 200,
+    "move": 0,
+    "prison": 0
+  },
+  {
+    "id": 11,
+    "message": "La direction a remarqué que vous séchiez les cours, allez en prison.",
+    "money": 0,
+    "move": 10,
+    "prison": 1
+  },
+  {
+    "id": 12,
+    "message": "Vous arrivez à vous faire exonérer des frais d’inscription, touchez 200 €.",
+    "money": 200,
+    "move": 0,
+    "prison": 0
+  }
+]

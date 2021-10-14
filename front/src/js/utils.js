@@ -21,6 +21,7 @@ function rollDice(player){
         users[player].position = (users[player].position + lancer)  ;
         if(users[player].position > 40){
             users[player].position = (users[player].position - 40);
+            users[player].money += 200;
         }
 
         card = after_move(player);

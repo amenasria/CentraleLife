@@ -3,7 +3,18 @@ import cases from '../assets/cases.json'
 
 
 function rollDice(player){
-    let lancer = Math.ceil(Math.random() * (12 - 1) + 1);
+    let lancer1 = Math.ceil(Math.random() * (6 - 1) + 1);
+    let lancer2 = Math.ceil(Math.random() * (6 - 1) + 1);
+
+    let dice1 = document.getElementById("dice1");
+    dice1.innerHTML = lancer1;
+
+    let dice2 = document.getElementById("dice2");
+    dice2.innerHTML = lancer2;
+
+    let lancer = lancer1 + lancer2;
+
+
     users[player].position = (users[player].position + lancer)  ;
     if(users[player].position > 40){
         users[player].position = (users[player].position - 40);

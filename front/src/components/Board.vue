@@ -7,7 +7,10 @@
         <liste-cases :cases="cases_gauche" type_liste="monopoly_col"></liste-cases>
         <div class="case_centrale">
             <div class="central_ui">
-                <div class="central_ui_dices">Dices</div>
+                <div class="central_ui_dices">
+                  <div id="dice1"></div>
+                  <div id="dice2"></div>
+                </div>
                 <div class="central_ui_header"><h2>C'est à {{users[player].name}} de jouer.</h2></div>
                 <div class="central_ui_buttons">
                     <button class="button_ui" id="button_dice" :disabled='blockdice' v-on:click="dice(player)">Lancer les dés</button>
@@ -26,14 +29,16 @@
         <liste-cases :cases="cases_droite" type_liste="monopoly_col"></liste-cases>
         <liste-cases :cases="coin_bas_gauche" type_liste="monopoly_coin"></liste-cases>
         <liste-cases :cases="cases_bas" type_liste="monopoly_row"></liste-cases>
-        <div class="case_depart">🡸</div>
+        <div class="case_depart">
+            🡸
+        </div>
     </div>
     <div class="menu">
         <h1>CENTRALE <br>LIFE</h1>
         <h2>4 joueurs</h2>
         <div class="liste_joueurs">
             <div class="joueur" v-for="user in users" :key="user.id" :style="'--user-color: ' + user.color">
-                <span class="user_icon"><svg aria-hidden="true" focusable="false" role="img" alt="User" style="height: 3.5ch" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path :fill="[user.id === 2 ? 'white' : user.color]" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg></span>
+                <span class="user_icon"><svg aria-hidden="true" focusable="false" role="img" alt="User" style="height: 3.5ch" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path :fill="[user.id === player + 1 ? 'white' : user.color]" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg></span>
                 <span class="user_info">
                     <span class="user_name"><b>{{ user.name }}</b></span>
                     <span class="user_money">{{ user.money }}€</span>

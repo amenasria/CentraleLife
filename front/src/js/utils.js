@@ -32,9 +32,15 @@ function rollDice(player){
     }
 
     if(case1.type === "rue" || case1.type === "calanque"){
-        message.innerHTML =  "Prix : " + case1.price + "€" + "<br/>" + "Loyer : " + case1.rent + "€";
-        ok.innerHTML = "Acheter";
-        cancel.style.display = "block";
+        if(case1.owner === -1){
+            message.innerHTML =  "Prix : " + case1.price + "€" + "<br/>" + "Loyer : " + case1.rent + "€";
+            ok.innerHTML = "Acheter";
+            cancel.style.display = "block";
+        } else {
+            message.innerHTML =  "Vous devez payer " + case1.rent + "€" + " à " +  users[case1.owner].name;
+            ok.innerHTML = "Payer";
+            cancel.style.display = 'none';
+        }
     }
 
     if(case1.type === "chance" || case1.type === "communaute"){
@@ -67,8 +73,13 @@ function click_ok(player){
     let case1 = cases[users[player].position];
 
     if(case1.type === "rue" || case1.type === "calanque"){
-        users[player].properties.push(case1.id);
-        users[player].money -= case1.price;
+        if(case1.owner === -1){
+            users[player].properties.push(case1.id);
+            cases[users[player].position].owner = player;
+        } else {
+            users[player].money -= case1.rent;
+            users[case1.owner].money += case1.rent;
+        }
     } else if (case1.type === "taxe") {
         users[player].money -= case1.price;
     } else if (case1.type === "go_prison") {

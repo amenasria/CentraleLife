@@ -14,12 +14,13 @@
         "categorie_rue": 1,
         "name": "Rue Basse",
         "price": 60,
-        "rent": 2
+        "rent": 2,
+        "owner": -1
     },
     {
         "id": 3,
         "type": "communaute",
-        "name": "CDC",
+        "name": "Caisse de communauté",
         "img": "communaute.svg",
         "alt": "Logo CDC"
     },
@@ -29,7 +30,8 @@
         "categorie_rue": 1,
         "name": "Rue Haute",
         "price": 60,
-        "rent": 2
+        "rent": 2,
+        "owner": -1
     },
     {
         "id": 5,
@@ -44,7 +46,8 @@
         "type": "calanque",
         "name": "Sugiton",
         "price": 200,
-        "rent":  25
+        "rent":  25,
+        "owner": -1
     },
     {
         "id": 7,
@@ -52,7 +55,8 @@
         "categorie_rue": 2,
         "name": "Résidence Chateau Gombert",
         "price": 100,
-        "rent": 6
+        "rent": 6,
+        "owner": -1
     },
     {
         "id": 8,
@@ -65,7 +69,8 @@
         "categorie_rue": 2,
         "name": "Résidence Oxford",
         "price": 100,
-        "rent": 6
+        "rent": 6,
+        "owner": -1
     },
     {
         "id": 10,
@@ -73,7 +78,8 @@
         "categorie_rue": 2,
         "name": "Résidence Victoria Park",
         "price": 100,
-        "rent": 6
+        "rent": 6,
+        "owner": -1
     },
     {
         "id": 11,
@@ -88,7 +94,8 @@
         "categorie_rue": 3,
         "name": "Le Panier",
         "price": 140,
-        "rent": 10
+        "rent": 10,
+        "owner": -1
     },
     {
         "id": 13,
@@ -96,7 +103,8 @@
         "name": "Centrale Marseille Alumni",
         "img": "alumni.png",
         "alt": "Logo Alumni",
-        "price": 150
+        "price": 150,
+        "owner": -1
     },
     {
         "id": 14,
@@ -104,7 +112,8 @@
         "categorie_rue": 3,
         "name": "5 Avenues Longchamp",
         "price": 140,
-        "rent": 10
+        "rent": 10,
+        "owner": -1
     },
     {
         "id": 15,
@@ -112,14 +121,16 @@
         "categorie_rue": 3,
         "name": "Noailles",
         "price": 140,
-        "rent": 10
+        "rent": 10,
+        "owner": -1
     },
     {
         "id": 16,
         "type": "calanque",
         "name": "Sormiou",
         "price": 200,
-        "rent":  25
+        "rent":  25,
+        "owner": -1
     },
     {
         "id": 17,
@@ -127,7 +138,8 @@
         "categorie_rue": 4,
         "name": "Le Panier",
         "price": 180,
-        "rent": 14
+        "rent": 14,
+        "owner": -1
     },
     {
         "id": 18,
@@ -142,7 +154,8 @@
         "categorie_rue": 4,
         "name": "Le Prado",
         "price": 180,
-        "rent": 14
+        "rent": 14,
+        "owner": -1
     },
     {
         "id": 20,
@@ -150,7 +163,8 @@
         "categorie_rue": 4,
         "name": "La Corniche",
         "price": 180,
-        "rent": 14
+        "rent": 14,
+        "owner": -1
     },
     {
         "id": 21,
@@ -165,7 +179,8 @@
         "categorie_rue": 5,
         "name": "Notre Dame de la Garde",
         "price": 220,
-        "rent": 18
+        "rent": 18,
+        "owner": -1
     },
     {
         "id": 23,
@@ -178,7 +193,8 @@
         "categorie_rue": 5,
         "name": "La Major",
         "price": 220,
-        "rent": 18
+        "rent": 18,
+        "owner": -1
     },
     {
         "id": 25,
@@ -186,14 +202,16 @@
         "categorie_rue": 5,
         "name": "L'Eglise de Réformés",
         "price": 220,
-        "rent": 18
+        "rent": 18,
+        "owner": -1
     },
     {
         "id": 26,
         "type": "calanque",
         "name": "Morgiou",
         "price": 200,
-        "rent":  25
+        "rent":  25,
+        "owner": -1
     },
     {
         "id": 27,
@@ -201,7 +219,8 @@
         "categorie_rue": 6,
         "name": "Vélodrome",
         "price": 260,
-        "rent": 24
+        "rent": 24,
+        "owner": -1
     },
     {
         "id": 28,
@@ -209,7 +228,8 @@
         "categorie_rue": 6,
         "name": "Centre Bourse",
         "price": 260,
-        "rent": 24
+        "rent": 24,
+        "owner": -1
     },
     {
         "id": 29,
@@ -225,7 +245,8 @@
         "categorie_rue": 6,
         "name": "Terrasses du Port",
         "price": 260,
-        "rent": 24
+        "rent": 24,
+        "owner": -1
     },
     {
         "id": 31,
@@ -240,7 +261,8 @@
         "categorie_rue": 7,
         "name": "Joliette",
         "price": 300,
-        "rent": 26
+        "rent": 26,
+        "owner": -1
     },
     {
         "id": 33,
@@ -248,7 +270,8 @@
         "categorie_rue": 7,
         "name": "Castellane",
         "price": 300,
-        "rent": 26
+        "rent": 26,
+        "owner": -1
     },
     {
         "id": 34,
@@ -263,14 +286,16 @@
         "categorie_rue": 7,
         "name": "Saint-Charles",
         "price": 300,
-        "rent": 26
+        "rent": 26,
+        "owner": -1
     },
     {
         "id": 36,
         "type": "calanque",
         "name": "En-Vau",
         "price": 200,
-        "rent":  25
+        "rent":  25,
+        "owner": -1
     },
     {
         "id": 37,
@@ -283,7 +308,8 @@
         "categorie_rue": 8,
         "name": "Vieux-Port",
         "price": 400,
-        "rent": 50
+        "rent": 50,
+        "owner": -1
     },
     {
         "id": 39,
@@ -299,6 +325,7 @@
         "categorie_rue": 8,
         "name": "Canebière",
         "price": 400,
-        "rent": 50
+        "rent": 50,
+        "owner": -1
     }
 ]

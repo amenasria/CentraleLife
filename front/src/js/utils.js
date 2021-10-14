@@ -81,6 +81,7 @@ function click_ok(player){
     if(case1.type === "rue" || case1.type === "calanque"){
         if(case1.owner === -1){
             users[player].properties.push(case1.id);
+            users[player].money -= case1.price;
             cases[users[player].position].owner = player;
             let case_html = document.getElementById("case_" + case1.id);
             case_html.classList.add("property" + player);

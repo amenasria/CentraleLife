@@ -10,7 +10,7 @@
                 <div class="central_ui_dices">Dices</div>
                 <div class="central_ui_header"><h2>C'est à {{users[player].name}} de jouer.</h2></div>
                 <div class="central_ui_buttons">
-                    <button class="button_ui" v-on:click="rollDice(player)">Lancer les dés</button>
+                    <button class="button_ui" id="button_dice" :disabled='blockdice' v-on:click="dice(player)">Lancer les dés</button>
                     <button class="button_ui">Voir mes cartes</button>
                 </div>
                 <div class="central_ui_display" id="show_game">
@@ -71,13 +71,22 @@ export default {
             cases_droite: casesData.slice(32, 41),
             users: usersData,
             player: 0,
+            blockdice: false,
         }
     },
     methods: {
-      rollDice,
+      dice(player){
+        rollDice(player);
+        this.blockdice = true;
+        let button_dice = document.getElementById('button_dice');
+        button_dice.style.background = '#CDCDCF';
+      },
       ok: function(player) {
         click_ok(player);
         this.player = (player + 1) % 4;
+        this.blockdice = false;
+        let button_dice = document.getElementById('button_dice');
+        button_dice.style.background = '#000F9F';
       },
 
     },

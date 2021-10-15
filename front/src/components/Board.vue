@@ -1,15 +1,15 @@
 <template>
   <div class="interface_monopoly">
     <div class="board">
-        <liste-cases :cases="coin_haut_gauche" type_liste="monopoly_coin"></liste-cases>
-        <liste-cases :cases="cases_haut" type_liste="monopoly_row"></liste-cases>
-        <liste-cases :cases="coin_haut_droite" type_liste="monopoly_coin"></liste-cases>
-        <liste-cases :cases="cases_gauche" type_liste="monopoly_col"></liste-cases>
+        <liste-cases :cases="coin_haut_gauche" type_liste="monopoly_coin" :users="users"></liste-cases>
+        <liste-cases :cases="cases_haut" type_liste="monopoly_row" :users="users"></liste-cases>
+        <liste-cases :cases="coin_haut_droite" type_liste="monopoly_coin" :users="users"></liste-cases>
+        <liste-cases :cases="cases_gauche" type_liste="monopoly_col" :users="users"></liste-cases>
         <div class="case_centrale">
             <div class="central_ui">
                 <div class="central_ui_dices">
-                  <div id="dice1"></div>
-                  <div id="dice2"></div>
+                  <span id="dice1"></span>
+                  <span id="dice2"></span>
                 </div>
                 <div class="central_ui_header"><h2>C'est à {{users[player].name}} de jouer.</h2></div>
                 <div class="central_ui_buttons">
@@ -26,10 +26,16 @@
                 </div>
             </div>
         </div>
-        <liste-cases :cases="cases_droite" type_liste="monopoly_col"></liste-cases>
-        <liste-cases :cases="coin_bas_gauche" type_liste="monopoly_coin"></liste-cases>
-        <liste-cases :cases="cases_bas" type_liste="monopoly_row"></liste-cases>
-        <div class="case_depart">
+        <liste-cases :cases="cases_droite" type_liste="monopoly_col" :users="users"></liste-cases>
+        <liste-cases :cases="coin_bas_gauche" type_liste="monopoly_coin" :users=users></liste-cases>
+        <liste-cases :cases="cases_bas" type_liste="monopoly_row" :users=users></liste-cases>
+        <div class="case_depart" style="position: relative">
+          <div style="z-index: 300; position: absolute; right: 0; width: 15px; height: max-content" >
+            <div v-if="users[0].position === 1" style="background: green; height: 10px; width: 10px; margin-bottom: 2px; border-radius: 5px"></div>
+            <div v-if="users[1].position === 1" style="background: red; height: 10px; width: 10px; margin-bottom: 2px; border-radius: 5px"></div>
+            <div v-if="users[2].position === 1" style="background: orange; height: 10px; width: 10px; margin-bottom: 2px; border-radius: 5px"></div>
+            <div v-if="users[3].position === 1" style="background: purple; height: 10px; width: 10px; margin-bottom: 2px; border-radius: 5px"></div>
+          </div>
             🡸
         </div>
     </div>

@@ -1,6 +1,7 @@
 <template>
   <div :class="type_liste">
     <div class="case"
+         style="position: relative;"
     v-for="casemonop in cases"
     :key="casemonop.id"
     v-bind:id="'case_' + casemonop.id"
@@ -15,13 +16,20 @@
     </span>
     
     <span><i v-if="casemonop.price">{{ casemonop.price }}€</i></span>
+
+      <div style="z-index: 300; position: absolute; right: 0; width: 15px; height: max-content; align-self: center">
+        <div v-if="users[0].position === casemonop.id" style="background: green; height: 10px; width: 10px; margin-bottom: 2px; border-radius: 5px"></div>
+        <div v-if="users[1].position === casemonop.id" style="background: red; height: 10px; width: 10px; margin-bottom: 2px; border-radius: 5px"></div>
+        <div v-if="users[2].position === casemonop.id" style="background: orange; height: 10px; width: 10px; margin-bottom: 2px; border-radius: 5px"></div>
+        <div v-if="users[3].position === casemonop.id" style="background: purple; height: 10px; width: 10px; margin-bottom: 2px; border-radius: 5px"></div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-    props: ['cases', 'type_liste']
+    props: ['cases', 'type_liste', 'users']
 }
 </script>
 

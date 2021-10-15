@@ -4,14 +4,55 @@ import chance from '../assets/chance.json'
 
 
 function rollDice(player){
-    let lancer1 = Math.ceil(Math.random() * (6 - 1) + 1);
-    let lancer2 = Math.ceil(Math.random() * (6 - 1) + 1);
+    let lancer1 = Math.ceil(Math.random() * 6);
+    let lancer2 = Math.ceil(Math.random() * 6);
 
     let dice1 = document.getElementById("dice1");
-    dice1.innerHTML = lancer1;
+
+
+    switch (lancer1){
+        case 1:
+            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-1.svg') + "\" width=\"30\" height=\"30\"></object>";
+            break;
+        case 2:
+            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-2.svg') + "\" width=\"30\" height=\"30\"></object>";
+            break;
+        case 3:
+            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-3.svg') + "\" width=\"30\" height=\"30\"></object>";
+            break;
+        case 4:
+            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-4.svg') + "\" width=\"30\" height=\"30\"></object>";
+            break;
+        case 5:
+            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-5.svg') + "\" width=\"30\" height=\"30\"></object>";
+            break;
+        case 6:
+            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-6.svg') + "\" width=\"30\" height=\"30\"></object>";
+            break;
+    }
 
     let dice2 = document.getElementById("dice2");
-    dice2.innerHTML = lancer2;
+
+    switch (lancer2){
+        case 1:
+            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-1.svg') + "\" width=\"30\" height=\"30\"></object>";
+            break;
+        case 2:
+            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-2.svg') + "\" width=\"30\" height=\"30\"></object>";
+            break;
+        case 3:
+            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-3.svg') + "\" width=\"30\" height=\"30\"></object>";
+            break;
+        case 4:
+            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-4.svg') + "\" width=\"30\" height=\"30\"></object>";
+            break;
+        case 5:
+            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-5.svg') + "\" width=\"30\" height=\"30\"></object>";
+            break;
+        case 6:
+            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-6.svg') + "\" width=\"30\" height=\"30\"></object>";
+            break;
+    }
 
     let lancer = lancer1 + lancer2;
 

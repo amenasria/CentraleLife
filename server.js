@@ -11,7 +11,21 @@ const app = express()  // create server instance
 const server = http.createServer(app)
 const io = require('socket.io')(server)
 
+<<<<<<< HEAD
 app.use(express.static('front/dist'))
+=======
+app.use(function (req, res, next) {
+    date = new Date(Date.now())
+    console.log('Time:', date.toLocaleDateString(), date.toLocaleTimeString(), "; url :", req.url);
+    next(); // sans cette ligne on ne pourra pas poursuivre.
+})
+
+// app.use(express.static('front/dist'))
+>>>>>>> ac335ab1f0a5e1966ddd60985e296a9c9ca6dfff
+
+app.get('/', (req, res) => {
+    res.redirect(301, '/static/index.html')
+})
 
 app.get('/baguette', (req, res) => {
     res.json({username: 'Baguette'})
@@ -31,6 +45,8 @@ io.on('connection', (socket) =>{
   let room_token = crypto.createHash('sha256').update(String(Date.now()) + salt).digest('hex').slice(0, 5).toUpperCase();
   io.emit('get_hash', {room_token: room_token});
 })
+
+
 
 
 

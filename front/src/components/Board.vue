@@ -7,30 +7,38 @@
         <liste-cases :cases="cases_gauche" type_liste="monopoly_col"></liste-cases>
         <div class="case_centrale">
             <div class="central_ui">
-                <div class="central_ui_dices">Dices</div>
-                <div class="central_ui_header"><h2>C'est à Paul de jouer.</h2></div>
+                <div class="central_ui_dices">
+                  <div id="dice1"></div>
+                  <div id="dice2"></div>
+                </div>
+                <div class="central_ui_header"><h2>C'est à {{users[player].name}} de jouer.</h2></div>
                 <div class="central_ui_buttons">
-                    <button class="button_ui">Lancer les dés</button>
+                    <button class="button_ui" id="button_dice" :disabled='blockdice' v-on:click="dice(player)">Lancer les dés</button>
                     <button class="button_ui">Voir mes cartes</button>
                 </div>
-                <div class="central_ui_display">
-                    <h3>Carte Chance {{ info }}</h3>
-                    <p>Vous êtes invité à une soirée, avancez jusqu'à la case Vieux Port</p>
-                    <button class="button_ui">Allez-y !</button>
+                <div class="central_ui_display" id="show_game">
+                    <h3 id="name_case"></h3>
+                    <p id="message"></p>
+                    <div class="central_ui_buttons">
+                      <button class="button_ui" id="button_cancel" v-on:click="cancel()">Refuser</button>
+                      <button class="button_ui" id="button_ok" v-on:click="ok(player, card)"></button>
+                    </div>
                 </div>
             </div>
         </div>
         <liste-cases :cases="cases_droite" type_liste="monopoly_col"></liste-cases>
         <liste-cases :cases="coin_bas_gauche" type_liste="monopoly_coin"></liste-cases>
         <liste-cases :cases="cases_bas" type_liste="monopoly_row"></liste-cases>
-        <div class="case_depart">🡸</div>
+        <div class="case_depart">
+            🡸
+        </div>
     </div>
     <div class="menu">
         <h1>CENTRALE <br>LIFE</h1>
         <h2>4 joueurs</h2>
         <div class="liste_joueurs">
             <div class="joueur" v-for="user in users" :key="user.id" :style="'--user-color: ' + user.color">
-                <span class="user_icon"><svg aria-hidden="true" focusable="false" role="img" alt="User" style="height: 3.5ch" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path :fill="[user.id === 2 ? 'white' : user.color]" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg></span>
+                <span class="user_icon"><svg aria-hidden="true" focusable="false" role="img" alt="User" style="height: 3.5ch" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path :fill="[user.id === player + 1 ? 'white' : user.color]" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg></span>
                 <span class="user_info">
                     <span class="user_name"><b>{{ user.name }}</b></span>
                     <span class="user_money">{{ user.money }}€</span>
@@ -49,7 +57,8 @@
 import casesData from "@/assets/cases.json";
 import usersData from "@/assets/users.json";
 import ListeCases from "@/components/ListeCases.vue";
-import axios from 'axios'
+import axios from 'axios';
+import {rollDice, click_ok} from "../js/utils.js"
 
 export default {
     components: {
@@ -65,8 +74,35 @@ export default {
             cases_haut: casesData.slice(22, 31),
             coin_haut_droite: casesData.slice(31, 32),
             cases_droite: casesData.slice(32, 41),
-            users: usersData
+            users: usersData,
+            player: 0,
+            blockdice: false,
+            card: null,
         }
+    },
+    methods: {
+      dice(player){
+        this.card = rollDice(player);
+        this.blockdice = true;
+        let button_dice = document.getElementById('button_dice');
+        button_dice.style.background = '#CDCDCF';
+      },
+      ok: function(player, card) {
+        click_ok(player, card);
+        this.player = (player + 1) % 4;
+        this.blockdice = false;
+        let button_dice = document.getElementById('button_dice');
+        button_dice.style.background = '#000F9F';
+        this.card = null;
+      },
+      cancel: function() {
+        this.player = (this.player + 1) % 4;
+        this.blockdice = false;
+        let button_dice = document.getElementById('button_dice');
+        button_dice.style.background = '#000F9F';
+        let game = document.getElementById('show_game');
+        game.style.display = "none";
+      }
     },
     mounted() {
         axios
@@ -103,7 +139,8 @@ export default {
         filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
         border-radius: 50px;
         border-style: none;
-        height: 6vh
+        height: 6vh;
+        margin: 2%;
     }
 
     .case_centrale {
@@ -313,5 +350,13 @@ export default {
 
     .monopoly_coin {
         display: grid;
+    }
+
+    #show_game {
+      display: none;
+    }
+
+    #button_cancel {
+      background: #4D5F80;
     }
 </style>

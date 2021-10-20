@@ -27,15 +27,10 @@
             </div>
         </div>
         <liste-cases :cases="cases_droite" type_liste="monopoly_col" :users="users"></liste-cases>
-        <liste-cases :cases="coin_bas_gauche" type_liste="monopoly_coin" :users=users></liste-cases>
-        <liste-cases :cases="cases_bas" type_liste="monopoly_row" :users=users></liste-cases>
-        <div class="case_depart" style="position: relative">
-          <div style="z-index: 300; position: absolute; right: 0; width: 15px; height: max-content" >
-            <div v-if="users[0].position === 1" style="background: green; height: 10px; width: 10px; margin-bottom: 2px; border-radius: 5px"></div>
-            <div v-if="users[1].position === 1" style="background: red; height: 10px; width: 10px; margin-bottom: 2px; border-radius: 5px"></div>
-            <div v-if="users[2].position === 1" style="background: orange; height: 10px; width: 10px; margin-bottom: 2px; border-radius: 5px"></div>
-            <div v-if="users[3].position === 1" style="background: purple; height: 10px; width: 10px; margin-bottom: 2px; border-radius: 5px"></div>
-          </div>
+        <liste-cases :cases="coin_bas_gauche" type_liste="monopoly_coin" :users="users"></liste-cases>
+        <liste-cases :cases="cases_bas" type_liste="monopoly_row" :users="users"></liste-cases>
+        <div id="case_1" class="case_depart" style="position: relative">
+          <div class="pawn_container"></div>
             🡸
         </div>
     </div>
@@ -43,7 +38,7 @@
         <h1>CENTRALE <br>LIFE</h1>
         <h2>4 joueurs</h2>
         <div class="liste_joueurs">
-            <div class="joueur" v-for="user in users" :key="user.id" :style="'--user-color: ' + user.color">
+            <div class="joueur" v-for="user in users" :key="user.id" :class="{active: $data.player + 1 === user.id }" :style="'--user-color: ' + user.color">
                 <span class="user_icon"><svg aria-hidden="true" focusable="false" role="img" alt="User" style="height: 3.5ch" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path :fill="[user.id === player + 1 ? 'white' : user.color]" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg></span>
                 <span class="user_info">
                     <span class="user_name"><b>{{ user.name }}</b></span>
@@ -63,7 +58,7 @@
 import casesData from "@/assets/cases.json";
 import usersData from "@/assets/users.json";
 import ListeCases from "@/components/ListeCases.vue";
-import axios from 'axios';
+// import axios from 'axios';
 import {rollDice, click_ok} from "../js/utils.js"
 
 export default {
@@ -88,8 +83,26 @@ export default {
         }
     },
     methods: {
+      initPawns(){
+        this.users.forEach(user => {
+            let case_depart = document.getElementById("case_1");
+            let pawn_container = case_depart.getElementsByClassName("pawn_container")[0];
+            let pawn = document.createElement("div");
+            pawn.setAttribute("style", `--user-color: ${user.color}`);
+            pawn.setAttribute("class", "pawn");
+            pawn.setAttribute("id", `pawn_player_${user.id}`)
+            pawn_container.appendChild(pawn);
+        });
+      },
+      movePawns(new_pos, player){
+          let pawn = document.getElementById(`pawn_player_${player + 1}`);
+          let pawn_container = document.getElementById(`case_${new_pos}`).getElementsByClassName("pawn_container")[0];
+          pawn_container.appendChild(pawn);
+      },
       dice(player){
         let {card, lancer} = rollDice(player);
+        let new_pos = this.users[player].position
+        this.movePawns(new_pos, player);
         this.card = card;
         this.lancer = lancer;
         this.blockdice = true;
@@ -115,9 +128,10 @@ export default {
       }
     },
     mounted() {
-        axios
-            .get('http://localhost:8081/baguette')
-            .then(response => (this.info = response))
+        // axios
+        //     .get('http://localhost:8081/baguette')
+        //     .then(response => (this.info = response))
+        this.initPawns();
     }
 }
 </script>
@@ -141,6 +155,23 @@ export default {
         --bleu-centrale: #000f9f;
         --color-case: #eff0f4;
 
+    }
+
+    .pawn_container {
+        z-index: 300;
+        position: absolute;
+        right: 0;
+        width: 15px;
+        height: max-content;
+        align-self: center
+    }
+
+    .pawn {
+        background: var(--user-color);
+        height: 10px;
+        width: 10px;
+        margin-bottom: 2px;
+        border-radius: 5px
     }
 
     .button_ui {

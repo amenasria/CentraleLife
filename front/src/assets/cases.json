@@ -100,7 +100,7 @@
     {
         "id": 13,
         "type": "compagnie",
-        "name": "Centrale Marseille Alumni",
+        "name": "Alumni",
         "img": "alumni.png",
         "alt": "Logo Alumni",
         "price": 150,
@@ -234,10 +234,11 @@
     {
         "id": 29,
         "type": "compagnie",
-        "name": "Barbu",
+        "name": "Bar'bu",
         "img": "barbu.png",
         "alt": "Logo Barbu",
-        "price": 150
+        "price": 150,
+        "owner": -1
     },
     {
         "id": 30,

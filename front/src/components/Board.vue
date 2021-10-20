@@ -103,15 +103,18 @@ export default {
         button_dice.style.background = '#CDCDCF';
       },
       ok: function(player, card, lancer, cagnotte) {
-        this.cagnotte = click_ok(player, card, lancer, cagnotte);
-        this.player = (player + 1) % 4;
-        this.blockdice = false;
-        let button_dice = document.getElementById('button_dice');
-        button_dice.style.background = '#000F9F';
-        let dice1 = document.getElementById("dice1");
-        let dice2 = document.getElementById("dice2");
-        dice1.innerHTML = "";
-        dice2.innerHTML = "";
+        let resp = click_ok(player, card, lancer, cagnotte);
+        this.cagnotte = resp.cagnotte;
+        this.blockdice = resp.block;
+        if(!resp.block){
+          let button_dice = document.getElementById('button_dice');
+          button_dice.style.background = '#000F9F';
+          let dice1 = document.getElementById("dice1");
+          let dice2 = document.getElementById("dice2");
+          dice1.innerHTML = "";
+          dice2.innerHTML = "";
+          this.player = (player + 1) % 4;
+        }
         this.card = null;
       },
       cancel: function() {

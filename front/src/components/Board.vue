@@ -21,7 +21,7 @@
                     <p id="message"></p>
                     <div class="central_ui_buttons">
                       <button class="button_ui" id="button_cancel" v-on:click="cancel()">Refuser</button>
-                      <button class="button_ui" id="button_ok" v-on:click="ok(player, card, lancer)"></button>
+                      <button class="button_ui" id="button_ok" v-on:click="ok(player, card, lancer, cagnotte)"></button>
                     </div>
                 </div>
             </div>
@@ -36,6 +36,9 @@
     </div>
     <div class="menu">
         <h1>CENTRALE <br>LIFE</h1>
+        <div>
+          Montant de la cagnotte : {{cagnotte}}
+        </div>
         <h2>4 joueurs</h2>
         <div class="liste_joueurs">
             <div class="joueur" v-for="user in users" :key="user.id" :class="{active: $data.player + 1 === user.id }" :style="'--user-color: ' + user.color">
@@ -52,6 +55,8 @@
         </div>
     </div>
   </div>
+
+
 </template>
 
 <script>
@@ -80,6 +85,7 @@ export default {
             blockdice: false,
             card: null,
             lancer: 0,
+            cagnotte : 0,
         }
     },
     methods: {
@@ -109,13 +115,19 @@ export default {
         let button_dice = document.getElementById('button_dice');
         button_dice.style.background = '#CDCDCF';
       },
-      ok: function(player, card, lancer) {
-        console.log(this.card);
-        click_ok(player, card, lancer);
-        this.player = (player + 1) % 4;
-        this.blockdice = false;
-        let button_dice = document.getElementById('button_dice');
-        button_dice.style.background = '#000F9F';
+      ok: function(player, card, lancer, cagnotte) {
+        let resp = click_ok(player, card, lancer, cagnotte);
+        this.cagnotte = resp.cagnotte;
+        this.blockdice = resp.block;
+        if(!resp.block){
+          let button_dice = document.getElementById('button_dice');
+          button_dice.style.background = '#000F9F';
+          let dice1 = document.getElementById("dice1");
+          let dice2 = document.getElementById("dice2");
+          dice1.innerHTML = "";
+          dice2.innerHTML = "";
+          this.player = (player + 1) % 4;
+        }
         this.card = null;
       },
       cancel: function() {
@@ -366,7 +378,7 @@ export default {
     }
 
     .case .case-img img {
-        width: 50%;
+        width: 45%;
         object-fit: cover;
         overflow: hidden;
     }

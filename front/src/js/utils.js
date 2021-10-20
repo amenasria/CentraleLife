@@ -230,8 +230,10 @@ function click_ok(player, card, lancer, cagnotte){
         }
         if( card.move !== 0){
             users[player].position = card.move;
-            block = true;
-            afterMove(player, lancer);
+            if(card.move !== 11){
+                block = true;
+                afterMove(player, lancer);
+            }
         }
         if(card.prison === 1){
             users[player].position = 11;

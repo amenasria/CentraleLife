@@ -186,7 +186,7 @@ function rollDice(player){
 }
 
 
-function click_ok(player, card, lancer){
+function click_ok(player, card, lancer, cagnotte){
     let case1 = cases[users[player].position];
 
     if(case1.type === "rue" || case1.type === "calanque"){
@@ -207,6 +207,9 @@ function click_ok(player, card, lancer){
         users[player].in_prison = 0;
     } else if (case1.type === "chance" || case1.type === "communaute"){
         users[player].money += card.money;
+        if(card.money < 0){
+            cagnotte += -1*card.money
+        }
         if( card.move !== 0){
             users[player].position = card.move;
         }
@@ -225,11 +228,15 @@ function click_ok(player, card, lancer){
             users[player].money -= lancer*4;
             users[case1.owner].money += lancer*4;
         }
+    } else if (case1.type === "parc"){
+        users[player].money += cagnotte;
+        cagnotte = 0;
     }
 
     let game = document.getElementById('show_game');
     game.style.display = "none";
 
+    return cagnotte;
 }
 
 export {rollDice, click_ok}

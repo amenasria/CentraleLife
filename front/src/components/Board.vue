@@ -36,9 +36,8 @@
     </div>
     <div class="menu">
         <h1>CENTRALE <br>LIFE</h1>
-        <div>
-          Montant de la cagnotte : {{cagnotte}}
-        </div>
+        <div>Room <b>{{room_token}}</b></div>
+        <div>Montant de la cagnotte : {{cagnotte}}</div>
         <h2>4 joueurs</h2>
         <div class="liste_joueurs">
             <div class="joueur" v-for="user in users" :key="user.id" :class="{active: $data.player + 1 === user.id }" :style="'--user-color: ' + user.color">
@@ -86,6 +85,7 @@ export default {
             card: null,
             lancer: 0,
             cagnotte : 0,
+            room_token: document.location.pathname.replace("/room/", ""),
         }
     },
     methods: {
@@ -184,6 +184,11 @@ export default {
         width: 10px;
         margin-bottom: 2px;
         border-radius: 5px
+    }
+
+    .calanque > .pawn_container > .pawn {
+        border: 1px solid white;
+        border-radius: 5px;
     }
 
     .button_ui {
@@ -330,6 +335,7 @@ export default {
         grid-template-columns: repeat(5, 1fr);
         padding: 1% 10%;
         place-items: center;
+        text-align: center;
     }
 
     .board {

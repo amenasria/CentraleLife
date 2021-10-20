@@ -1,0 +1,20 @@
+{
+    "rooms": [
+        {
+            "token": "4C212",
+            "users": [         
+                {
+                    "id": 1,
+                    "name": "Marie",
+                    "color": "green",
+                    "money": 2500,
+                    "position": 1,
+                    "in_prison": -1,
+                    "properties": []
+                }
+                
+            ]
+        }
+    ]
+
+}

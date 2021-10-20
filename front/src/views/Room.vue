@@ -1,6 +1,5 @@
 <template>
   <div>
-      <h1>{{this.$route.params["room_token"]}}</h1>
       <Board />
   </div>
 </template>

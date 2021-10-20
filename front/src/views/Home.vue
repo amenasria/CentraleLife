@@ -59,7 +59,7 @@ export default {
     },
 
     joinRoom: function () {
-      let room_regexp = new RegExp("https?://(www.)?localhost:8081/room/[a-zA-Z0-9]{5}");
+      let room_regexp = new RegExp("/^https?://(www.)?localhost:8081/room/[a-zA-Z0-9]{5}$/");
 
       // If the link matches the model then check if the room exists in the DB
       if (this.lien_invitation.match(room_regexp) != null) {

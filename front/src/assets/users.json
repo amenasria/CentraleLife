@@ -7,7 +7,8 @@
         "money": 2500,
         "position": 1,
         "in_prison": -1,
-        "properties": []
+        "properties": [],
+        "lost": false
     },
     {
         "id": 2,
@@ -16,7 +17,8 @@
         "money": 2500,
         "position": 1,
         "in_prison": -1,
-        "properties": []
+        "properties": [],
+        "lost": false
     },
     {
         "id": 3,
@@ -25,7 +27,8 @@
         "money": 2500,
         "position": 1,
         "in_prison": -1,
-        "properties": []
+        "properties": [],
+        "lost": false
     },
     {
         "id": 4,
@@ -34,6 +37,7 @@
         "money": 2500,
         "position": 1,
         "in_prison": -1,
-        "properties": []
+        "properties": [],
+        "lost": false
     }
 ]

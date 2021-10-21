@@ -22,16 +22,28 @@ function afterMove(player, lancer){
 
     //Si c'est une case "taxe", on paye la taxe
     if(case1.type === "taxe"){
-        message.innerHTML = "Vous devez payer " + case1.price + "€.";
-        ok.innerHTML = "Payer";
-        cancel.style.display = 'none';
+        if(case1.price < users[player].money) {
+            message.innerHTML = "Vous devez payer " + case1.price + "€.";
+            ok.innerHTML = "Payer";
+            cancel.style.display = 'none';
+        } else {
+            message.innerHTML = "Vous ne pouvez pas payer cette taxe, vous avez perdu.";
+            ok.innerHTML = "RIP";
+            cancel.style.display = 'none';
+        }
     }
 
     if(case1.type === "rue" || case1.type === "calanque"){
         if(case1.owner === -1){
-            message.innerHTML =  "Prix : " + case1.price + "€" + "<br/>" + "Loyer : " + case1.rent + "€";
-            ok.innerHTML = "Acheter";
-            cancel.style.display = "block";
+            if(case1.price < users[player].money){
+                message.innerHTML =  "Prix : " + case1.price + "€" + "<br/>" + "Loyer : " + case1.rent + "€";
+                ok.innerHTML = "Acheter";
+                cancel.style.display = "block";
+            } else {
+                message.innerHTML =  "Vous n'avez pas assez d'argent pour acheter cette propriété.";
+                ok.innerHTML = "Ok";
+                cancel.style.display = "none";
+            }
         }  else if (case1.owner === player) {
             message.innerHTML =  "Vous êtes chez vous";
             ok.innerHTML = "Ok";
@@ -48,15 +60,21 @@ function afterMove(player, lancer){
 
         card = chance[card_id];
 
-        message.innerHTML =  card.message;
-
-        if(card.money > 0){
-            ok.innerHTML = "Encaisser";
-        } else if(card.money < 0){
-            ok.innerHTML = "Payer";
+        if(-1*card.money < users[player].money){
+            message.innerHTML =  card.message;
+            if(card.money > 0){
+                ok.innerHTML = "Encaisser";
+            } else if(card.money < 0){
+                ok.innerHTML = "Payer";
+            } else {
+                ok.innerHTML = "Y aller";
+            }
         } else {
-            ok.innerHTML = "Y aller";
+            message.innerHTML =  card.message + "<br/> Vous n'avez pas assez d'argent, vous avez perdu !";
+            ok.innerHTML = "RIP";
         }
+
+
 
         cancel.style.display = 'none';
     }
@@ -81,9 +99,15 @@ function afterMove(player, lancer){
 
     if(case1.type === "compagnie"){
         if(case1.owner === -1){
-            message.innerHTML =  "Prix : " + case1.price + "€" + "<br/>" + "Loyer : 4 fois le montant indiqué par les dés";
-            ok.innerHTML = "Acheter";
-            cancel.style.display = "block";
+            if(case1.price < users[player].money) {
+                message.innerHTML = "Prix : " + case1.price + "€" + "<br/>" + "Loyer : 4 fois le montant indiqué par les dés";
+                ok.innerHTML = "Acheter";
+                cancel.style.display = "block";
+            } else {
+                message.innerHTML =  "Vous n'avez pas assez d'argent pour acheter cette compagnie.";
+                ok.innerHTML = "Ok";
+                cancel.style.display = "none";
+            }
         }  else if (case1.owner === player) {
             message.innerHTML =  "Vous êtes chez vous !";
             ok.innerHTML = "Ok";
@@ -113,22 +137,22 @@ function rollDice(player){
 
     switch (lancer1){
         case 1:
-            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-1.svg') + "\" width=\"30\" height=\"30\"></object>";
+            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-1.svg') + "\" width=\"40\" height=\"40\"></object>";
             break;
         case 2:
-            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-2.svg') + "\" width=\"30\" height=\"30\"></object>";
+            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-2.svg') + "\" width=\"40\" height=\"40\"></object>";
             break;
         case 3:
-            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-3.svg') + "\" width=\"30\" height=\"30\"></object>";
+            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-3.svg') + "\" width=\"40\" height=\"40\"></object>";
             break;
         case 4:
-            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-4.svg') + "\" width=\"30\" height=\"30\"></object>";
+            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-4.svg') + "\" width=\"40\" height=\"40\"></object>";
             break;
         case 5:
-            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-5.svg') + "\" width=\"30\" height=\"30\"></object>";
+            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-5.svg') + "\" width=\"40\" height=\"40\"></object>";
             break;
         case 6:
-            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-6.svg') + "\" width=\"30\" height=\"30\"></object>";
+            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-6.svg') + "\" width=\"40\" height=\"40\"></object>";
             break;
     }
 
@@ -136,22 +160,22 @@ function rollDice(player){
 
     switch (lancer2){
         case 1:
-            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-1.svg') + "\" width=\"30\" height=\"30\"></object>";
+            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-1.svg') + "\" width=\"40\" height=\"40\"></object>";
             break;
         case 2:
-            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-2.svg') + "\" width=\"30\" height=\"30\"></object>";
+            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-2.svg') + "\" width=\"40\" height=\"40\"></object>";
             break;
         case 3:
-            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-3.svg') + "\" width=\"30\" height=\"30\"></object>";
+            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-3.svg') + "\" width=\"40\" height=\"40\"></object>";
             break;
         case 4:
-            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-4.svg') + "\" width=\"30\" height=\"30\"></object>";
+            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-4.svg') + "\" width=\"40\" height=\"40\"></object>";
             break;
         case 5:
-            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-5.svg') + "\" width=\"30\" height=\"30\"></object>";
+            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-5.svg') + "\" width=\"40\" height=\"40\"></object>";
             break;
         case 6:
-            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-6.svg') + "\" width=\"30\" height=\"30\"></object>";
+            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-6.svg') + "\" width=\"40\" height=\"40\"></object>";
             break;
     }
 
@@ -209,43 +233,64 @@ function click_ok(player, card, lancer, cagnotte){
 
     if(case1.type === "rue" || case1.type === "calanque"){
         if(case1.owner === -1){
-            users[player].properties.push(case1.id);
-            users[player].money -= case1.price;
-            cases[users[player].position].owner = player;
-            let case_html = document.getElementById("case_" + case1.id);
-            case_html.classList.add("property" + player);
+            if(case1.price < users[player].money) {
+                users[player].properties.push(case1.id);
+                users[player].money -= case1.price;
+                cases[users[player].position].owner = player;
+                let case_html = document.getElementById("case_" + case1.id);
+                case_html.classList.add("property" + player);
+            }
         } else if (case1.owner !== player) {
-            users[player].money -= case1.rent;
-            users[case1.owner].money += case1.rent;
+            if(case1.rent < users[player].money) {
+                users[player].money -= case1.rent;
+                users[case1.owner].money += case1.rent;
+            } else {
+                users[case1.owner].money += users[player].money;
+                users[player].money = 0;
+                users[player].lost = true;
+            }
         }
     } else if (case1.type === "taxe") {
-        users[player].money -= case1.price;
+        if(case1.price < users[player].money) {
+            users[player].money -= case1.price;
+        } else {
+            users[player].money = 0;
+            users[player].lost = true;
+        }
     } else if (case1.type === "go_prison") {
         users[player].position = 11;
         users[player].in_prison = 0;
     } else if (case1.type === "chance" || case1.type === "communaute"){
-        users[player].money += card.money;
-        if(card.money < 0){
-            cagnotte += -1*card.money
-        }
-        if( card.move !== 0){
-            users[player].position = card.move;
-            if(card.move !== 11){
-                block = true;
-                afterMove(player, lancer);
+        if(-1*card.money < users[player].money){
+            users[player].money += card.money;
+            if(card.money < 0){
+                cagnotte += -1*card.money
             }
+            if( card.move !== 0){
+                users[player].position = card.move;
+                if(card.move !== 11){
+                    block = true;
+                    afterMove(player, lancer);
+                }
+            }
+        } else {
+            cagnotte += -1*users[player].money;
+            users[player].lost = true;
         }
+
         if(card.prison === 1){
             users[player].position = 11;
             users[player].in_prison = 0;
         }
     } else if (case1.type === "compagnie"){
         if(case1.owner === -1){
-            users[player].properties.push(case1.id);
-            users[player].money -= case1.price;
-            cases[users[player].position].owner = player;
-            let case_html = document.getElementById("case_" + case1.id);
-            case_html.classList.add("property" + player);
+            if(case1.price < users[player].money) {
+                users[player].properties.push(case1.id);
+                users[player].money -= case1.price;
+                cases[users[player].position].owner = player;
+                let case_html = document.getElementById("case_" + case1.id);
+                case_html.classList.add("property" + player);
+            }
         } else if (case1.owner !== player) {
             users[player].money -= lancer*4;
             users[case1.owner].money += lancer*4;

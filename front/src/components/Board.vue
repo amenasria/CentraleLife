@@ -142,6 +142,9 @@ export default {
       },
       cancel: function() {
         this.player = (this.player + 1) % 4;
+        if(this.users[this.player].lost){
+          this.player = (this.player + 1) % 4;
+        }
         this.blockdice = false;
         let button_dice = document.getElementById('button_dice');
         button_dice.style.background = '#000F9F';

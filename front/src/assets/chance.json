@@ -8,14 +8,14 @@
   },
   {
     "id": 2,
-    "message": "Vous devez remboursez le Bar'bu. Vous payez 60 €.",
+    "message": "Vous devez rembourser le Bar'bu. Vous payez 60 €.",
     "money": -60,
     "move": 0,
     "prison": 0
   },
   {
     "id": 3,
-    "message": "Après 3 heures de queue au RU, vous vous épanouissez de faim. Payez vos frais d’hôpitaux s’élevant à 250 €.",
+    "message": "Après 3 heures de queue au RU, vous vous épavouissez de faim. Payez vos frais d’hôpitaux s’élevant à 250 €.",
     "money": -250,
     "move": 0,
     "prison": 0

@@ -6,6 +6,7 @@
         <liste-cases :cases="coin_haut_droite" type_liste="monopoly_coin" :users="users"></liste-cases>
         <liste-cases :cases="cases_gauche" type_liste="monopoly_col" :users="users"></liste-cases>
         <div class="case_centrale">
+            <img src="../assets" alt="">
             <div class="central_ui">
                 <div class="central_ui_dices">
                   <span id="dice1"></span>

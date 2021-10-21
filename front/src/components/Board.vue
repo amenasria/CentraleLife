@@ -128,6 +128,8 @@ export default {
       },
       ok: function(player, card, lancer, cagnotte) {
         let resp = click_ok(player, card, lancer, cagnotte);
+        let new_pos = this.users[player].position
+        this.movePawns(new_pos, player);
         this.cagnotte = resp.cagnotte;
         this.blockdice = resp.block;
         if(!resp.block){

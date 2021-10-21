@@ -56,7 +56,8 @@ function afterMove(player, lancer){
     }
 
     if(case1.type === "chance" || case1.type === "communaute"){
-        let card_id = Math.ceil(Math.random() * (11 - 1));
+
+        let card_id = Math.ceil(Math.random() * (12 - 1));
 
         card = chance[card_id];
 
@@ -275,6 +276,7 @@ function click_ok(player, card, lancer, cagnotte){
             }
         } else {
             cagnotte += -1*users[player].money;
+            users[player].money = 0;
             users[player].lost = true;
         }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="interface_monopoly">
+  <div class="interface_monopoly" :class="{night: !day}">
     <div class="board">
         <liste-cases :cases="coin_haut_gauche" type_liste="monopoly_coin" :users="users"></liste-cases>
         <liste-cases :cases="cases_haut" type_liste="monopoly_row" :users="users"></liste-cases>
@@ -11,7 +11,7 @@
                   <span id="dice1"></span>
                   <span id="dice2"></span>
                 </div>
-                <div class="central_ui_header"><h2>C'est à {{users[player].name}} de jouer.</h2></div>
+                <div class="central_ui_header"><h2 :class="{night: !day, neon_text_small: !day}" :style="'--neon-color: ' + users[player].color">C'est à {{users[player].name}} de jouer.</h2></div>
                 <div class="central_ui_buttons">
                     <button class="button_ui" id="button_dice" :disabled='blockdice' v-on:click="dice(player)">Lancer les dés</button>
                     <button class="button_ui">Voir mes cartes</button>
@@ -35,9 +35,11 @@
         </div>
     </div>
     <div class="menu">
-        <h1>CENTRALE <br>LIFE</h1>
-        <div>Room <b>{{room_token}}</b></div>
-        <div>Montant de la cagnotte : {{cagnotte}}</div>
+        <DarkMode/>
+        <button v-on:click="toggleDarkMode"></button>
+        <h1 style="margin-top: 0;" :class="{night: !day, neon_text_big: !day}">CENTRALE <br>LIFE</h1>
+        <div :class="{night_text: !day}">Room <b>{{room_token}}</b></div>
+        <div :class="{night_text: !day}">Montant de la cagnotte : {{cagnotte}}</div>
         <h2>4 joueurs</h2>
         <div class="liste_joueurs">
             <div class="joueur" v-for="user in users" :key="user.id" :class="{active: $data.player + 1 === user.id }" :style="'--user-color: ' + user.color">
@@ -62,12 +64,14 @@
 import casesData from "@/assets/cases.json";
 import usersData from "@/assets/users.json";
 import ListeCases from "@/components/ListeCases.vue";
+import DarkMode from "@/components/DarkMode.vue"
 // import axios from 'axios';
 import {rollDice, click_ok} from "../js/utils.js"
 
 export default {
     components: {
-        ListeCases
+        ListeCases,
+        DarkMode,
     },
     data() {
         return {
@@ -85,10 +89,16 @@ export default {
             card: null,
             lancer: 0,
             cagnotte : 0,
+            day: true, // 0 if day 1 if night
             room_token: document.location.pathname.replace("/room/", ""),
         }
     },
     methods: {
+      toggleDarkMode() {
+        let darkmode_checkbox = document.getElementById("toggleDarkMode");
+        darkmode_checkbox.checked = !darkmode_checkbox.checked;
+        this.day = ! this.day;
+      },
       initPawns(){
         this.users.forEach(user => {
             let case_depart = document.getElementById("case_1");
@@ -167,6 +177,39 @@ export default {
         --bleu-centrale: #000f9f;
         --color-case: #eff0f4;
 
+        --neon-light: #fff;
+        --neon-color: #0fa;
+
+        --night-color: hsl(240, 100%, 10%);
+        /* --night-color: hsl(240, 100%, 10%); */
+
+    }
+
+    .neon_text_big {
+        color: var(--neon-light);
+        text-shadow:
+            0 0 7px var(--neon-light),
+            /* 0 0 10px var(--neon-light), */
+            0 0 21px var(--neon-color),
+            0 0 42px var(--neon-color),
+            0 0 82px var(--neon-color),
+            0 0 92px var(--neon-color);
+            /* 0 0 102px var(--neon-color); */
+            /* 0 0 151px var(--neon-color); */
+    }
+
+    .neon_text_small {
+        color: var(--neon-light);
+        text-shadow:
+            0 0 7px var(--neon-light),
+            0 0 10px var(--neon-color),
+            0 0 21px var(--neon-color),
+            0 0 42px var(--neon-color),
+            0 0 82px var(--neon-color),
+            0 0 92px var(--neon-color),
+            0 0 102px var(--neon-color),
+            0 0 151px var(--neon-color),
+            0 0 203px var(--neon-color);
     }
 
     .pawn_container {
@@ -259,6 +302,16 @@ export default {
         color: var(--bleu-centrale);
     }
 
+    .menu h1.night {
+        --neon-color:var(--bleu-centrale);
+        color: var(--neon-light);
+    }
+
+    .central_ui_header h2.night {
+        --neon-color:red;
+        color: var(--neon-light);
+    }
+
     .menu h1 {
         font-size: 3.5vmax;
     }
@@ -329,6 +382,18 @@ export default {
     .categorie_7 .bandeau_couleur {background-color: var(--color-category-7);}
     .categorie_8 .bandeau_couleur {background-color: var(--color-category-8);}
 
+    html {
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        height: 100%;
+    }
+
+    div#app {
+        height: 100%;
+    }
 
     .interface_monopoly {
         display: grid;
@@ -336,8 +401,10 @@ export default {
         padding: 1% 10%;
         place-items: center;
         text-align: center;
+        margin: 0;
+        height: 100%;
     }
-
+    
     .board {
         grid-column: 1 / span 3;
         display: grid;
@@ -347,6 +414,10 @@ export default {
         row-gap: var(--horizontal-gap);
         width: 45vw;
         height: 45vw;
+    }
+
+    .interface_monopoly.night {
+        background-color: var(--night-color);
     }
 
     .menu {

@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div style="height: 100%;">
       <Board />
+      <DarkMode/>
   </div>
 </template>
 
@@ -9,10 +10,11 @@ import Board from "../components/Board.vue"
 
 
 
+
 export default {
   name: 'Room',
   components: {
-    Board
+    Board,
   },
   methods: {
     connectToWS: function() {

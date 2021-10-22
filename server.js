@@ -10,6 +10,8 @@ const crypto = require('crypto');
 const app = express()  // create server instance
 const server = http.createServer(app)
 const io = require('socket.io')(server)
+const mapRooms = new Map()
+
 
 
 // Logging every request made to the server
@@ -37,7 +39,6 @@ app.get('/', function (req, res) {
 app.head('/room/[A-Z0-9]{5}', function(req, res) {
   res.header("Access-Control-Allow-Origin", "*"); // Until in prod we'll have to do this
   let room_token = req.url.replace("/room/", "");
-  console.log(`Looking for room token ${room_token} in database`);
   if (roomIsInDB(room_token)) {
     res.status(200);
     res.send("Room exists");
@@ -48,12 +49,17 @@ app.head('/room/[A-Z0-9]{5}', function(req, res) {
   
 })
 
+// Creating a new room
+app.put('/room', function(req, res) {
+  let salt = "Baguette";
+  let room_token = crypto.createHash('sha256').update(String(Date.now()) + salt).digest('hex').slice(0, 5).toUpperCase();
+  mapRooms.set(room_token, {});
+  res.status(201);
+  res.send("Room created");
+})
+
 function roomIsInDB(room_token) {
-  if (room_token === "F5444" || room_token === "ABCDE") {
-    console.log(`Room ${room_token} is in database`);
-    return true
-  }
-  return false
+  return mapRooms.has(room_token)
 }
 
 // Etablissement de la connexion

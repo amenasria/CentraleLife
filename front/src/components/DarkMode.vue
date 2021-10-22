@@ -1,12 +1,12 @@
 <template>
   <div class="main_div">
         <input id="toggleDarkMode" :value="value" class="toggle" type="checkbox" checked>
-        {{value}}
   </div>
 </template>
 
 <script>
 export default {
+    name: "DarkMode",
     props: ['value']
 }
 </script>
@@ -20,7 +20,6 @@ export default {
     --offset-orthogonal: calc(var(--size) * 0.65);
     --offset-diagonal: calc(var(--size) * 0.45);
 }
-
 
 .toggle {
     appearance: none;

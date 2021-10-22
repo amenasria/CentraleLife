@@ -27,10 +27,6 @@ app.get('/', (req, res) => {
     res.redirect(301, '/static/index.html')
 })
 
-app.get('/baguette', (req, res) => {
-    res.json({username: 'Baguette'})
-})
-
 app.get('/', function (req, res) {
   res.sendFile('index.html', { root: __dirname })
 })
@@ -46,7 +42,6 @@ app.head('/room/[A-Z0-9]{5}', function(req, res) {
     res.status(404);
     res.send("Room not found");
   }
-  
 })
 
 // Creating a new room
@@ -67,6 +62,10 @@ io.on('connection', (socket) =>{
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
+
+  socket.on('enter_room', (data) => {
+    console.log(`Received from enter_room: ${data.room}`);
+  })
   console.log(`Connecté au client: socket_id = ${socket.id}`);
   let salt = "Baguette";
   let room_token = crypto.createHash('sha256').update(String(Date.now()) + salt).digest('hex').slice(0, 5).toUpperCase();

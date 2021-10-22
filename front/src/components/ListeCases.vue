@@ -23,7 +23,8 @@
 
 <script>
 export default {
-    props: ['cases', 'type_liste', 'users']
+  name: "ListeCases",
+  props: ['cases', 'type_liste', 'users']
 }
 </script>
 

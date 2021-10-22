@@ -35,7 +35,7 @@
         </div>
     </div>
     <div class="menu">
-        <DarkMode/>
+        <dark-mode></dark-mode>
         <button v-on:click="toggleDarkMode"></button>
         <h1 style="margin-top: 0;" :class="{night: !day, neon_text_big: !day}">CENTRALE <br>LIFE</h1>
         <div :class="{night_text: !day}">Room <b>{{room_token}}</b></div>
@@ -70,6 +70,7 @@ import DarkMode from "@/components/DarkMode.vue"
 import {rollDice, click_ok} from "../js/utils.js"
 
 export default {
+    name: "Board",
     components: {
         ListeCases,
         DarkMode,

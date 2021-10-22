@@ -1,7 +1,6 @@
 <template>
   <div style="height: 100%;">
       <Board />
-      <DarkMode/>
   </div>
 </template>
 
@@ -16,14 +15,20 @@ export default {
   components: {
     Board,
   },
+  data() {
+    return {
+      socket: require("socket.io-client")("http://localhost:8081"),
+      room_token: window.location.pathname.replace('/room/', ''), // TODO: A remplacer par la valeur de la room qu'on passe à la vue
+      pseudo: "Alexandre"
+    }
+  },
   methods: {
-    connectToWS: function() {
-      let room_token = window.location.hostname;
-      console.log(room_token);
+    connectToRoom: function() {
+      this.socket.emit('enter_room', {room : this.room_token, pseudo : this.pseudo});
     }
   },
   beforeMount() {
-    this.connectToWS()
+    this.connectToRoom()
   }
 }
 </script>

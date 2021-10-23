@@ -15,7 +15,7 @@
   },
   {
     "id": 3,
-    "message": "Après 3 heures de queue au RU, vous vous épavouissez de faim. Payez vos frais d’hôpitaux s’élevant à 250 €.",
+    "message": "Après 3 heures de queue au RU, vous vous évanouissez de faim. Payez vos frais d’hôpitaux s’élevant à 250 €.",
     "money": -250,
     "move": 0,
     "prison": 0
@@ -81,6 +81,27 @@
     "message": "Vous arrivez à vous faire exonérer des frais d’inscription, touchez 200 €.",
     "money": 200,
     "move": 0,
+    "prison": 0
+  },
+  {
+    "id": 13,
+    "message": "Vous n'avez pas validé Orthodidacte. Vous devez aller le passer à la Poste et payer 110 €.",
+    "money": -110,
+    "move": 0,
+    "prison": 0
+  },
+  {
+    "id": 14,
+    "message": "Vous rencontrez Lapiaule, allez sur le case Bar'bu.",
+    "money": 0,
+    "move": 29,
+    "prison": 0
+  },
+  {
+    "id": 15,
+    "message": "Alerte rouge tempête à Marseille. Les amphis sont inondés et les cours sont annulés. Allez à Saint-Charles pour rentrer chez vous.",
+    "money": 0,
+    "move": 35,
     "prison": 0
   }
 ]

@@ -57,7 +57,7 @@ function afterMove(player, lancer){
 
     if(case1.type === "chance" || case1.type === "communaute"){
 
-        let card_id = Math.ceil(Math.random() * (12 - 1));
+        let card_id = Math.ceil(Math.random() * (13 - 1));
 
         card = chance[card_id];
 

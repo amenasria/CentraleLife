@@ -1,24 +1,20 @@
 <template>
   <div class="interface_monopoly" :class="{night: !day}">
 
-    <Modal v-show="winner !== -1">
+    <Modal ref="PropertiesModal">
       <template v-slot:header>
-        <h1>Rejoindre une salle</h1>
+        <h1>Les propriétés de {{users[player].name}}</h1>
       </template>
       <template v-slot:body>
-        <span style="text-align: center; font-size: 15px; color: var(--color-input-ft)">Entre un lien d'invitation ci-dessous pour rejoindre un serveur existant</span>
-        <div style="margin: 3% 0 3% 0"><b>Lien d'invitation</b> <b style="color: red;">*</b></div>
-        <div>
-          <input type="text" id="lien_invitation" name="lien_invitation" v-model="lien_invitation" placeholder="https://localhost:8080/room/F5444">
-        </div>
-        <div style="margin: 3% 0 2% 0"><b>Les invitations devraient ressembler à</b></div>
-        <div style="color: var(--color-examples)">F5444<br/>https://localhost:8080/room/F5444
+        <div v-for="property in users[player].properties" :key="property">
+          <span style="text-align: left; margin-right: 50px"><b>{{ cases[property].name }}</b></span>
+          <span style="text-align: center; margin-right: 50px">Prix : {{ cases[property].price }} €         </span>
+          <span style="text-align: right;">Loyer : {{ cases[property].rent }} €</span>
         </div>
       </template>
       <template v-slot:footer>
         <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-          <button @click="$refs.RoomModal.closeModal()" class="back_btn">Retour</button>
-          <button v-on:click="joinRoom()" class="join_btn">Rejoindre la salle</button>
+          <button @click="$refs.PropertiesModal.closeModal()" class="join_btn">Fermer</button>
         </div>
       </template>
     </Modal>
@@ -38,7 +34,7 @@
                 <div class="central_ui_header"><h2 :class="{night: !day, neon_text_small: !day}" :style="'--neon-color: ' + users[player].color" id="player">C'est à {{users[player].name}} de jouer.</h2></div>
                 <div class="central_ui_buttons">
                     <button class="button_ui" id="button_dice" :disabled='blockdice' v-on:click="dice(player)">Lancer les dés</button>
-                    <button class="button_ui" id="button_card">Voir mes cartes</button>
+                    <button class="button_ui" id="button_card" v-on:click="$refs.PropertiesModal.openModal()">Voir mes cartes</button>
                 </div>
                 <div class="central_ui_display" id="show_game">
                     <h3 id="name_case"></h3>
@@ -103,6 +99,7 @@ export default {
     },
     data() {
         return {
+            cases: casesData,
             coin_bas_droite: casesData.slice(1, 2), 
             cases_bas: casesData.slice(2, 11).reverse(),
             coin_bas_gauche: casesData.slice(11, 12), 

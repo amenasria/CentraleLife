@@ -144,6 +144,7 @@ export default {
       },
       dice(player){
         let {card, lancer} = rollDice(player);
+        this.$parent.socket.emit('rolled_dice', {dices: lancer});
         let new_pos = this.users[player].position
         this.movePawns(new_pos, player);
         this.card = card;

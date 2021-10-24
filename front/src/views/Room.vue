@@ -42,7 +42,8 @@ export default {
     }
   },
   beforeMount() {
-    this.connectToRoom()
+    this.connectToRoom();
+    this.listenToEvents();
   }
 }
 </script>

@@ -47,19 +47,19 @@ export default {
   methods: {
     createRoom: function () {
       this.hasCreatedRoom = true;
-      const io = require("socket.io-client");
-      const socket = io("http://localhost:8081");
-      socket.on("connect", () => {
-          console.log(`Connecté au serveur: socket_id = ${socket.id}`);
-      });
-      socket.on('get_hash', function(msg){
-          console.log(msg["room_token"]);
-          window.location.replace("http://localhost:8080/room/" + msg["room_token"])
-      });
+      axios
+        .put("http://localhost:8081/api/room")
+        .then(response => {
+          if (response.status === 201) { // If room is created then enter it
+            window.location.replace("http://localhost:8080/room/" + response.data)
+          } else {
+            console.warn(`Couldn't create room, response :\n${response}`);
+          }
+        });
     },
 
     joinRoom: function () {
-      let room_regexp = new RegExp("/^https?://(www.)?localhost:8081/room/[a-zA-Z0-9]{5}$/");
+      let room_regexp = new RegExp("/^https?://(www.)?localhost:8081/api/room/[a-zA-Z0-9]{5}$/");
 
       // If the link matches the model then check if the room exists in the DB
       if (this.lien_invitation.match(room_regexp) != null) {

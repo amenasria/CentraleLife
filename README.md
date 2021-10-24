@@ -23,14 +23,42 @@ Pour [créer le projet](https://cli.vuejs.org/guide/creating-a-project.html#vue-
 `vue create nameProject`
 
 
-
 ### Node.js et Express
 
 La partie back en [Node.js](https://nodejs.org/en/) avec le framework [Express](https://expressjs.com/fr/).
 Node.js est un environnement d'exécution permettant d'utiliser le JavaScript côté serveur.
 Express est un framework pour construire des applications avec Node.js.
 
+#### Créer un projet Express
+
+Une fois [Node.js](https://nodejs.org/en/) installé, vous pouvez créer un projet Expresse  en faisont :
+```
+mkdir myapp     # Création du dossier de votre projet
+cd my app       # Aller dans ce dossier
+npm init        # Création du package.json
+```
+
+Le entry point est généralement index.js ou server.js dans notre cas.
+
+```
+npm install express --save  # Installation d'Express
+```
+
+[En savoir plus](https://expressjs.com/fr/starter/installing.html)
+
+
 ### Websocket
+
+Pour le websocket, nous avons utilisé [Socket.IO](https://socket.io/).
+Socket.IO est une librairie permettant une communication en temps réel, bidirectionnelle et basée sur des événements entre le navigateur et le serveur.
+
+Par exemple, pour notre jeu, nous envoyons les événements suivants :
+- Un nouveau joueur a rejoint la partie.
+- J'ai lancé les dés.
+- J'ai fait un choix.
+- J'ai mis à jour les données du jeu.
+
+Voici le schéma pour le lancer de dés :
 
 ![Fonctionnement du websocket](./assets_readme/websocket.png)
 

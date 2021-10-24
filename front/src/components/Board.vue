@@ -6,6 +6,9 @@
         <h1>Les propriétés de {{users[player].name}}</h1>
       </template>
       <template v-slot:body>
+        <div v-if="users[player].properties.length === 0">
+          <span>Vous n'avez aucune propriété.</span>
+        </div>
         <div v-for="property in users[player].properties" :key="property">
           <span style="text-align: left; margin-right: 50px"><b>{{ cases[property].name }}</b></span>
           <span style="text-align: center; margin-right: 50px">Prix : {{ cases[property].price }} €         </span>
@@ -15,6 +18,77 @@
       <template v-slot:footer>
         <div style="display: flex; align-items: flex-start; justify-content: space-between;">
           <button @click="$refs.PropertiesModal.closeModal()" class="join_btn">Fermer</button>
+        </div>
+      </template>
+    </Modal>
+
+    <Modal ref="RulesModal">
+      <template v-slot:header>
+        <h1>Règles du jeu</h1>
+      </template>
+      <template v-slot:body>
+        <div style="text-align: left">
+          <span style="margin-top: 20px"><b>Nombre de joueurs : </b> 2 à 4 </span> <br/>
+
+          <h2> Déroulement de la partie : </h2>
+
+          <h3> Début de partie </h3>
+          Au début de la partie, chaque joueur reçoit 1200 €. Les pions commencent tous sur la case Départ (petite image). <br/>
+          Les joueurs jouent dans l'ordre d'arrivée dans la salle. La première personne a lancé les dés est donc le créateur de la salle.
+          Chaque personne lance les dés à tour de rôle (le nom de la personne qui joue étant indiqué au milieu du plateau).
+
+          <h3>Les différentes cases</h3>
+
+          Lorsqu'un joueur lance les dés, il doit se déplacer d'autant de cases que la somme des valeurs sur les dés.
+          En fonction de la case sur laquelle il arrive, il y a des actions différentes.
+
+          <h4>Une propriété, une calanque ou une compagnie</h4>
+
+          <h5>Sans propriétaire</h5>
+
+          Si le pion arrive sur une case Propriété, Calanque ou Compagnie et dont personne n'est propriétaire, le joueur peut choisir de l'acheter ou non.
+          Si le joueur décide de l'acheter et a assez d'argent, il paye le prix de la propriété et la case a une bordure de sa couleur.
+
+          <h5>Avec propriétaire</h5>
+
+          Si le pion arrive sur une case Propriété dont un joueur est propriétaire, le joueur paye le loyer indiqué au propriétaire.
+
+          <h4>Chance ou Caisse de communauté</h4>
+
+          Si le pion arrive sur une case "Chance" ou "Caisse de communauté", une carte est tiré au hasard. Le joueur doit effectuer l'action indiqué. <br/>
+          S'il doit se déplacer sur une case "Propriété", il a la possibilité de l'acheter si la case n'as pas de propriétaire ou il doit payer le loyer au propriétaire. <br/>
+          S'il doit payer, l'argent est versé dans le cagnotte.
+
+          <h4>Taxe</h4>
+
+          Si le pion atterit sur la case "Cotisation BDE" ou "Frais de scolarité", il doit payer le montant indiqué.
+
+          <h4>KSI</h4>
+
+          Si le pion atterit sur la case KSI, le joueur gagne le montant de la cagnotte.
+
+          <h4>Prison</h4>
+
+          Un joueur est emprisonné s'il atteint la case "Allez en prison" ou s'il tire une carte lui indiquant d'aller en prison.
+
+          <h5>Sortir de prison</h5>
+
+          Un joueur peut sortir de prison soit après 3 tours, soit après avoir fait un doublet de 6.
+
+          <h3>Faillite</h3>
+
+          Un joueur est en faillite s'il n'a plus assez d'argent pour payer un loyer à un autre joueur, une taxe ou une carte chance. <br/>
+          Un joueur en faillite a perdu et la partie continue sans lui.
+
+          <h3>Gagnant</h3>
+
+          Le gagnant est le dernier joueur restant, car les autres joueurs sont en faillite.
+        </div>
+
+      </template>
+      <template v-slot:footer>
+        <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+          <button @click="$refs.RulesModal.closeModal()" class="join_btn">Fermer</button>
         </div>
       </template>
     </Modal>
@@ -73,7 +147,7 @@
             </div>
         </div>
         <div class="player_buttons">
-            <button class="button_ui">Mettre en pause</button>
+            <button class="button_ui" v-on:click="$refs.RulesModal.openModal()">Règles du jeu</button>
             <button class="button_ui">Abandonner la partie</button>
         </div>
     </div>
@@ -293,7 +367,7 @@ export default {
     }
 
     .pawn_container {
-        z-index: 300;
+        z-index: 8;
         position: absolute;
         right: 0;
         width: 15px;

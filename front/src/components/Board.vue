@@ -160,9 +160,6 @@ export default {
       }
     },
     mounted() {
-        // axios
-        //     .get('http://localhost:8081/baguette')
-        //     .then(response => (this.info = response))
         this.initPawns();
     }
 }
@@ -191,21 +188,16 @@ export default {
         --neon-color: #0fa;
 
         --night-color: hsl(240, 100%, 10%);
-        /* --night-color: hsl(240, 100%, 10%); */
-
     }
 
     .neon_text_big {
         color: var(--neon-light);
         text-shadow:
             0 0 7px var(--neon-light),
-            /* 0 0 10px var(--neon-light), */
             0 0 21px var(--neon-color),
             0 0 42px var(--neon-color),
             0 0 82px var(--neon-color),
             0 0 92px var(--neon-color);
-            /* 0 0 102px var(--neon-color); */
-            /* 0 0 151px var(--neon-color); */
     }
 
     .neon_text_small {

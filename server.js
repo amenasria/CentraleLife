@@ -63,9 +63,17 @@ io.on('connection', (socket) =>{
     console.log('user disconnected');
   });
 
-  socket.on('enter_room', (data) => {
+  socket.on('enter_room', (socket) => {
     console.log(`Received from enter_room: ${data.room}`);
   })
+
+  broadcast_events = ['new_player_joined', 'rolled_dice', 'made_choice', 'updated_game_data']
+  broadcast_events.forEach(event => {
+    socket.on(event, (data) => {
+      socket.emit(event, data);
+    })
+  });
+  
   console.log(`Connecté au client: socket_id = ${socket.id}`);
   let salt = "Baguette";
   let room_token = crypto.createHash('sha256').update(String(Date.now()) + salt).digest('hex').slice(0, 5).toUpperCase();

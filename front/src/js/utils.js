@@ -128,7 +128,11 @@ function afterMove(player, lancer){
     return card
 }
 
-
+/**
+ * 
+ * @param {number} player 
+ * @returns {{card: number, lancer: number}} card_id (int or null) and dice_roll_value
+ */
 function rollDice(player){
     let lancer1 = Math.ceil(Math.random() * 6);
     let lancer2 = Math.ceil(Math.random() * 6);

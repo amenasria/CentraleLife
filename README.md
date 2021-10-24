@@ -1,4 +1,4 @@
-# Centrale Life
+![Logo Centrale Life](./assets_readme/centrale_life.png)
 
 Centrale Life est un joueur de plateau inspiré de la vie centralienne. On peut y jouer en multijoueur grâce à un websocket.
 
@@ -31,6 +31,8 @@ Node.js est un environnement d'exécution permettant d'utiliser le JavaScript c�
 Express est un framework pour construire des applications avec Node.js.
 
 ### Websocket
+
+![Fonctionnement du websocket](./assets_readme/websocket.png)
 
 ### Test
 

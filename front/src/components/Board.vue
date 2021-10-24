@@ -162,7 +162,7 @@ import usersData from "@/assets/users.json";
 import ListeCases from "@/components/ListeCases.vue";
 import DarkMode from "@/components/DarkMode.vue"
 // import axios from 'axios';
-import {rollDice, click_ok} from "../js/utils.js"
+const utils = require("../js/utils.js")
 import Modal from "./Modal";
 
 export default {
@@ -217,7 +217,7 @@ export default {
           pawn_container.appendChild(pawn);
       },
       dice(player){
-        let {card, lancer} = rollDice(player);
+        let {card, lancer} = utils.rollDice(player);
         let new_pos = this.users[player].position
         this.movePawns(new_pos, player);
         this.card = card;
@@ -227,7 +227,7 @@ export default {
         button_dice.style.background = '#CDCDCF';
       },
       ok: function(player, card, lancer, cagnotte) {
-        let resp = click_ok(player, card, lancer, cagnotte);
+        let resp = utils.click_ok(player, card, lancer, cagnotte);
         let new_pos = this.users[player].position
         this.movePawns(new_pos, player);
         this.cagnotte = resp.cagnotte;
@@ -309,7 +309,7 @@ export default {
         player.style.display = 'none';
         game.style.display = 'block';
         title.innerHTML = ' Bravo ! 🎉';
-      }
+      },
     },
     mounted() {
         this.initPawns();

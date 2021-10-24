@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "test": "jest"
   },
   "dependencies": {
     "axios": "^0.22.0",
@@ -21,6 +22,9 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "jest": "^27.3.1",
+    "jsdom": "^18.0.0",
+    "rewire": "^5.0.0",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
@@ -41,5 +45,8 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "jest":{
+    "testEnvironment": "jsdom"
+  }
 }

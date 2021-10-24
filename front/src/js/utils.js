@@ -12,7 +12,6 @@ function afterMove(player, lancer){
     let ok = document.getElementById('button_ok');
     let cancel = document.getElementById('button_cancel');
 
-
     let game = document.getElementById('show_game');
     game.style.display = "block";
 
@@ -319,4 +318,4 @@ function click_ok(player, card, lancer, cagnotte){
     return {cagnotte, block};
 }
 
-export {rollDice, click_ok}
+export { afterMove, rollDice, click_ok }

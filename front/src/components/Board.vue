@@ -1,5 +1,25 @@
 <template>
   <div class="interface_monopoly" :class="{night: !day}">
+
+    <Modal ref="PropertiesModal">
+      <template v-slot:header>
+        <h1>Les propriétés de {{users[player].name}}</h1>
+      </template>
+      <template v-slot:body>
+        <div v-for="property in users[player].properties" :key="property">
+          <span style="text-align: left; margin-right: 50px"><b>{{ cases[property].name }}</b></span>
+          <span style="text-align: center; margin-right: 50px">Prix : {{ cases[property].price }} €         </span>
+          <span style="text-align: right;">Loyer : {{ cases[property].rent }} €</span>
+        </div>
+      </template>
+      <template v-slot:footer>
+        <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+          <button @click="$refs.PropertiesModal.closeModal()" class="join_btn">Fermer</button>
+        </div>
+      </template>
+    </Modal>
+
+
     <div class="board">
         <liste-cases :cases="coin_haut_gauche" type_liste="monopoly_coin" :users="users"></liste-cases>
         <liste-cases :cases="cases_haut" type_liste="monopoly_row" :users="users"></liste-cases>
@@ -11,10 +31,10 @@
                   <span id="dice1"></span>
                   <span id="dice2"></span>
                 </div>
-                <div class="central_ui_header"><h2 :class="{night: !day, neon_text_small: !day}" :style="'--neon-color: ' + users[player].color">C'est à {{users[player].name}} de jouer.</h2></div>
+                <div class="central_ui_header"><h2 :class="{night: !day, neon_text_small: !day}" :style="'--neon-color: ' + users[player].color" id="player">C'est à {{users[player].name}} de jouer.</h2></div>
                 <div class="central_ui_buttons">
                     <button class="button_ui" id="button_dice" :disabled='blockdice' v-on:click="dice(player)">Lancer les dés</button>
-                    <button class="button_ui">Voir mes cartes</button>
+                    <button class="button_ui" id="button_card" v-on:click="$refs.PropertiesModal.openModal()">Voir mes cartes</button>
                 </div>
                 <div class="central_ui_display" id="show_game">
                     <h3 id="name_case"></h3>
@@ -45,8 +65,9 @@
             <div class="joueur" v-for="user in users" :key="user.id" :class="{active: $data.player + 1 === user.id }" :style="'--user-color: ' + user.color">
                 <span class="user_icon"><svg aria-hidden="true" focusable="false" role="img" alt="User" style="height: 3.5ch" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path :fill="[user.id === player + 1 ? 'white' : user.in_prison === -1 ? user.color : 'black']" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg></span>
                 <span class="user_info">
-                    <span class="user_name"><b>{{ user.name }}</b></span>
-                    <span class="user_money" v-if="!user.lost">{{user.money}} €</span>
+                  <span class="user_name"><b>{{ user.name }}</b></span>
+                  <span class="user_money" v-if="winner === user.id - 1">Gagné !</span>
+                  <span class="user_money" v-else-if="!user.lost">{{user.money}} €</span>
                   <span class="user_money" v-else>Perdu</span>
                 </span>
             </div>
@@ -68,15 +89,18 @@ import ListeCases from "@/components/ListeCases.vue";
 import DarkMode from "@/components/DarkMode.vue"
 // import axios from 'axios';
 import {rollDice, click_ok} from "../js/utils.js"
+import Modal from "./Modal";
 
 export default {
     name: "Board",
     components: {
         ListeCases,
         DarkMode,
+        Modal,
     },
     data() {
         return {
+            cases: casesData,
             coin_bas_droite: casesData.slice(1, 2), 
             cases_bas: casesData.slice(2, 11).reverse(),
             coin_bas_gauche: casesData.slice(11, 12), 
@@ -93,6 +117,7 @@ export default {
             cagnotte : 0,
             day: true, // 0 if day 1 if night
             room_token: document.location.pathname.replace("/room/", ""),
+            winner: -1
         }
     },
     methods: {
@@ -140,23 +165,76 @@ export default {
           let dice2 = document.getElementById("dice2");
           dice1.innerHTML = "";
           dice2.innerHTML = "";
-          this.player = (this.player + 1) % 4;
-          while(this.users[this.player].lost){
-            this.player = (this.player + 1) % 4;
+          let loser = 0;
+          let winner = -1;
+          for(let i = 0; i < this.users.length; i++){
+            if(this.users[i].lost){
+              loser += 1;
+            } else {
+              winner = i;
+            }
           }
+          if(loser === this.users.length - 1){
+            this.winner = winner;
+            this.player = this.winner;
+            this.win();
+          } else{
+            this.player = (this.player + 1) % 4;
+            while(this.users[this.player].lost){
+              this.player = (this.player + 1) % 4;
+            }
+          }
+
         }
         this.card = null;
       },
       cancel: function() {
-        this.player = (this.player + 1) % 4;
-        while(this.users[this.player].lost){
+        let loser = 0;
+        let winner = -1;
+        for(let i = 0; i < this.users.length; i++){
+          if(this.users[i].lost){
+            loser += 1;
+          } else {
+            winner = i;
+          }
+        }
+        if(loser === this.users.length - 1){
+          this.winner = winner;
+          this.player = this.winner;
+          this.win();
+        } else{
           this.player = (this.player + 1) % 4;
+          while(this.users[this.player].lost){
+            this.player = (this.player + 1) % 4;
+          }
         }
         this.blockdice = false;
         let button_dice = document.getElementById('button_dice');
         button_dice.style.background = '#000F9F';
         let game = document.getElementById('show_game');
         game.style.display = "none";
+      },
+      win(){
+        let message = document.getElementById('message');
+        let ok = document.getElementById('button_ok');
+        let cancel = document.getElementById('button_cancel');
+        let dice1 = document.getElementById("dice1");
+        let dice2 = document.getElementById("dice2");
+        let roll = document.getElementById("button_dice");
+        let cards = document.getElementById("button_card");
+        let player = document.getElementById("player");
+        let game = document.getElementById("show_game");
+        let title = document.getElementById("name_case");
+        message.innerHTML = this.users[this.winner].name + " a gagné la partie !";
+        ok.style.display = "none";
+        cancel.style.display = 'none';
+        dice1.style.display = 'none';
+        dice2.style.display = 'none';
+        roll.style.display = 'none';
+        cards.style.display = 'none';
+        player.style.display = 'none';
+        game.style.display = 'block';
+        title.innerHTML = ' Bravo ! 🎉';
       }
     },
     mounted() {

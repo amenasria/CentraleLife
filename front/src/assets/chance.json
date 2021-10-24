@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "message": "Vous allez au WEI vous payez 140 €.",
+    "message": "Vous allez au WEI, vous payez 140 €.",
     "money": -140,
     "move": 0,
     "prison": 0
@@ -15,21 +15,21 @@
   },
   {
     "id": 3,
-    "message": "Après 3 heures de queue au RU, vous vous épavouissez de faim. Payez vos frais d’hôpitaux s’élevant à 250 €.",
+    "message": "Après 3 heures de queue au RU, vous vous évanouissez de faim. Payez vos frais d’hôpitaux s’élevant à 250 €.",
     "money": -250,
     "move": 0,
     "prison": 0
   },
   {
     "id": 4,
-    "message": "Vous êtes invité à une soirée, avancez jusqu’à la case Vieux Port.",
+    "message": "Vous êtes invité à une soirée, avancez jusqu’à la case Vieux-Port.",
     "money": 0,
     "move": 38,
     "prison": 0
   },
   {
     "id": 5,
-    "message": "Vous devez aller à un mariage, allez à la Majore.",
+    "message": "Vous devez aller à un mariage, allez à la Major.",
     "money": 0,
     "move": 24,
     "prison": 0
@@ -81,6 +81,48 @@
     "message": "Vous arrivez à vous faire exonérer des frais d’inscription, touchez 200 €.",
     "money": 200,
     "move": 0,
+    "prison": 0
+  },
+  {
+    "id": 13,
+    "message": "Vous n'avez pas validé Orthodidacte. Vous devez aller le passer à la Poste et payer 110 €.",
+    "money": -110,
+    "move": 0,
+    "prison": 0
+  },
+  {
+    "id": 14,
+    "message": "Vous rencontrez Lapiaule, allez sur le case Bar'bu.",
+    "money": 0,
+    "move": 29,
+    "prison": 0
+  },
+  {
+    "id": 15,
+    "message": "Alerte rouge tempête à Marseille ! Les amphis sont inondés et les cours sont annulés. Allez à Saint-Charles pour rentrer chez vous.",
+    "money": 0,
+    "move": 35,
+    "prison": 0
+  },
+  {
+    "id": 16,
+    "message": "Le FOCEEN croit en votre projet de plantation de bananes dans le Pot'à Gégé et vous donne 100 €.",
+    "money": 100,
+    "move": 0,
+    "prison": 0
+  },
+  {
+    "id": 17,
+    "message": "Vous faites une soirée chez vous à Oxford. La sécurité arrive et vous fait payer une amende de 135 €.",
+    "money": -135,
+    "move": 0,
+    "prison": 0
+  },
+  {
+    "id": 18,
+    "message": "Vous remportez le shotgun du BDS pour aller au match OM-PSG. Allez au Vélodrome.",
+    "money": 0,
+    "move": 27,
     "prison": 0
   }
 ]

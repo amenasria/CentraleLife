@@ -48,18 +48,23 @@ function afterMove(player, lancer){
             message.innerHTML =  "Vous êtes chez vous";
             ok.innerHTML = "Ok";
             cancel.style.display = 'none';
-        } else {
+        } else if (case1.rent < users[player].money) {
             message.innerHTML =  "Vous devez payer " + case1.rent + "€" + " à " +  users[case1.owner].name;
             ok.innerHTML = "Payer";
+            cancel.style.display = 'none';
+        } else {
+            message.innerHTML =  "Vous devez payer " + case1.rent + "€" + " à " +  users[case1.owner].name +". Vous n'avez pas assez d'argent.";
+            ok.innerHTML = "RIP";
             cancel.style.display = 'none';
         }
     }
 
     if(case1.type === "chance" || case1.type === "communaute"){
 
-        let card_id = Math.ceil(Math.random() * (12 - 1));
+        let card_id = Math.ceil(Math.random() * (chance.length - 1));
 
         card = chance[card_id];
+
 
         if(-1*card.money < users[player].money){
             message.innerHTML =  card.message;
@@ -279,7 +284,7 @@ function click_ok(player, card, lancer, cagnotte){
                 }
             }
         } else {
-            cagnotte += -1*users[player].money;
+            cagnotte += users[player].money;
             users[player].money = 0;
             users[player].lost = true;
         }

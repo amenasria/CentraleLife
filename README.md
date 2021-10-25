@@ -1,6 +1,6 @@
 ![Logo Centrale Life](./assets_readme/centrale_life.png)
 
-Centrale Life est un joueur de plateau inspiré de la vie centralienne. On peut y jouer en multijoueur grâce à un websocket.
+Centrale Life est un jeu de plateau inspiré de la vie centralienne. On peut y jouer en multijoueur grâce à un websocket.
 
 ## Technologies utilisées
 

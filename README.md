@@ -31,7 +31,7 @@ Express est un framework pour construire des applications avec Node.js.
 
 #### Créer un projet Express
 
-Une fois [Node.js](https://nodejs.org/en/) installé, vous pouvez créer un projet Expresse  en faisont :
+Une fois [Node.js](https://nodejs.org/en/) installé, vous pouvez créer un projet Express en faisant :
 ```
 mkdir myapp     # Création du dossier de votre projet
 cd my app       # Aller dans ce dossier

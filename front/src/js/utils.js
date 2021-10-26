@@ -2,131 +2,136 @@ import users from '../assets/users.json'
 import cases from '../assets/cases.json'
 import chance from '../assets/chance.json'
 
+function changePosition(player, lancer){
+
+    let new_position =  (users[player].position + lancer);
+    if(new_position > 40){
+        new_position -= 40;
+        users[player].money += 200;
+    }
+
+    return new_position;
+}
+
+function hasEnoughMoney(player, price){
+
+    let money = users[player].money;
+    return price <= money;
+
+}
+
+function hasOwner(case1){
+    return case1.owner !== -1;
+}
+
+function isOwner(case1, player){
+    return case1.owner === player;
+}
+
+function pickCard() {
+    let card_id = Math.ceil(Math.random() * (chance.length - 1));
+    return chance[card_id];
+}
+
+function wroteMessage(title, message, text_ok, text_cancel){
+
+    let game = document.getElementById('show_game');
+    game.style.display = "block";
+
+    let name = document.getElementById('name_case');
+    name.innerHTML = "<b>" + title + "</b>";
+
+    let content = document.getElementById('message');
+    content.innerHTML = message;
+
+    let ok = document.getElementById('button_ok');
+    ok.innerHTML = text_ok;
+
+    let cancel = document.getElementById('button_cancel');
+    if(text_cancel === ""){
+        cancel.style.display = "none";
+    } else {
+        cancel.style.display = "block";
+        cancel.innerHTML = text_cancel;
+    }
+
+}
+
 function afterMove(player, lancer){
 
     let card = null;
 
     let case1 = cases[users[player].position];
 
-    let message = document.getElementById('message');
-    let ok = document.getElementById('button_ok');
-    let cancel = document.getElementById('button_cancel');
 
-    let game = document.getElementById('show_game');
-    game.style.display = "block";
-
-
-    let name = document.getElementById('name_case');
-    name.innerHTML = "<b>" + case1.name + "</b>";
-
-    //Si c'est une case "taxe", on paye la taxe
-    if(case1.type === "taxe"){
-        if(case1.price < users[player].money) {
-            message.innerHTML = "Vous devez payer " + case1.price + "€.";
-            ok.innerHTML = "Payer";
-            cancel.style.display = 'none';
-        } else {
-            message.innerHTML = "Vous ne pouvez pas payer cette taxe, vous avez perdu.";
-            ok.innerHTML = "RIP";
-            cancel.style.display = 'none';
-        }
-    }
-
-    if(case1.type === "rue" || case1.type === "calanque"){
-        if(case1.owner === -1){
-            if(case1.price < users[player].money){
-                message.innerHTML =  "Prix : " + case1.price + "€" + "<br/>" + "Loyer : " + case1.rent + "€";
-                ok.innerHTML = "Acheter";
-                cancel.style.display = "block";
+    switch(case1.type) {
+        case "taxe" :
+            if(hasEnoughMoney(player, case1.price)){
+                wroteMessage(case1.name, "Vous devez payer " + case1.price + "€.", "Payer", "");
             } else {
-                message.innerHTML =  "Vous n'avez pas assez d'argent pour acheter cette propriété.";
-                ok.innerHTML = "Ok";
-                cancel.style.display = "none";
+                wroteMessage(case1.name, "Vous ne pouvez pas payer cette taxe, vous avez perdu.", "RIP", "");
             }
-        }  else if (case1.owner === player) {
-            message.innerHTML =  "Vous êtes chez vous";
-            ok.innerHTML = "Ok";
-            cancel.style.display = 'none';
-        } else if (case1.rent < users[player].money) {
-            message.innerHTML =  "Vous devez payer " + case1.rent + "€" + " à " +  users[case1.owner].name;
-            ok.innerHTML = "Payer";
-            cancel.style.display = 'none';
-        } else {
-            message.innerHTML =  "Vous devez payer " + case1.rent + "€" + " à " +  users[case1.owner].name +". Vous n'avez pas assez d'argent.";
-            ok.innerHTML = "RIP";
-            cancel.style.display = 'none';
-        }
-    }
-
-    if(case1.type === "chance" || case1.type === "communaute"){
-
-        let card_id = Math.ceil(Math.random() * (chance.length - 1));
-
-        card = chance[card_id];
-
-
-        if(-1*card.money < users[player].money){
-            message.innerHTML =  card.message;
-            if(card.money > 0){
-                ok.innerHTML = "Encaisser";
-            } else if(card.money < 0){
-                ok.innerHTML = "Payer";
+            break;
+        case "rue" :
+        case "calanque":
+            if(!hasOwner(case1)){
+                if(hasEnoughMoney(player, case1.price)){
+                    wroteMessage(case1.name, "Prix : " + case1.price + "€" + "<br/>" + "Loyer : " + case1.rent + "€", "Acheter", "Ne pas acheter");
+                } else {
+                    wroteMessage(case1.name, "Vous n'avez pas assez d'argent pour acheter cette propriété.", "Ok", "");
+                }
+            } else if (isOwner(case1, player)) {
+                wroteMessage(case1.name, "Vous êtes chez vous", "Ok", "");
+            } else if (hasEnoughMoney(player, case1.rent)) {
+                wroteMessage(case1.name, "Vous devez payer " + case1.rent + "€" + " à " +  users[case1.owner].name + ".", "Payer", "");
             } else {
-                ok.innerHTML = "Y aller";
+                wroteMessage(case1.name, "Vous devez payer " + case1.rent + "€" + " à " +  users[case1.owner].name + ". Vous n'avez pas assez d'argent.", "RIP", "");
             }
-        } else {
-            message.innerHTML =  card.message + "<br/> Vous n'avez pas assez d'argent, vous avez perdu !";
-            ok.innerHTML = "RIP";
-        }
-
-
-
-        cancel.style.display = 'none';
-    }
-
-    if(case1.type === "prison"){
-        message.innerHTML =  "Vous faites une visite à la prison.";
-        ok.innerHTML = "Ok";
-        cancel.style.display = 'none';
-    }
-
-    if(case1.type === "go_prison"){
-        message.innerHTML =  "Vous allez en prison.";
-        ok.innerHTML = "Y aller";
-        cancel.style.display = 'none';
-    }
-
-    if(case1.type === "parc"){
-        message.innerHTML =  "Vous avez fait une étude KSI, vous ramassez l'argent.";
-        ok.innerHTML = "Encaisser";
-        cancel.style.display = 'none';
-    }
-
-    if(case1.type === "compagnie"){
-        if(case1.owner === -1){
-            if(case1.price < users[player].money) {
-                message.innerHTML = "Prix : " + case1.price + "€" + "<br/>" + "Loyer : 4 fois le montant indiqué par les dés";
-                ok.innerHTML = "Acheter";
-                cancel.style.display = "block";
+            break;
+        case "compagnie":
+            if(!hasOwner(case1)){
+                if(hasEnoughMoney(player, case1.price)){
+                    wroteMessage(case1.name, "Prix : " + case1.price + "€" + "<br/>" + "Loyer : 4 fois le montant indiqué par les dés", "Acheter", "Ne pas acheter");
+                } else {
+                    wroteMessage(case1.name, "Vous n'avez pas assez d'argent pour acheter cette compagnie.", "Ok", "");
+                }
+            } else if (isOwner(case1, player)) {
+                wroteMessage(case1.name, "Vous êtes chez vous", "Ok", "");
+            } else if (hasEnoughMoney(player, case1.rent)) {
+                wroteMessage(case1.name, "Vous devez payer " + lancer*4 + "€" + " à " +  users[case1.owner].name + ".", "Payer", "");
             } else {
-                message.innerHTML =  "Vous n'avez pas assez d'argent pour acheter cette compagnie.";
-                ok.innerHTML = "Ok";
-                cancel.style.display = "none";
+                wroteMessage(case1.name, "Vous devez payer " + lancer*4 + "€" + " à " +  users[case1.owner].name + ". Vous n'avez pas assez d'argent.", "RIP", "");
             }
-        }  else if (case1.owner === player) {
-            message.innerHTML =  "Vous êtes chez vous !";
-            ok.innerHTML = "Ok";
-            cancel.style.display = 'none';
-        } else {
-            message.innerHTML =  "Vous devez payer " + lancer*4 + "€" + " à " +  users[case1.owner].name;
-            ok.innerHTML = "Payer";
-            cancel.style.display = 'none';
-        }
-    }
-
-    if (case1.type === "depart"){
-        message.innerHTML =  "Vous êtes sur la case départ.";
-        ok.innerHTML = "Ok";
+            break;
+        case "chance":
+        case "communaute":
+            card = pickCard();
+            if(hasEnoughMoney(player, -1*card.money)){
+                let text_ok = "";
+                if(card.money > 0){
+                    text_ok = "Encaisser";
+                } else if(card.money < 0){
+                    text_ok = "Payer";
+                } else {
+                    text_ok = "Y aller";
+                }
+                wroteMessage(case1.name, card.message, text_ok, "");
+            } else {
+                wroteMessage(case1.name, card.message + "<br/> Vous n'avez pas assez d'argent, vous avez perdu !", "RIP", "");
+            }
+            break;
+        case "prison":
+            wroteMessage(case1.name, "Vous faites une visite à la prison.", "Ok", "");
+            break;
+        case "go_prison":
+            wroteMessage(case1.name, "Vous allez en prison.", "Y aller", "");
+            break;
+        case "parc":
+            wroteMessage(case1.name, "Vous avez fait une étude KSI, vous ramassez l'argent.", "Encaisser", "");
+            break;
+        case "depart":
+            wroteMessage(case1.name, "Vous êtes sur la case départ.", "Ok", "");
+            break;
     }
 
     return card
@@ -194,12 +199,7 @@ function rollDice(player){
 
     if(users[player].in_prison === -1){
 
-        users[player].position = (users[player].position + lancer)  ;
-        if(users[player].position > 40){
-            users[player].position = (users[player].position - 40);
-            users[player].money += 200;
-        }
-
+        users[player].position = changePosition(player, lancer);
         card = afterMove(player, lancer);
 
     } else {

@@ -64,6 +64,23 @@ Voici le schéma pour le lancer de dés :
 
 ### Test
 
+#### User story
+
+Les user stories sont des petites histoires qui décrivent une utilisation possible du site.
+Cela permet de tester si une suite d'actions est possible.
+
+Pour cela, nous avons utilisé [selenium](https://www.selenium.dev/documentation/).
+Il y a trois tests :
+- create room : pour vérifier si la création de salle est possible
+- roll dice : pour vérifier si le lancer de dés est possible
+- play game : après avoir lancé les dés, on clique sur le bouton ok
+
+Pour lancer ces tests :
+
+```
+npm test -- --testRegex="user-story.js"
+```
+
 ## Exécuter le projet
 
 ### Installer le projet

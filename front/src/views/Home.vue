@@ -85,6 +85,10 @@ export default {
         --color-examples: #535a64;
     }
 
+    h1 {
+      text-align: center;
+    }
+
     #lien_invitation {
       background-color: var(--color-input-bg);
       color: var(--color-input-ft);

@@ -64,7 +64,7 @@ io.on('connection', (socket) =>{
   });
 
   socket.on('enter_room', (socket) => {
-    console.log(`Received from enter_room: ${data.room}`);
+    //console.log(`Received from enter_room: ${data.room}`);
   })
 
   broadcast_events = ['new_player_joined', 'rolled_dice', 'made_choice', 'updated_game_data']

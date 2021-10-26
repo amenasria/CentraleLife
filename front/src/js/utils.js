@@ -37,6 +37,11 @@ function inPrison(player) {
     return users[player].in_prison !== -1;
 }
 
+function goPrison(player) {
+    users[player].position = 11;
+    users[player].in_prison = 0;
+}
+
 function setMoney(player, change){
     users[player].money += change;
 }
@@ -256,8 +261,7 @@ function click_ok(player, card, lancer, cagnotte){
             }
             break;
         case "go_prison":
-            users[player].position = 11;
-            users[player].in_prison = 0;
+            goPrison(player);
             break;
         case "chance":
         case "communaute":
@@ -280,8 +284,7 @@ function click_ok(player, card, lancer, cagnotte){
             }
 
             if(card.prison === 1){
-                users[player].position = 11;
-                users[player].in_prison = 0;
+                goPrison(player);
             }
             break;
         case "compagnie":

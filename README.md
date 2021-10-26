@@ -64,6 +64,34 @@ Voici le schéma pour le lancer de dés :
 
 ### Test
 
+#### Test unitaire
+
+Les tests unitaires permettent de tester des fonctions et de vérifier qu'elles renvoient bien ce qu'il faut.
+
+Pour cela, nous utilisons [Jest](https://jestjs.io/). Pour l'installer :
+
+```
+npm install --save-dev jest
+```
+
+Dans utils.js, nous avons des fonctions que nous n'exportons pas. 
+Pour pouvoir tout de même les tester, nous utilisons [Rewire](https://github.com/jhnns/rewire).
+
+Cependant, pour notre projet Vue, nous utilisons le package [babel-plugin-rewire](https://github.com/speedskater/babel-plugin-rewire) qui s'inspire de Rewire.
+
+Pour l'installer :
+
+```
+npm install babel-plugin-rewire --save-dev
+```
+[En savoir plus](https://www.samanthaming.com/journal/2-testing-non-exported-functions/#non-export-function)
+
+Pour lancer les tests, il faut exécuter :
+
+```
+npm test
+```
+
 #### User story
 
 Les user stories sont des petites histoires qui décrivent une utilisation possible du site.
@@ -81,7 +109,7 @@ Pour lancer ces tests :
 npm test -- --testRegex="user-story.js"
 ```
 
-## Exécuter le projet
+## Lancer le projet
 
 ### Installer le projet
 
@@ -105,7 +133,7 @@ cd front
 npm run serve     # Starts a dev server (for the frontend)
 ```
 
-### Production
+### Lancer le projet en production
 
 Build vue project to ./front/dist static folder:
 ```

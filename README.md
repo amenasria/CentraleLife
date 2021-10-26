@@ -20,7 +20,9 @@ Pour ce projet, nous avons fait une application Vue CLI.
 Pour pouvoir en faire une, il faut [installer Vue sur votre ordinateur](https://cli.vuejs.org/guide/installation.html).
 Pour [créer le projet](https://cli.vuejs.org/guide/creating-a-project.html#vue-create), il faut exécuter :
 
-`vue create nameProject`
+```
+vue create nameProject
+```
 
 
 ### Node.js et Express
@@ -61,6 +63,14 @@ Par exemple, pour notre jeu, nous envoyons les événements suivants :
 Voici le schéma pour le lancer de dés :
 
 ![Fonctionnement du websocket](./assets_readme/websocket.png)
+
+Pour l'installer : 
+
+```
+npm install socket.io
+```
+
+**Lien intéressant sur les** [tests](https://socket.io/docs/v4/testing/#example-with-jest)
 
 ### Test
 

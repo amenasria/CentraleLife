@@ -33,7 +33,57 @@ function pickCard() {
     return chance[card_id];
 }
 
-function wroteMessage(title, message, text_ok, text_cancel){
+function inPrison(player) {
+    return users[player].in_prison !== -1;
+}
+
+function setMoney(player, change){
+    users[player].money += change;
+}
+
+function buyProperty(player, case_id){
+    users[player].properties.push(case_id);
+    cases[users[player].position].owner = player;
+    let case_html = document.getElementById("case_" + case_id);
+    case_html.classList.add("property" + player);
+}
+
+function dice() {
+    let lancer1 = Math.ceil(Math.random() * 6);
+    let lancer2 = Math.ceil(Math.random() * 6);
+
+    return {
+        lancer1,
+        lancer2
+    };
+}
+
+function displayDice(lancer, numberDice){
+    let dice = document.getElementById("dice" + numberDice);
+
+    switch (lancer){
+        case 1:
+            dice.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-1.svg') + "\" width=\"40\" height=\"40\"></object>";
+            break;
+        case 2:
+            dice.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-2.svg') + "\" width=\"40\" height=\"40\"></object>";
+            break;
+        case 3:
+            dice.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-3.svg') + "\" width=\"40\" height=\"40\"></object>";
+            break;
+        case 4:
+            dice.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-4.svg') + "\" width=\"40\" height=\"40\"></object>";
+            break;
+        case 5:
+            dice.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-5.svg') + "\" width=\"40\" height=\"40\"></object>";
+            break;
+        case 6:
+            dice.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-6.svg') + "\" width=\"40\" height=\"40\"></object>";
+            break;
+    }
+}
+
+function writeMessage(title, message, text_ok, text_cancel){
 
     let game = document.getElementById('show_game');
     game.style.display = "block";
@@ -57,50 +107,51 @@ function wroteMessage(title, message, text_ok, text_cancel){
 
 }
 
+/* display the right content in the middle */
+
 function afterMove(player, lancer){
 
     let card = null;
 
     let case1 = cases[users[player].position];
 
-
     switch(case1.type) {
         case "taxe" :
             if(hasEnoughMoney(player, case1.price)){
-                wroteMessage(case1.name, "Vous devez payer " + case1.price + "€.", "Payer", "");
+                writeMessage(case1.name, "Vous devez payer " + case1.price + "€.", "Payer", "");
             } else {
-                wroteMessage(case1.name, "Vous ne pouvez pas payer cette taxe, vous avez perdu.", "RIP", "");
+                writeMessage(case1.name, "Vous ne pouvez pas payer cette taxe, vous avez perdu.", "RIP", "");
             }
             break;
         case "rue" :
         case "calanque":
             if(!hasOwner(case1)){
                 if(hasEnoughMoney(player, case1.price)){
-                    wroteMessage(case1.name, "Prix : " + case1.price + "€" + "<br/>" + "Loyer : " + case1.rent + "€", "Acheter", "Ne pas acheter");
+                    writeMessage(case1.name, "Prix : " + case1.price + "€" + "<br/>" + "Loyer : " + case1.rent + "€", "Acheter", "Ne pas acheter");
                 } else {
-                    wroteMessage(case1.name, "Vous n'avez pas assez d'argent pour acheter cette propriété.", "Ok", "");
+                    writeMessage(case1.name, "Vous n'avez pas assez d'argent pour acheter cette propriété.", "Ok", "");
                 }
             } else if (isOwner(case1, player)) {
-                wroteMessage(case1.name, "Vous êtes chez vous", "Ok", "");
+                writeMessage(case1.name, "Vous êtes chez vous", "Ok", "");
             } else if (hasEnoughMoney(player, case1.rent)) {
-                wroteMessage(case1.name, "Vous devez payer " + case1.rent + "€" + " à " +  users[case1.owner].name + ".", "Payer", "");
+                writeMessage(case1.name, "Vous devez payer " + case1.rent + "€" + " à " +  users[case1.owner].name + ".", "Payer", "");
             } else {
-                wroteMessage(case1.name, "Vous devez payer " + case1.rent + "€" + " à " +  users[case1.owner].name + ". Vous n'avez pas assez d'argent.", "RIP", "");
+                writeMessage(case1.name, "Vous devez payer " + case1.rent + "€" + " à " +  users[case1.owner].name + ". Vous n'avez pas assez d'argent.", "RIP", "");
             }
             break;
         case "compagnie":
             if(!hasOwner(case1)){
                 if(hasEnoughMoney(player, case1.price)){
-                    wroteMessage(case1.name, "Prix : " + case1.price + "€" + "<br/>" + "Loyer : 4 fois le montant indiqué par les dés", "Acheter", "Ne pas acheter");
+                    writeMessage(case1.name, "Prix : " + case1.price + "€" + "<br/>" + "Loyer : 4 fois le montant indiqué par les dés", "Acheter", "Ne pas acheter");
                 } else {
-                    wroteMessage(case1.name, "Vous n'avez pas assez d'argent pour acheter cette compagnie.", "Ok", "");
+                    writeMessage(case1.name, "Vous n'avez pas assez d'argent pour acheter cette compagnie.", "Ok", "");
                 }
             } else if (isOwner(case1, player)) {
-                wroteMessage(case1.name, "Vous êtes chez vous", "Ok", "");
+                writeMessage(case1.name, "Vous êtes chez vous", "Ok", "");
             } else if (hasEnoughMoney(player, case1.rent)) {
-                wroteMessage(case1.name, "Vous devez payer " + lancer*4 + "€" + " à " +  users[case1.owner].name + ".", "Payer", "");
+                writeMessage(case1.name, "Vous devez payer " + lancer*4 + "€" + " à " +  users[case1.owner].name + ".", "Payer", "");
             } else {
-                wroteMessage(case1.name, "Vous devez payer " + lancer*4 + "€" + " à " +  users[case1.owner].name + ". Vous n'avez pas assez d'argent.", "RIP", "");
+                writeMessage(case1.name, "Vous devez payer " + lancer*4 + "€" + " à " +  users[case1.owner].name + ". Vous n'avez pas assez d'argent.", "RIP", "");
             }
             break;
         case "chance":
@@ -115,22 +166,22 @@ function afterMove(player, lancer){
                 } else {
                     text_ok = "Y aller";
                 }
-                wroteMessage(case1.name, card.message, text_ok, "");
+                writeMessage(case1.name, card.message, text_ok, "");
             } else {
-                wroteMessage(case1.name, card.message + "<br/> Vous n'avez pas assez d'argent, vous avez perdu !", "RIP", "");
+                writeMessage(case1.name, card.message + "<br/> Vous n'avez pas assez d'argent, vous avez perdu !", "RIP", "");
             }
             break;
         case "prison":
-            wroteMessage(case1.name, "Vous faites une visite à la prison.", "Ok", "");
+            writeMessage(case1.name, "Vous faites une visite à la prison.", "Ok", "");
             break;
         case "go_prison":
-            wroteMessage(case1.name, "Vous allez en prison.", "Y aller", "");
+            writeMessage(case1.name, "Vous allez en prison.", "Y aller", "");
             break;
         case "parc":
-            wroteMessage(case1.name, "Vous avez fait une étude KSI, vous ramassez l'argent.", "Encaisser", "");
+            writeMessage(case1.name, "Vous avez fait une étude KSI, vous ramassez l'argent.", "Encaisser", "");
             break;
         case "depart":
-            wroteMessage(case1.name, "Vous êtes sur la case départ.", "Ok", "");
+            writeMessage(case1.name, "Vous êtes sur la case départ.", "Ok", "");
             break;
     }
 
@@ -143,86 +194,23 @@ function afterMove(player, lancer){
  * @returns {{card: number, lancer: number}} card_id (int or null) and dice_roll_value
  */
 function rollDice(player){
-    let lancer1 = Math.ceil(Math.random() * 6);
-    let lancer2 = Math.ceil(Math.random() * 6);
 
-    let dice1 = document.getElementById("dice1");
-
-
-    switch (lancer1){
-        case 1:
-            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-1.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 2:
-            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-2.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 3:
-            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-3.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 4:
-            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-4.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 5:
-            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-5.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 6:
-            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-6.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-    }
-
-    let dice2 = document.getElementById("dice2");
-
-    switch (lancer2){
-        case 1:
-            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-1.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 2:
-            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-2.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 3:
-            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-3.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 4:
-            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-4.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 5:
-            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-5.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 6:
-            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-6.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-    }
-
+    let {lancer1, lancer2} = dice();
+    displayDice(lancer1, 1);
+    displayDice(lancer2, 2);
     let lancer = lancer1 + lancer2;
 
     let card = null;
 
-    if(users[player].in_prison === -1){
-
+    if(!inPrison(player)){
         users[player].position = changePosition(player, lancer);
         card = afterMove(player, lancer);
-
     } else {
-
-        let message = document.getElementById('message');
-        let ok = document.getElementById('button_ok');
-        let cancel = document.getElementById('button_cancel');
-
-
-        let game = document.getElementById('show_game');
-        game.style.display = "block";
-        let name = document.getElementById('name_case');
-        name.innerHTML = "<b> Prison </b>";
         users[player].in_prison += 1;
         if(lancer === 12 || users[player].in_prison === 3){
-            message.innerHTML =  "Vous sortez de prison !";
-            ok.innerHTML = "Ok";
-            users[player].in_prison = -1;
-            cancel.style.display = 'none';
+            writeMessage("<b> Prison </b>", "Vous sortez de prison !", "Ok", "");
         } else {
-            message.innerHTML =  "Vous restez en prison. Il reste " + (3 - users[player].in_prison) + " tour(s) avant de pouvoir sortir.";
-            ok.innerHTML = "Ok";
-            cancel.style.display = 'none';
+            writeMessage("<b> Prison </b>", "Vous restez en prison. Il reste " + (3 - users[player].in_prison) + " tour(s) avant de pouvoir sortir.", "Ok", "");
         }
     }
 
@@ -240,80 +228,83 @@ function click_ok(player, card, lancer, cagnotte){
 
     let block = false;
 
-    if(case1.type === "rue" || case1.type === "calanque"){
-        if(case1.owner === -1){
-            if(case1.price < users[player].money) {
-                users[player].properties.push(case1.id);
-                users[player].money -= case1.price;
-                cases[users[player].position].owner = player;
-                let case_html = document.getElementById("case_" + case1.id);
-                case_html.classList.add("property" + player);
+    switch (case1.type){
+        case "rue":
+        case "calanque":
+            if(!hasOwner(case1)){
+                if(hasEnoughMoney(player, case1.price)) {
+                    setMoney(player, -1*case1.price);
+                    buyProperty(player, case1.id);
+                }
+            } else if (!isOwner(case1, player)) {
+                if(hasEnoughMoney(player, case1.rent)) {
+                    setMoney(player, -1*case1.rent);
+                    setMoney(case1.owner, case1.rent);
+                } else {
+                    setMoney(case1.owner, users[player].money);
+                    users[player].money = 0;
+                    users[player].lost = true;
+                }
             }
-        } else if (case1.owner !== player) {
-            if(case1.rent < users[player].money) {
-                users[player].money -= case1.rent;
-                users[case1.owner].money += case1.rent;
+            break;
+        case "taxe":
+            if(hasEnoughMoney(player, case1.price)) {
+                setMoney(player, -1*case1.price);
             } else {
-                users[case1.owner].money += users[player].money;
                 users[player].money = 0;
                 users[player].lost = true;
             }
-        }
-    } else if (case1.type === "taxe") {
-        if(case1.price < users[player].money) {
-            users[player].money -= case1.price;
-        } else {
-            users[player].money = 0;
-            users[player].lost = true;
-        }
-    } else if (case1.type === "go_prison") {
-        users[player].position = 11;
-        users[player].in_prison = 0;
-    } else if (case1.type === "chance" || case1.type === "communaute"){
-        if(-1*card.money < users[player].money){
-            users[player].money += card.money;
-            if(card.money < 0){
-                cagnotte += -1*card.money
-            }
-            if( card.move !== 0){
-                users[player].position = card.move;
-                if(card.move !== 11){
-                    block = true;
-                    afterMove(player, lancer);
-                }
-            }
-        } else {
-            cagnotte += users[player].money;
-            users[player].money = 0;
-            users[player].lost = true;
-        }
-
-        if(card.prison === 1){
+            break;
+        case "go_prison":
             users[player].position = 11;
             users[player].in_prison = 0;
-        }
-    } else if (case1.type === "compagnie"){
-        if(case1.owner === -1){
-            if(case1.price < users[player].money) {
-                users[player].properties.push(case1.id);
-                users[player].money -= case1.price;
-                cases[users[player].position].owner = player;
-                let case_html = document.getElementById("case_" + case1.id);
-                case_html.classList.add("property" + player);
+            break;
+        case "chance":
+        case "communaute":
+            if(hasEnoughMoney(player, -1*card.money)){
+                setMoney(player, card.money);
+                if(card.money < 0){
+                    cagnotte += -1*card.money
+                }
+                if(card.move !== 0){
+                    users[player].position = card.move;
+                    if(card.move !== 11){
+                        block = true;
+                        afterMove(player, lancer);
+                    }
+                }
+            } else {
+                cagnotte += users[player].money;
+                users[player].money = 0;
+                users[player].lost = true;
             }
-        } else if (case1.owner !== player) {
-            users[player].money -= lancer*4;
-            users[case1.owner].money += lancer*4;
-        }
-    } else if (case1.type === "parc"){
-        users[player].money += cagnotte;
-        cagnotte = 0;
+
+            if(card.prison === 1){
+                users[player].position = 11;
+                users[player].in_prison = 0;
+            }
+            break;
+        case "compagnie":
+            if(!hasOwner(case1)){
+                if(hasEnoughMoney(player, case1.price)) {
+                    setMoney(player, -1*case1.price);
+                    buyProperty(player, case1.id);
+                }
+            } else if (case1.owner !== player) {
+                setMoney(player, -1*lancer*4);
+                setMoney(case1.owner, lancer*4);
+            }
+            break;
+        case "parc":
+            setMoney(player, cagnotte);
+            cagnotte = 0;
+            break;
     }
+
     if(!block){
         let game = document.getElementById('show_game');
         game.style.display = "none";
     }
-
 
     return {cagnotte, block};
 }

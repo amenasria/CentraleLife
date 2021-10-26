@@ -309,4 +309,7 @@ function click_ok(player, card, lancer, cagnotte){
     return {cagnotte, block};
 }
 
-export { afterMove, rollDice, click_ok }
+export {
+    rollDice,
+    click_ok
+}

@@ -216,6 +216,27 @@ export default {
           let pawn_container = document.getElementById(`case_${new_pos}`).getElementsByClassName("pawn_container")[0];
           pawn_container.appendChild(pawn);
       },
+      changePlayer(){
+        let loser = 0;
+        let winner = -1;
+        for(let i = 0; i < this.users.length; i++){
+          if(this.users[i].lost){
+            loser += 1;
+          } else {
+            winner = i;
+          }
+        }
+        if(loser === this.users.length - 1){
+          this.winner = winner;
+          this.player = this.winner;
+          this.win();
+        } else{
+          this.player = (this.player + 1) % 4;
+          while(this.users[this.player].lost){
+            this.player = (this.player + 1) % 4;
+          }
+        }
+      },
       dice(player){
         let {card, lancer} = utils.rollDice(player);
         let new_pos = this.users[player].position
@@ -239,49 +260,12 @@ export default {
           let dice2 = document.getElementById("dice2");
           dice1.innerHTML = "";
           dice2.innerHTML = "";
-          let loser = 0;
-          let winner = -1;
-          for(let i = 0; i < this.users.length; i++){
-            if(this.users[i].lost){
-              loser += 1;
-            } else {
-              winner = i;
-            }
-          }
-          if(loser === this.users.length - 1){
-            this.winner = winner;
-            this.player = this.winner;
-            this.win();
-          } else{
-            this.player = (this.player + 1) % 4;
-            while(this.users[this.player].lost){
-              this.player = (this.player + 1) % 4;
-            }
-          }
-
+          this.changePlayer();
         }
         this.card = null;
       },
       cancel: function() {
-        let loser = 0;
-        let winner = -1;
-        for(let i = 0; i < this.users.length; i++){
-          if(this.users[i].lost){
-            loser += 1;
-          } else {
-            winner = i;
-          }
-        }
-        if(loser === this.users.length - 1){
-          this.winner = winner;
-          this.player = this.winner;
-          this.win();
-        } else{
-          this.player = (this.player + 1) % 4;
-          while(this.users[this.player].lost){
-            this.player = (this.player + 1) % 4;
-          }
-        }
+        this.changePlayer();
         this.blockdice = false;
         let button_dice = document.getElementById('button_dice');
         button_dice.style.background = '#000F9F';

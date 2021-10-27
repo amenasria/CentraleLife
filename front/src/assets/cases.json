@@ -6,7 +6,8 @@
     {
         "id": 1,
         "type": "depart",
-        "name": "Départ"
+        "name": "Départ",
+        "money": 200
     },
     {
         "id": 2,
@@ -86,7 +87,8 @@
         "type": "prison",
         "name": "Prison",
         "img": "chimie.png",
-        "alt": "Logo Prison"
+        "alt": "Logo Prison",
+        "msg": "Vous faites une visite à la prison."
     },
     {
         "id": 12,
@@ -171,7 +173,8 @@
         "type": "parc",
         "name": "KSI",
         "img": "ksi.png",
-        "alt": "Logo Ksi"
+        "alt": "Logo Ksi",
+        "msg": "Vous avez fait une étude KSI, vous ramassez l'argent."
     },
     {
         "id": 22,
@@ -254,7 +257,8 @@
         "type": "go_prison",
         "name": "Allez en prison",
         "img": "poliste.png",
-        "alt": "Logo Poliste"
+        "alt": "Logo Poliste",
+        "msg": "Vous allez en prison."
     },
     {
         "id": 32,

@@ -18,7 +18,7 @@
           </div>
         </template>
       </Modal>
-      <Board :users="users" />
+      <Board :users="users" :hasStarted="hasStarted"/>
   </div>
 </template>
 
@@ -37,7 +37,8 @@ export default {
       socket: require("socket.io-client")("http://localhost:8081"),
       room_token: window.location.pathname.replace('/room/', ''), // TODO: A remplacer par la valeur de la room qu'on passe à la vue
       pseudo: "",
-      users: []
+      users: [],
+      hasStarted: false
     }
   },
   methods: {
@@ -69,7 +70,12 @@ export default {
     }
   },
   mounted() {
+    // Open the modal
     this.$refs.RoomModal.openModal();
+    // When the modal appeared, focus on the pseudo field
+    this.$nextTick(() => {
+      document.getElementById("pseudo").focus();      
+    })
   }
 }
 </script>

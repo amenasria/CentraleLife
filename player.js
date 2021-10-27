@@ -1,4 +1,5 @@
 const cartes_chance = require("./front/src/assets/chance.json");
+const cases = require("./front/src/assets/cases.json");
 
 class Player {
     constructor(id, name, color, money, position, in_prison, properties) {
@@ -41,5 +42,72 @@ function pickCard(player){
     return [card_id, player]
 }
 
+
+/**
+ * Making an action depending on the case the player is on.
+ * @param {Player} player Current user playing
+ * @param {String} action Action he chose on the board (buy or pass)
+ * @returns {{String, Player}} Returns an action and the modified Player.
+ */
+function makeAction(player, action){
+    let current_case = cases[player.position];
+    let owner_id = doesCaseBelongToPlayer(current_case, players);
+    if (owner_id === player.id) { // If you're home, do nothing
+        return ["home", player]
+    } else if (owner_id >= 0) { // If you're on someone else property, pay him rent
+        player.money -= current_case.rent
+        return ["had_to_pay", player]
+    } else if (owner_id === -1) { // If you're on no-one's property
+        switch (current_case.type) {
+            case "taxe":
+                player.money -= current_case.price;
+                break;
+            case "rue":
+            case "calanque":
+            case "compagnie":
+                if (action === "acheter") {
+                    if (player.money - current_case.price > 0) {
+                        player.money -= current_case.price;
+                        player.properties.push(player.position);
+                        return ["just_bought", player]
+                    } else {
+                        return ["couldnt_bought", player]
+                    }                    
+                };
+                break;
+            case "chance":
+            case "communaute":
+                return ["card", player]
+            case "prison":
+                return ["visiting_prison", player]
+            case "go_prison":
+                player.in_prison = 0;
+                return ["in_prison", player]
+            case "parc":
+                return ["parc", player]
+            case "depart":
+                player.money += current_case.money
+                return ["depart", player]
+        }
+    }
+}
+
+/**
+ * Check if the case belongs to any Player
+ * @param {Case} case_board
+ * @param {Array.<Player>} players 
+ * @returns {Number} The id of the player it belongs to or -1 if it doesn't belong to anyone.
+ */
+function doesCaseBelongToPlayer(case_board, players) {
+    output = -1;
+    players.forEach(player => {
+        if (player.properties.includes(case_board.id)) {
+            output = player.id;
+        }
+    });
+    return output
+}
+
 exports.rollDice = rollDice;
 exports.pickCard = pickCard;
+exports.makeAction = makeAction;

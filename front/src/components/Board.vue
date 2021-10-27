@@ -26,7 +26,11 @@
         <liste-cases :cases="coin_haut_droite" type_liste="monopoly_coin"></liste-cases>
         <liste-cases :cases="cases_gauche" type_liste="monopoly_col"></liste-cases>
         <div class="case_centrale">
-            <div class="central_ui">
+            <div class="central_start" v-if='!hasStarted'>
+              <img :src="require('../assets/logo_board.png')" alt="Logo Centrale Life" style="width: 70%">
+              <button class="button_ui" id="button_start" v-on:click="start_game()">Commencer la partie !</button>
+            </div>
+            <div class="central_ui" v-if='hasStarted'>
                 <div class="central_ui_dices">
                   <span id="dice1"></span>
                   <span id="dice2"></span>
@@ -34,7 +38,7 @@
                 <div class="central_ui_header"><!--<h2 :class="{night: !day, neon_text_small: !day}" :style="'--neon-color: ' + users[player].color" id="player">C'est à {{users[player].name}} de jouer.</h2>--></div>
                 <div class="central_ui_buttons">
                     <button class="button_ui" id="button_dice" :disabled='blockdice' v-on:click="dice(player)">Lancer les dés</button>
-                    <button class="button_ui" id="button_card" v-on:click="$refs.PropertiesModal.openModal()">Voir mes cartes</button>
+                    <button class="button_ui" id="button_card" v-on:click="$refs.PropertiesModal.openModal()" :disabled="hasStarted">Voir mes cartes</button>
                 </div>
                 <div class="central_ui_display" id="show_game">
                     <h3 id="name_case"></h3>
@@ -73,10 +77,10 @@
                 </span>
             </div>
         </div>
-        <div class="player_buttons">
+        <!-- <div class="player_buttons">
             <button class="button_ui">Mettre en pause</button>
             <button class="button_ui">Abandonner la partie</button>
-        </div>
+        </div> -->
     </div>
   </div>
 
@@ -98,7 +102,7 @@ export default {
         DarkMode,
         Modal,
     },
-    props: ['users'],
+    props: ['users', 'hasStarted'],
     data() {
         return {
             cases: casesData,
@@ -121,6 +125,9 @@ export default {
         }
     },
     methods: {
+      start_game() {
+        console.log("Start the game !");
+      },
       toggleDarkMode() {
         let darkmode_checkbox = document.getElementById("toggleDarkMode");
         darkmode_checkbox.checked = !darkmode_checkbox.checked;
@@ -266,6 +273,12 @@ export default {
         --night-color: hsl(240, 100%, 10%);
     }
 
+    .central_start {
+      display: grid;
+      place-items: center;
+
+    }
+
     .neon_text_big {
         color: var(--neon-light);
         text-shadow:
@@ -320,6 +333,7 @@ export default {
         border-style: none;
         height: 6vh;
         margin: 2%;
+        cursor: pointer;
     }
 
     .case_centrale {

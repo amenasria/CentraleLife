@@ -9,9 +9,6 @@ const crypto = require('crypto');
 
 playerFile = require("./player.js");
 
-var fs = require('fs');
-eval(fs.readFileSync("./player.js")+"");
-// import rollDice from "./player.js"
 
 const app = express();  // create server instance
 const server = http.createServer(app);
@@ -118,6 +115,10 @@ io.on('connection', (socket) =>{
     mapRooms.get(room_token)["users"][player_id] = modified_player;
     io.sockets.in(room_token).emit('rolled_dice', {"lancer1": lancer1, "lancer2": lancer2});
     io.sockets.in(room_token).emit('updated_game_data', mapRooms.get(room_token));
+  })
+
+  socket.on('finish_action', (data) => {
+    [choice, current_player] = data.choice, mapRooms.get(room_token)["users"][data.player_id];
   })
 
 

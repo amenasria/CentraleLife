@@ -85,36 +85,40 @@ function roomIsInDB(room_token) {
 
 // Etablissement de la connexion
 io.on('connection', (socket) =>{
-
+  
   
   // If the room exists & is not full then the user will be added to the room
   socket.on('enter_room', (data) => {
     let room_token = data.room;
+    socket.join(room_token);
     let is_room_accessible = mapRooms.has(room_token) && mapRooms.get(room_token)["users"].length < nb_max_players;
     if (is_room_accessible) {
-      socket.join(room_token);
-      player_id = mapRooms.get(room_token)["users"].length + 1
-      let new_user = new Player(player_id, data.name, colorsList[player_id - 1], 1, -1, []);
-      mapRooms.get(room_token)["users"].push(new_user);
+      player_id = mapRooms.get(room_token)["users"].length;
+      player_name = data.hasOwnProperty("name") ? data.name : `User ${player_id}`;
+      let new_player = new Player(player_id, player_name, colorsList[player_id], 250, 1, -1, []);
+      mapRooms.get(room_token)["users"].push(new_player);
       console.log(`User ${socket.id} entered room ${room_token}`);
+      io.sockets.in(room_token).emit('list_players', mapRooms.get(room_token)["users"]);
     }
     userSocketToRoom.set(socket.id, is_room_accessible ? [room_token, player_id] : ["", 0]);
-    console.log(mapRooms);
   })
 
 
 
   socket.on('disconnect', () => {
-    let socketUserAndRoom = userSocketToRoom.get(socket.id);
-    if (socketUserAndRoom[0] != "") {
-      mapRooms.get(socketUserAndRoom[0]).delete(socketUserAndRoom[1])
-      // TODO: ADD EVENT updated_game_data TO REMOVE PLAYER FROM ROOM
+    if (userSocketToRoom.has(socket.id)) {
+      let socketRoomAndUser = userSocketToRoom.get(socket.id);
+      if (socketRoomAndUser[0] != "") {
+        console.log(mapRooms.get(socketRoomAndUser[0]));
+        mapRooms.get(socketRoomAndUser[0]).users.splice(socketRoomAndUser[1]);
+        // TODO: ADD EVENT updated_game_data TO REMOVE PLAYER FROM ROOM
+      }
     }
     console.log('user disconnected');
   });
 
 
-  broadcast_events = ['new_player_joined', 'rolled_dice', 'made_choice', 'updated_game_data']
+  broadcast_events = ['list_players', 'rolled_dice', 'made_choice', 'updated_game_data']
   broadcast_events.forEach(event => {
     socket.on(event, (data) => {
       console.log(`Received from msg from ${event}`);

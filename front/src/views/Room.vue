@@ -1,6 +1,6 @@
 <template>
   <div style="height: 100%;">
-      <Board />
+      <Board :users="users" />
   </div>
 </template>
 
@@ -16,7 +16,8 @@ export default {
     return {
       socket: require("socket.io-client")("http://localhost:8081"),
       room_token: window.location.pathname.replace('/room/', ''), // TODO: A remplacer par la valeur de la room qu'on passe à la vue
-      pseudo: "Alexandre"
+      pseudo: "Alexandre",
+      users: []
     }
   },
   methods: {
@@ -24,8 +25,9 @@ export default {
       this.socket.emit('enter_room', {room : this.room_token, pseudo : this.pseudo});
     },
     listenToEvents: function() {
-      this.socket.on('new_player_joined', (data) => {
-        console.log(`A new player just joined. Its name: ${data.pseudo}`);
+      this.socket.on('list_players', (players) => {
+        this.users = players;
+        console.log(`Players' list update !`);
       })
       
       this.socket.on('rolled_dice', (data) => {

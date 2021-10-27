@@ -8,7 +8,7 @@
       <template v-slot:body>
         <div v-for="property in users[player].properties" :key="property">
           <span style="text-align: left; margin-right: 50px"><b>{{ cases[property].name }}</b></span>
-          <span style="text-align: center; margin-right: 50px">Prix : {{ cases[property].price }} €         </span>
+          <span style="text-align: center; margin-right: 50px">Prix : {{ cases[property].price }} €</span>
           <span style="text-align: right;">Loyer : {{ cases[property].rent }} €</span>
         </div>
       </template>
@@ -21,17 +21,17 @@
 
 
     <div class="board">
-        <liste-cases :cases="coin_haut_gauche" type_liste="monopoly_coin" :users="users"></liste-cases>
-        <liste-cases :cases="cases_haut" type_liste="monopoly_row" :users="users"></liste-cases>
-        <liste-cases :cases="coin_haut_droite" type_liste="monopoly_coin" :users="users"></liste-cases>
-        <liste-cases :cases="cases_gauche" type_liste="monopoly_col" :users="users"></liste-cases>
+        <liste-cases :cases="coin_haut_gauche" type_liste="monopoly_coin"></liste-cases>
+        <liste-cases :cases="cases_haut" type_liste="monopoly_row"></liste-cases>
+        <liste-cases :cases="coin_haut_droite" type_liste="monopoly_coin"></liste-cases>
+        <liste-cases :cases="cases_gauche" type_liste="monopoly_col"></liste-cases>
         <div class="case_centrale">
             <div class="central_ui">
                 <div class="central_ui_dices">
                   <span id="dice1"></span>
                   <span id="dice2"></span>
                 </div>
-                <div class="central_ui_header"><h2 :class="{night: !day, neon_text_small: !day}" :style="'--neon-color: ' + users[player].color" id="player">C'est à {{users[player].name}} de jouer.</h2></div>
+                <div class="central_ui_header"><!--<h2 :class="{night: !day, neon_text_small: !day}" :style="'--neon-color: ' + users[player].color" id="player">C'est à {{users[player].name}} de jouer.</h2>--></div>
                 <div class="central_ui_buttons">
                     <button class="button_ui" id="button_dice" :disabled='blockdice' v-on:click="dice(player)">Lancer les dés</button>
                     <button class="button_ui" id="button_card" v-on:click="$refs.PropertiesModal.openModal()">Voir mes cartes</button>
@@ -46,9 +46,9 @@
                 </div>
             </div>
         </div>
-        <liste-cases :cases="cases_droite" type_liste="monopoly_col" :users="users"></liste-cases>
-        <liste-cases :cases="coin_bas_gauche" type_liste="monopoly_coin" :users="users"></liste-cases>
-        <liste-cases :cases="cases_bas" type_liste="monopoly_row" :users="users"></liste-cases>
+        <liste-cases :cases="cases_droite" type_liste="monopoly_col"></liste-cases>
+        <liste-cases :cases="coin_bas_gauche" type_liste="monopoly_coin"></liste-cases>
+        <liste-cases :cases="cases_bas" type_liste="monopoly_row"></liste-cases>
         <div id="case_1" class="case_depart" style="position: relative">
           <div class="pawn_container"></div>
             🡸
@@ -60,7 +60,8 @@
         <h1 style="margin-top: 0;" :class="{night: !day, neon_text_big: !day}">CENTRALE <br>LIFE</h1>
         <div :class="{night_text: !day}">Room <b>{{room_token}}</b></div>
         <div :class="{night_text: !day}">Montant de la cagnotte : {{cagnotte}}</div>
-        <h2>4 joueurs</h2>
+        <h2>{{ users.length }} joueurs</h2>
+        <!-- {{ users }} -->
         <div class="liste_joueurs">
             <div class="joueur" v-for="user in users" :key="user.id" :class="{active: $data.player + 1 === user.id }" :style="'--user-color: ' + user.color">
                 <span class="user_icon"><svg aria-hidden="true" focusable="false" role="img" alt="User" style="height: 3.5ch" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path :fill="[user.id === player + 1 ? 'white' : user.in_prison === -1 ? user.color : 'black']" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg></span>
@@ -84,7 +85,6 @@
 
 <script>
 import casesData from "@/assets/cases.json";
-import usersData from "@/assets/users.json";
 import ListeCases from "@/components/ListeCases.vue";
 import DarkMode from "@/components/DarkMode.vue"
 // import axios from 'axios';
@@ -98,6 +98,7 @@ export default {
         DarkMode,
         Modal,
     },
+    props: ['users'],
     data() {
         return {
             cases: casesData,
@@ -109,7 +110,6 @@ export default {
             cases_haut: casesData.slice(22, 31),
             coin_haut_droite: casesData.slice(31, 32),
             cases_droite: casesData.slice(32, 41),
-            users: usersData,
             player: 0,
             blockdice: false,
             card: null,
@@ -128,6 +128,7 @@ export default {
       },
       initPawns(){
         this.users.forEach(user => {
+            console.log(user);
             let case_depart = document.getElementById("case_1");
             let pawn_container = case_depart.getElementsByClassName("pawn_container")[0];
             let pawn = document.createElement("div");
@@ -239,7 +240,11 @@ export default {
       }
     },
     mounted() {
-        this.initPawns();
+      console.log(this.users);
+      this.initPawns();
+    },
+    beforeUpdate(){
+      console.log(this.users);
     }
 }
 </script>

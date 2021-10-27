@@ -54,8 +54,8 @@ function buyProperty(player, case_id){
 }
 
 function looseProperty(player){
-    for(let case_id in users[player].properties){
-        let case_html = document.getElementById("case_" + case_id);
+    for(const id in users[player].properties){
+        let case_html = document.getElementById("case_" + users[player].properties[id]);
         case_html.classList.remove("property" + player);
     }
     users[player].properties = [];
@@ -168,7 +168,7 @@ function afterMove(player, lancer){
                 }
             } else if (isOwner(case1, player)) {
                 writeMessage(case1.name, "Vous êtes chez vous", "Ok", "");
-            } else if (hasEnoughMoney(player, case1.rent)) {
+            } else if (hasEnoughMoney(player, lancer*4)) {
                 writeMessage(case1.name, "Vous devez payer " + lancer*4 + "€" + " à " +  users[case1.owner].name + ".", "Payer", "");
             } else {
                 writeMessage(case1.name, "Vous devez payer " + lancer*4 + "€" + " à " +  users[case1.owner].name + ". Vous n'avez pas assez d'argent.", "RIP", "");
@@ -228,6 +228,7 @@ function rollDice(player){
     } else {
         users[player].in_prison += 1;
         if(lancer === 12 || users[player].in_prison === 3){
+            users[player].in_prison = -1;
             writeMessage("<b> Prison </b>", "Vous sortez de prison !", "Ok", "");
         } else {
             writeMessage("<b> Prison </b>", "Vous restez en prison. Il reste " + (3 - users[player].in_prison) + " tour(s) avant de pouvoir sortir.", "Ok", "");

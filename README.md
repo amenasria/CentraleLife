@@ -1,4 +1,4 @@
-![Logo Centrale Life](../../cours_informatique/docs/assets/projets/CentraleLife/centrale_life.png)
+![Logo Centrale Life](assets_readme/centrale_life.png)
 
 Centrale Life est un jeu de plateau inspiré de la vie centralienne. On peut y jouer en multijoueur grâce à un websocket.
 
@@ -62,7 +62,7 @@ Par exemple, pour notre jeu, nous envoyons les événements suivants :
 
 Voici le schéma pour le lancer de dés :
 
-![Fonctionnement du websocket](../../cours_informatique/docs/assets/projets/CentraleLife/websocket.png)
+![Fonctionnement du websocket](assets_readme/websocket.png)
 
 Pour l'installer : 
 
@@ -147,7 +147,7 @@ Les règles du jeu sont disponibles en cliquant sur le bouton **Règles du jeu**
 
 Quand un joueur est en faillite (c'est-à-dire quand il n'a plus assez d'argent pour payer une taxe ou un loyer), il est éliminé. Le but du jeu est d'être la dernière personne à ne pas être en faillite.
 
-![Plateau](../../cours_informatique/docs/assets/projets/CentraleLife/plateau.png)
+![Plateau](assets_readme/plateau.png)
 
 ### Amélioration possible du jeu
 

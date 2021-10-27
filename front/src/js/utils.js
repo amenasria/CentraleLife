@@ -53,6 +53,21 @@ function buyProperty(player, case_id){
     case_html.classList.add("property" + player);
 }
 
+function looseProperty(player){
+    for(let case_id in users[player].properties){
+        let case_html = document.getElementById("case_" + case_id);
+        case_html.classList.remove("property" + player);
+    }
+    users[player].properties = [];
+    cases[users[player].position].owner = -1;
+}
+
+function setLoser(player){
+    users[player].money = 0;
+    users[player].lost = true;
+    looseProperty(player);
+}
+
 function dice() {
     let lancer1 = Math.ceil(Math.random() * 6);
     let lancer2 = Math.ceil(Math.random() * 6);
@@ -247,8 +262,7 @@ function click_ok(player, card, lancer, cagnotte){
                     setMoney(case1.owner, case1.rent);
                 } else {
                     setMoney(case1.owner, users[player].money);
-                    users[player].money = 0;
-                    users[player].lost = true;
+                    setLoser(player);
                 }
             }
             break;
@@ -256,8 +270,7 @@ function click_ok(player, card, lancer, cagnotte){
             if(hasEnoughMoney(player, case1.price)) {
                 setMoney(player, -1*case1.price);
             } else {
-                users[player].money = 0;
-                users[player].lost = true;
+                setLoser(player);
             }
             break;
         case "go_prison":
@@ -279,8 +292,7 @@ function click_ok(player, card, lancer, cagnotte){
                 }
             } else {
                 cagnotte += users[player].money;
-                users[player].money = 0;
-                users[player].lost = true;
+                setLoser(player);
             }
 
             if(card.prison === 1){

@@ -10,6 +10,7 @@ const utils = {
     inPrison: utilsRewire.__get__('inPrison'),
     goPrison: utilsRewire.__get__('goPrison'),
     dice: utilsRewire.__get__('dice'),
+    buyProperty: utilsRewire.__get__('buyProperty'),
     rollDice: rollDice,
     click_ok: click_ok,
 }

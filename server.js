@@ -7,10 +7,16 @@ const cors = require('cors');
 const http = require('http');
 const crypto = require('crypto');
 
+playerFile = require("./player.js");
+
+var fs = require('fs');
+eval(fs.readFileSync("./player.js")+"");
+// import rollDice from "./player.js"
 
 const app = express();  // create server instance
 const server = http.createServer(app);
 const io = require('socket.io')(server);
+
 const mapRooms = new Map();
 const userSocketToRoom = new Map();
 const nb_max_players = 4;
@@ -91,16 +97,27 @@ io.on('connection', (socket) =>{
   socket.on('enter_room', (data) => {
     let room_token = data.room;
     socket.join(room_token);
+    console.log(socket.rooms);
     let is_room_accessible = mapRooms.has(room_token) && mapRooms.get(room_token)["users"].length < nb_max_players;
     if (is_room_accessible) {
       player_id = mapRooms.get(room_token)["users"].length;
-      player_name = data.hasOwnProperty("name") ? data.name : `User ${player_id}`;
+      player_name = data.hasOwnProperty("pseudo") ? data.pseudo : `User ${player_id}`;
       let new_player = new Player(player_id, player_name, colorsList[player_id], 250, 1, -1, []);
       mapRooms.get(room_token)["users"].push(new_player);
       console.log(`User ${socket.id} entered room ${room_token}`);
       io.sockets.in(room_token).emit('list_players', mapRooms.get(room_token)["users"]);
     }
-    userSocketToRoom.set(socket.id, is_room_accessible ? [room_token, player_id] : ["", 0]);
+    userSocketToRoom.set(socket.id, is_room_accessible ? [room_token, player_id] : ["", -1]);
+    // console.log(socket.rooms);
+  })
+
+  socket.on('roll_dice', (player_id) => {
+    let room_token = userSocketToRoom.get(socket.id)[0];
+    current_player = mapRooms.get(room_token)["users"][player_id]; // Bug si la salle n'existe pas déjà A FIX
+    var [lancer1, lancer2, modified_player] = playerFile.rollDice(current_player);
+    mapRooms.get(room_token)["users"][player_id] = modified_player;
+    io.sockets.in(room_token).emit('rolled_dice', {"lancer1": lancer1, "lancer2": lancer2});
+    io.sockets.in(room_token).emit('updated_game_data', mapRooms.get(room_token));
   })
 
 

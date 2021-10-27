@@ -1,22 +1,42 @@
 <template>
   <div style="height: 100%;">
+      <Modal ref="RoomModal">
+        <template v-slot:header>
+          <h1>Qui êtes-vous?</h1>
+        </template>
+        <template v-slot:body>
+          <span style="text-align: center; font-size: 15px; color: var(--color-input-ft)">Veuillez entrer votre pseudo pour la partie</span>
+          <div style="margin: 3% 0 3% 0"><b>Pseudo</b> <b style="color: red;">*</b></div>
+          <div>
+            <input type="text" id="pseudo" name="pseudo" v-model="pseudo" placeholder="Pseudonyme" maxlength="8" v-on:keyup.enter="setup()">
+          </div>
+        </template>
+        <template v-slot:footer>
+          <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+            <button @click="$router.push('/');" class="back_btn">Retour à l'accueil</button>
+            <button v-on:click="setup()" class="join_btn">Me connecter !</button>
+          </div>
+        </template>
+      </Modal>
       <Board :users="users" />
   </div>
 </template>
 
 <script>
 import Board from "../components/Board.vue"
+import Modal from "../components/Modal.vue"
 
 export default {
   name: 'Room',
   components: {
     Board,
+    Modal
   },
   data() {
     return {
       socket: require("socket.io-client")("http://localhost:8081"),
       room_token: window.location.pathname.replace('/room/', ''), // TODO: A remplacer par la valeur de la room qu'on passe à la vue
-      pseudo: "Alexandre",
+      pseudo: "",
       users: []
     }
   },
@@ -31,7 +51,7 @@ export default {
       })
       
       this.socket.on('rolled_dice', (data) => {
-        console.log(`Just rolled the dices. New value: ${data.dices}`);
+        console.log(`Just rolled the dices. New value: ${data.lancer1} & ${data.lancer2}`);
       });
 
       this.socket.on('made_choice', (data) => {
@@ -39,13 +59,17 @@ export default {
       });
 
       this.socket.on('updated_game_data', (data) => {
-        console.log(`Just updated the game data. New value: ${data.game}`);
+        console.log(`Just updated the game data. New value: ${data.users}`);
       })
+    },
+    setup: function () {
+      this.$refs.RoomModal.closeModal();
+      this.connectToRoom();
+      this.listenToEvents();
     }
   },
-  beforeMount() {
-    this.connectToRoom();
-    this.listenToEvents();
+  mounted() {
+    this.$refs.RoomModal.openModal();
   }
 }
 </script>

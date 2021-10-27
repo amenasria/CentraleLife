@@ -88,7 +88,7 @@ import casesData from "@/assets/cases.json";
 import ListeCases from "@/components/ListeCases.vue";
 import DarkMode from "@/components/DarkMode.vue"
 // import axios from 'axios';
-import {rollDice, click_ok} from "../js/utils.js"
+import {click_ok} from "../js/utils.js"
 import Modal from "./Modal";
 
 export default {
@@ -144,15 +144,7 @@ export default {
           pawn_container.appendChild(pawn);
       },
       dice(player){
-        let {card, lancer} = rollDice(player);
-        this.$parent.socket.emit('rolled_dice', {dices: lancer});
-        let new_pos = this.users[player].position
-        this.movePawns(new_pos, player);
-        this.card = card;
-        this.lancer = lancer;
-        this.blockdice = true;
-        let button_dice = document.getElementById('button_dice');
-        button_dice.style.background = '#CDCDCF';
+        this.$parent.socket.emit('roll_dice', player);
       },
       ok: function(player, card, lancer, cagnotte) {
         let resp = click_ok(player, card, lancer, cagnotte);

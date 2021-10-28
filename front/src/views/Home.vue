@@ -10,7 +10,7 @@
             <span style="text-align: center; font-size: 15px; color: var(--color-input-ft)">Entre un lien d'invitation ci-dessous pour rejoindre un serveur existant</span>
             <div style="margin: 3% 0 3% 0"><b>Lien d'invitation</b> <b style="color: red;">*</b></div>
             <div>
-              <input type="text" id="lien_invitation" name="lien_invitation" v-model="lien_invitation" placeholder="https://localhost:8080/room/F5444">
+              <input type="text" id="lien_invitation" name="lien_invitation" v-model="lien_invitation" placeholder="https://localhost:8081/room/F5444">
             </div>
             <div style="margin: 3% 0 2% 0"><b>Les invitations devraient ressembler à</b></div>
             <div style="color: var(--color-examples)">F5444<br/>https://localhost:8080/room/F5444
@@ -48,18 +48,18 @@ export default {
     createRoom: function () {
       this.hasCreatedRoom = true;
       const io = require("socket.io-client");
-      const socket = io("http://node.marjolaine.ovh1.ec-m.fr");
+      const socket = io("http://localhost:8081");
       socket.on("connect", () => {
           console.log(`Connecté au serveur: socket_id = ${socket.id}`);
       });
       socket.on('get_hash', function(msg){
           console.log(msg["room_token"]);
-          window.location.replace("http://node.marjolaine.ovh1.ec-m.fr/room/" + msg["room_token"])
+          window.location.replace("http://localhost:8080/room/" + msg["room_token"])
       });
     },
 
     joinRoom: function () {
-      let room_regexp = new RegExp("/^https?://(www.)?node.marjolaine.ovh1.ec-m.fr/room/[a-zA-Z0-9]{5}$/");
+      let room_regexp = new RegExp("/^https?://(www.)?localhost:8081/room/[a-zA-Z0-9]{5}$/");
 
       // If the link matches the model then check if the room exists in the DB
       if (this.lien_invitation.match(room_regexp) != null) {

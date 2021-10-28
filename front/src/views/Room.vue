@@ -14,7 +14,7 @@ export default {
   },
   data() {
     return {
-      socket: require("socket.io-client")("http://node.marjolaine.ovh1.ec-m.fr"),
+      socket: require("socket.io-client")("http://localhost:8081"),
       room_token: window.location.pathname.replace('/room/', ''), // TODO: A remplacer par la valeur de la room qu'on passe à la vue
       pseudo: "Alexandre"
     }

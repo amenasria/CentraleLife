@@ -87,7 +87,7 @@ io.on('connection', (socket) =>{
     if (is_room_accessible) {
       player_id = mapRooms.get(room_token)["users"].length;
       player_name = data.hasOwnProperty("pseudo") ? data.pseudo : `User ${player_id}`;
-      let new_player = new playerFile.Player(player_id, player_name, colorsList[player_id], 250, 1, -1, [], false);
+      let new_player = new playerFile.Player(player_id, player_name, colorsList[player_id], 1500, 1, -1, [], false);
       mapRooms.get(room_token)["users"].push(new_player);
       console.log(`User ${socket.id} entered room ${room_token}`);
       socket.emit('your_id', player_id)

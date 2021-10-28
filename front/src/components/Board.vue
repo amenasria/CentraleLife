@@ -3,14 +3,21 @@
 
     <Modal ref="PropertiesModal">
       <template v-slot:header>
-        <h1>Les propriétés de {{users[player].name}}</h1>
+        <h1>Les propriétés de {{users[playingPlayerId].name}}</h1>
       </template>
       <template v-slot:body>
-        <div v-for="property in users[player].properties" :key="property">
-          <span style="text-align: left; margin-right: 50px"><b>{{ cases[property].name }}</b></span>
-          <span style="text-align: center; margin-right: 50px">Prix : {{ cases[property].price }} €</span>
-          <span style="text-align: right;">Loyer : {{ cases[property].rent }} €</span>
-        </div>
+        <table>
+          <tr>
+            <th>Nom</th>
+            <th>Prix</th>
+            <th>Loyer</th>
+          </tr>
+          <tr v-for="property in users[playingPlayerId].properties" :key="property">
+            <td><b>{{ cases[property].name }}</b></td>
+            <td style="color: var(--bleu-centrale);"><b>{{ cases[property].price }} €</b></td>
+            <td style="color: green;"><b>{{ cases[property].rent }} €</b></td>
+          </tr>
+        </table>
       </template>
       <template v-slot:footer>
         <div style="display: flex; align-items: flex-start; justify-content: space-between;">
@@ -43,7 +50,7 @@
                 <div class="central_ui_display" id="show_game" :style="'--user-color: ' + users[playingPlayerId].color">
                     <h3 id="name_case"></h3>
                     <p id="message"></p>
-                    <div class="central_ui_buttons">
+                    <div class="central_ui_buttons" v-if="myId === playingPlayerId">
                       <button class="button_ui" id="button_cancel" v-on:click="makeAction('cancel', playingPlayerId)">Refuser</button>
                       <button class="button_ui" id="button_ok" v-on:click="makeAction('ok', playingPlayerId)"></button>
                     </div>
@@ -130,6 +137,8 @@ export default {
         });
         this.$parent.socket.on('rolled_dice', (data) => {
           this.displayDices(data.lancer1, data.lancer2);
+          document.getElementById('button_dice').style.display = 'none';
+          document.getElementById('button_card').style.display = 'none';
           [this.lancer1, this.lancer2] = [data.lancer1, data.lancer2];
           console.log(data.lancer1 + data.lancer2);
         });
@@ -156,7 +165,7 @@ export default {
       makeAction(action, player_id) {
         this.$parent.socket.emit('make_action', {"player_id": player_id, "action": action})
         if (action === "ok") {
-          this.ok(this.player, this.card, this.lancer, this.cagnotte);
+          this.ok(player_id, this.card, this.lancer, this.cagnotte);
         } else {
           this.cancel(this.player);
         }
@@ -178,6 +187,14 @@ export default {
         let darkmode_checkbox = document.getElementById("toggleDarkMode");
         darkmode_checkbox.checked = !darkmode_checkbox.checked;
         this.day = ! this.day;
+      },
+      color_case() {
+        this.users.forEach(user => {
+          user.properties.forEach(property => {
+            console.log(`On ajoute à la case_${property} la classe property_${user.id}`);
+            document.getElementById(`case_${property}`).classList.add(`property_${user.id}`);
+          });
+        });
       },
       initPawns(){
         this.users.forEach(user => {
@@ -291,6 +308,10 @@ export default {
     },
     mounted() {
       this.listen()
+    },
+    updated() {
+      console.log("On change les couleurs");
+      this.color_case();
     }
 }
 </script>
@@ -628,5 +649,21 @@ export default {
 
     #button_cancel {
       background: #4D5F80;
+    }
+
+    .property_0{
+      border: solid 2px green;
+    }
+
+    .property_1{
+      border: solid 2px red;
+    }
+
+    .property_2{
+      border: solid 2px orange;
+    }
+
+    .property_3{
+      border: solid 2px purple;
     }
 </style>

@@ -181,8 +181,8 @@ function click_ok(users, player, card, lancer, cagnotte){
                 users[player].properties.push(case1.id);
                 users[player].money -= case1.price;
                 cases[users[player].position].owner = player;
-                let case_html = document.getElementById("case_" + case1.id);
-                case_html.classList.add("property" + player);
+                // let case_html = document.getElementById("case_" + case1.id);
+                // case_html.classList.add("property" + player);
             }
         } else if (case1.owner !== player) {
             if(case1.rent < users[player].money) {
@@ -234,8 +234,8 @@ function click_ok(users, player, card, lancer, cagnotte){
                 users[player].properties.push(case1.id);
                 users[player].money -= case1.price;
                 cases[users[player].position].owner = player;
-                let case_html = document.getElementById("case_" + case1.id);
-                case_html.classList.add("property" + player);
+                // let case_html = document.getElementById("case_" + case1.id);
+                // case_html.classList.add("property" + player);
             }
         } else if (case1.owner !== player) {
             users[player].money -= lancer*4;

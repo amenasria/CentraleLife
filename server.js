@@ -21,11 +21,7 @@ app.use(function (req, res, next) {
     next(); // sans cette ligne on ne pourra pas poursuivre.
 })
 
-// app.use(express.static('front/dist'))
-
-app.get('/', (req, res) => {
-    res.redirect(301, '/static/index.html')
-})
+//app.use(express.static('front/dist'))
 
 app.get('/', function (req, res) {
   res.sendFile('index.html', { root: __dirname })

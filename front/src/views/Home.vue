@@ -10,10 +10,10 @@
             <span style="text-align: center; font-size: 15px; color: var(--color-input-ft)">Entre un lien d'invitation ci-dessous pour rejoindre un serveur existant</span>
             <div style="margin: 3% 0 3% 0"><b>Lien d'invitation</b> <b style="color: red;">*</b></div>
             <div>
-              <input type="text" id="lien_invitation" name="lien_invitation" v-model="lien_invitation" placeholder="https://localhost:8080/room/F5444">
+              <input type="text" id="lien_invitation" name="lien_invitation" v-model="lien_invitation" :placeholder="window.location.href + 'room/F5444'">
             </div>
             <div style="margin: 3% 0 2% 0"><b>Les invitations devraient ressembler à</b></div>
-            <div style="color: var(--color-examples)">F5444<br/>https://localhost:8080/room/F5444
+            <div style="color: var(--color-examples)">F5444<br/>{{window.location.href}}room/F5444
             </div>
           </template>
           <template v-slot:footer>
@@ -48,10 +48,10 @@ export default {
     createRoom: function () {
       this.hasCreatedRoom = true;
       axios
-        .put("http://localhost:8081/api/room")
+        .put(`${window.location.href}api/room`)
         .then(response => {
           if (response.status === 201) { // If room is created then enter it
-            window.location.replace("http://localhost:8080/room/" + response.data)
+            window.location.replace(`${window.location.href}room/${response.data}`)
           } else {
             console.warn(`Couldn't create room, response :\n${response}`);
           }
@@ -60,7 +60,7 @@ export default {
 
     joinRoom: function () {
       // let room_regexp = new RegExp("/^https?://(www.)?localhost:8081/api/room/[a-zA-Z0-9]{5}$/");
-      let room_regexp = new RegExp("/^https?://(www.)?localhost:8080/room/[a-zA-Z0-9]{5}$/");
+      let room_regexp = new RegExp("/^https?://(www.)?" + `${window.location.href}` + "room/[a-zA-Z0-9]{5}$/");
 
       // If the link matches the model then check if the room exists in the DB
       if (this.lien_invitation.match(room_regexp) != null) {

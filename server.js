@@ -1,6 +1,7 @@
 // optional: allow environment to specify port
 const port = process.env.PORT || 8081
 
+const MODE = "DEV" // DEV or PROD
 
 const express = require('express');
 const cors = require('cors');
@@ -30,15 +31,36 @@ app.use(function (req, res, next) {
     next(); // sans cette ligne on ne pourra pas poursuivre.
 })
 
-// app.use(express.static('front/dist'))
+if (MODE === "PROD") {
+  // bind static front
+  const staticFileMiddleware = express.static('./front/dist')
 
-app.get('/', (req, res) => {
-    res.redirect(301, '/static/index.html')
-})
+  app.use(staticFileMiddleware)
+  app.use(history({
+      rewrites: [
+          {
+              from: /^\/api\/.*$/,
+              to: function (context) {
+                  return context.parsedUrl.path // if the url matches "/api/" (https://regexr.com/) it is not for Vue
+              }
+          }
+      ]
+  }))
+  app.use(staticFileMiddleware)
+  // ^ `app.use(staticFileMiddleware)` is included twice as per https://github.com/bripkens/connect-history-api-fallback/blob/master/examples/static-files-and-index-rewrite/README.md#configuring-the-middleware
 
-app.get('/', function (req, res) {
-  res.sendFile('index.html', { root: __dirname })
-})
+}
+
+
+
+
+// app.get('/', (req, res) => {
+//     res.redirect(301, '/static/index.html')
+// })
+
+// app.get('/', function (req, res) {
+//   res.sendFile('index.html', { root: __dirname })
+// })
 
 // Creating a new room
 app.put('/api/room', function(req, res, next) {

@@ -34,7 +34,7 @@ export default {
   },
   data() {
     return {
-      socket: require("socket.io-client")(window.location.origin),
+      socket: require("socket.io-client")("http://node.sauge.ovh1.ec-m.fr:10413"),
       room_token: window.location.pathname.replace('/room/', ''), // TODO: A remplacer par la valeur de la room qu'on passe à la vue
       pseudo: "",
       users: [],

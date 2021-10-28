@@ -102,8 +102,9 @@ io.on('connection', (socket) =>{
     var [lancer1, lancer2, modified_player] = playerFile.rollDice(current_player);
     io.sockets.in(room_token).emit('rolled_dice', {"lancer1": lancer1, "lancer2": lancer2});
     let card_id = -1;
+    console.log(playerFile.cases[modified_player.position].type);
     if (playerFile.cases[modified_player.position].type === "chance" || playerFile.cases[modified_player.position].type === "communaute") {
-      let card_id = Math.ceil(Math.random() * (18 - 1));
+      card_id = Math.ceil(Math.random() * (18 - 1));
       let carte_chance = playerFile.cartes_chance[card_id];
       // Updating money, position and in_prison attributes depending on the carte_chance values
       modified_player.money += carte_chance.money;

@@ -47,7 +47,7 @@
                     <button class="button_ui" id="button_dice" :disabled='blockdice' v-on:click="dice(playingPlayerId)">Lancer les dés</button>
                     <button class="button_ui" id="button_card" v-on:click="$refs.PropertiesModal.openModal()">Voir mes cartes</button>
                 </div>
-                <div class="central_ui_display" id="show_game" :style="'--user-color: ' + users[playingPlayerId].color">
+                <div v-if="isWaitingForAction" class="central_ui_display" id="show_game" :style="'--user-color: ' + users[playingPlayerId].color">
                     <h3 id="name_case"></h3>
                     <p id="message"></p>
                     <div class="central_ui_buttons" v-if="myId === playingPlayerId">
@@ -124,6 +124,7 @@ export default {
             playingPlayerId: -1,
             lancer1: 0,
             lancer2: 0,
+            isWaitingForAction: false,
         }
     },
     methods: {
@@ -131,33 +132,37 @@ export default {
         this.$parent.socket.on('start_game', (playingPlayerId) => {
           this.initPawns();
           this.playingPlayerId = playingPlayerId
-          console.log(this.myId);
+          // console.log(this.myId);
           this.myTurn = playingPlayerId === this.myId;
-          console.log(this.users[this.myId]);
+          // console.log(this.users[this.myId]);
         });
         this.$parent.socket.on('rolled_dice', (data) => {
           this.displayDices(data.lancer1, data.lancer2);
+          this.isWaitingForAction = true;
           document.getElementById('button_dice').style.display = 'none';
           document.getElementById('button_card').style.display = 'none';
           [this.lancer1, this.lancer2] = [data.lancer1, data.lancer2];
-          console.log(data.lancer1 + data.lancer2);
+          // console.log(data.lancer1 + data.lancer2);
         });
         this.$parent.socket.on('move_player', (data) => {
-          console.log(data.new_pos);
+          // console.log(data.new_pos);
           this.movePawns(data.player_id, data.new_pos)
           this.displayCard(data.player_id, data.new_pos, data.card_id, this.lancer1 + this.lancer2); // (player_id, case_id, card_id, lancer)
         });
-        this.$parent.socket.on('made_action', (data) => {
-          console.log(`Tryin to click button_${data.action}`);
+        this.$parent.socket.on('made_action', () => {
+          // console.log(`Tryin to click button_${data.action}`);
 
-          document.getElementById(`button_${data.action}`).style.border = `solid 5px ${this.users[this.playingPlayerId].color}`;
-          document.getElementById('show_game').style.display = 'none';
-          document.getElementById(`button_${data.action}`).style.border = `none`;
+          // document.getElementById(`button_${data.action}`).style.border = `solid 5px ${this.users[this.playingPlayerId].color}`;
+          // document.getElementById('show_game').style.display = 'none';
+          // document.getElementById(`button_${data.action}`).style.border = `none`;
+          this.isWaitingForAction = false;
+          
+          // console.log(`isWaitingForAction: ${this.isWaitingForAction}`);
           // console.log(data);
           // GET RID OF PANEL AND/OR BUTTONS
         });
         this.$parent.socket.on('next_turn', () => {
-          console.log("next_turn event");
+          // console.log("next_turn event");
           this.playingPlayerId =  (this.playingPlayerId + 1) % this.users.length;
         })
         
@@ -178,7 +183,8 @@ export default {
       },
       displayCard(player_id, case_id, card_id, lancer) {
           let displayed_card = afterMove(this.users, player_id, lancer, case_id, card_id);
-          console.log(displayed_card);
+          return displayed_card
+          // console.log(displayed_card);
       },
       start_game() {
         this.$parent.socket.emit('start_game');
@@ -191,14 +197,14 @@ export default {
       color_case() {
         this.users.forEach(user => {
           user.properties.forEach(property => {
-            console.log(`On ajoute à la case_${property} la classe property_${user.id}`);
+            // console.log(`On ajoute à la case_${property} la classe property_${user.id}`);
             document.getElementById(`case_${property}`).classList.add(`property_${user.id}`);
           });
         });
       },
       initPawns(){
         this.users.forEach(user => {
-            console.log(user);
+            // console.log(user);
             let case_depart = document.getElementById("case_1");
             let pawn_container = case_depart.getElementsByClassName("pawn_container")[0];
             let pawn = document.createElement("div");
@@ -246,9 +252,9 @@ export default {
           } 
           // else{
           //   this.player_id = (this.player_id + 1) % this.users.length;
-          //   console.log(this.users);
-          //   console.log(player_id);
-          //   console.log();
+            // console.log(this.users);
+            // console.log(player_id);
+            // console.log();
           //   while(this.users[this.player_id].lost){
           //     this.player_id = (this.player_id + 1) % this.users.length;
           //   }
@@ -310,7 +316,7 @@ export default {
       this.listen()
     },
     updated() {
-      console.log("On change les couleurs");
+      // console.log("On change les couleurs");
       this.color_case();
     }
 }

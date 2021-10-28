@@ -30,20 +30,6 @@ export default {
 
 <style>
 
-.property0{
-  border: solid 2px green;
-}
 
-.property1{
-  border: solid 2px red;
-}
-
-.property2{
-  border: solid 2px orange;
-}
-
-.property3{
-  border: solid 2px purple;
-}
 
 </style>

@@ -59,14 +59,16 @@ export default {
     },
 
     joinRoom: function () {
-      let room_regexp = new RegExp("/^https?://(www.)?localhost:8081/api/room/[a-zA-Z0-9]{5}$/");
+      // let room_regexp = new RegExp("/^https?://(www.)?localhost:8081/api/room/[a-zA-Z0-9]{5}$/");
+      let room_regexp = new RegExp("/^https?://(www.)?localhost:8080/room/[a-zA-Z0-9]{5}$/");
 
       // If the link matches the model then check if the room exists in the DB
       if (this.lien_invitation.match(room_regexp) != null) {
-        console.log(this.lien_invitation)
-        axios
-          .head(this.lien_invitation)
-          .then(response => console.log((this.info = response)))
+        this.location.replace(this.lien_invitation)
+        // console.log(this.lien_invitation)
+        // axios
+        //   .head(this.lien_invitation)
+        //   .then(response => console.log((this.info = response)))
       }
     }
 

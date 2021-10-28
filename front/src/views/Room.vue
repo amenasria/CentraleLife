@@ -34,7 +34,7 @@ export default {
   },
   data() {
     return {
-      socket: require("socket.io-client")("http://localhost:8081"),
+      socket: require("socket.io-client")(window.location.href),
       room_token: window.location.pathname.replace('/room/', ''), // TODO: A remplacer par la valeur de la room qu'on passe à la vue
       pseudo: "",
       users: [],

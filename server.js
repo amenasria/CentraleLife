@@ -21,18 +21,6 @@ const empty_user = {"id": 0, "name": "", "color": "", "money": 0, "position": 1,
 const empty_room = {"users": []};
 const colorsList = ["green", "red", "orange", "purple"];
 
-class Player {
-  constructor(id, name, color, money, position, in_prison, properties) {
-    this.id = id;
-    this.name = name
-    this.color = color;
-    this.money = money;
-    this.position = position;
-    this.in_prison = in_prison;
-    this.properties = properties;
-  }
-}
-
 app.use(cors()); // Until prod we'll have to do this
 
 // Logging every request made to the server
@@ -99,26 +87,53 @@ io.on('connection', (socket) =>{
     if (is_room_accessible) {
       player_id = mapRooms.get(room_token)["users"].length;
       player_name = data.hasOwnProperty("pseudo") ? data.pseudo : `User ${player_id}`;
-      let new_player = new Player(player_id, player_name, colorsList[player_id], 250, 1, -1, []);
+      let new_player = new playerFile.Player(player_id, player_name, colorsList[player_id], 250, 1, -1, [], false);
       mapRooms.get(room_token)["users"].push(new_player);
       console.log(`User ${socket.id} entered room ${room_token}`);
-      io.sockets.in(room_token).emit('list_players', mapRooms.get(room_token)["users"]);
+      socket.emit('your_id', player_id)
+      io.sockets.in(room_token).emit('updated_game_data', {"users": mapRooms.get(room_token)["users"]});
     }
     userSocketToRoom.set(socket.id, is_room_accessible ? [room_token, player_id] : ["", -1]);
-    // console.log(socket.rooms);
   })
 
   socket.on('roll_dice', (player_id) => {
     let room_token = userSocketToRoom.get(socket.id)[0];
     current_player = mapRooms.get(room_token)["users"][player_id]; // Bug si la salle n'existe pas déjà A FIX
     var [lancer1, lancer2, modified_player] = playerFile.rollDice(current_player);
-    mapRooms.get(room_token)["users"][player_id] = modified_player;
     io.sockets.in(room_token).emit('rolled_dice', {"lancer1": lancer1, "lancer2": lancer2});
-    io.sockets.in(room_token).emit('updated_game_data', mapRooms.get(room_token));
+    let card_id = -1;
+    if (playerFile.cases[modified_player.position].type === "chance" || playerFile.cases[modified_player.position].type === "communaute") {
+      let card_id = Math.ceil(Math.random() * (18 - 1));
+      let carte_chance = playerFile.cartes_chance[card_id];
+      // Updating money, position and in_prison attributes depending on the carte_chance values
+      modified_player.money += carte_chance.money;
+      modified_player.position = carte_chance.move === 0 ? modified_player.position : carte_chance.move;
+      modified_player.in_prison += carte_chance.prison;
+    }
+    mapRooms.get(room_token)["users"][player_id] = modified_player;
+    io.sockets.in(room_token).emit('move_player', {"player_id": player_id, "new_pos": modified_player.position, "card_id": card_id});
+    io.sockets.in(room_token).emit('updated_game_data', {"users": mapRooms.get(room_token)["users"]});
+  }),
+
+  socket.on('make_action', (data) => {
+    console.log("received make_action");
+    let room_token = userSocketToRoom.get(socket.id)[0];
+    current_player = mapRooms.get(room_token)["users"][data.player_id];
+    [msg, modified_player] = playerFile.makeAction(current_player, mapRooms.get(room_token)["users"], data.action);
+    mapRooms.get(room_token)["users"][data.player_id] = modified_player;
+    io.sockets.in(room_token).emit('made_action', data);
+    io.sockets.in(room_token).emit('updated_game_data', {"users": mapRooms.get(room_token)["users"]});
+    io.sockets.in(room_token).emit('next_turn');
   })
 
   socket.on('finish_action', (data) => {
     [choice, current_player] = data.choice, mapRooms.get(room_token)["users"][data.player_id];
+  })
+
+  socket.on('start_game', () => {
+    let room_token = userSocketToRoom.get(socket.id)[0];
+    playingPlayerId = 0;
+    io.sockets.in(room_token).emit('start_game', playingPlayerId);
   })
 
 

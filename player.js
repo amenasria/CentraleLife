@@ -2,7 +2,7 @@ const cartes_chance = require("./front/src/assets/chance.json");
 const cases = require("./front/src/assets/cases.json");
 
 class Player {
-    constructor(id, name, color, money, position, in_prison, properties) {
+    constructor(id, name, color, money, position, in_prison, properties, lost) {
       this.id = id;
       this.name = name
       this.color = color;
@@ -10,6 +10,7 @@ class Player {
       this.position = position;
       this.in_prison = in_prison;
       this.properties = properties;
+      this.lost = lost;
     }
   }
 
@@ -22,7 +23,18 @@ class Player {
 function rollDice(player){
     let lancer1 = Math.ceil(Math.random() * 6);
     let lancer2 = Math.ceil(Math.random() * 6);
-    player.position += lancer1 + lancer2;
+    if (player.in_prison === -1) {
+        player.position += lancer1 + lancer2;
+        if (player.position > 40) {
+            player.position = player.position - 40;
+            player.money += 200;
+        }
+    } else {
+        if (lancer1 === lancer2) {
+            player.in_prison = 0
+        }
+    }
+
     return [lancer1, lancer2, player]
 }
 
@@ -33,7 +45,7 @@ function rollDice(player){
  * @returns {{card_id, Player}} card id & modified Player.
  */
 function pickCard(player){
-    let card_id = Math.ceil(Math.random() * (chance.length - 1));
+    let card_id = Math.ceil(Math.random() * (18 - 1));
     let carte_chance = cartes_chance[card_id];
     // Updating money, position and in_prison attributes depending on the carte_chance values
     player.money += carte_chance.money;
@@ -49,9 +61,9 @@ function pickCard(player){
  * @param {String} action Action he chose on the board (buy or pass)
  * @returns {{String, Player}} Returns an action and the modified Player.
  */
-function makeAction(player, action){
+function makeAction(player, users, action){
     let current_case = cases[player.position];
-    let owner_id = doesCaseBelongToPlayer(current_case, players);
+    let owner_id = doesCaseBelongToPlayer(current_case, users);
     if (owner_id === player.id) { // If you're home, do nothing
         return ["home", player]
     } else if (owner_id >= 0) { // If you're on someone else property, pay him rent
@@ -61,11 +73,11 @@ function makeAction(player, action){
         switch (current_case.type) {
             case "taxe":
                 player.money -= current_case.price;
-                break;
+                return ["tax", player]
             case "rue":
             case "calanque":
             case "compagnie":
-                if (action === "acheter") {
+                if (action === "ok") {
                     if (player.money - current_case.price > 0) {
                         player.money -= current_case.price;
                         player.properties.push(player.position);
@@ -74,10 +86,11 @@ function makeAction(player, action){
                         return ["couldnt_bought", player]
                     }                    
                 };
-                break;
+                return ["not_bought", player]
             case "chance":
             case "communaute":
-                return ["card", player]
+                [card_id, player] = pickCard(player);
+                return [`card_${card_id}`, player]
             case "prison":
                 return ["visiting_prison", player]
             case "go_prison":
@@ -111,3 +124,6 @@ function doesCaseBelongToPlayer(case_board, players) {
 exports.rollDice = rollDice;
 exports.pickCard = pickCard;
 exports.makeAction = makeAction;
+exports.Player = Player;
+exports.cases = cases;
+exports.cartes_chance = cartes_chance;

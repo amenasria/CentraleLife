@@ -1,23 +1,16 @@
-import users from '../assets/users.json'
 import cases from '../assets/cases.json'
 import chance from '../assets/chance.json'
 
-function afterMove(player, lancer){
+function afterMove(users, player, lancer, case_id, card_id){
 
     let card = null;
-
-    let case1 = cases[users[player].position];
-
+    let case1 = cases[case_id];
     let message = document.getElementById('message');
     let ok = document.getElementById('button_ok');
     let cancel = document.getElementById('button_cancel');
-
-
     let game = document.getElementById('show_game');
-    game.style.display = "block";
-
-
     let name = document.getElementById('name_case');
+    game.style.display = "block";
     name.innerHTML = "<b>" + case1.name + "</b>";
 
     //Si c'est une case "taxe", on paye la taxe
@@ -61,11 +54,9 @@ function afterMove(player, lancer){
 
     if(case1.type === "chance" || case1.type === "communaute"){
 
-        let card_id = Math.ceil(Math.random() * (chance.length - 1));
-
+        console.log(card_id);
+        console.log(chance);
         card = chance[card_id];
-
-
         if(-1*card.money < users[player].money){
             message.innerHTML =  card.message;
             if(card.money > 0){
@@ -79,9 +70,6 @@ function afterMove(player, lancer){
             message.innerHTML =  card.message + "<br/> Vous n'avez pas assez d'argent, vous avez perdu !";
             ok.innerHTML = "RIP";
         }
-
-
-
         cancel.style.display = 'none';
     }
 
@@ -133,109 +121,55 @@ function afterMove(player, lancer){
     return card
 }
 
-/**
- * 
- * @param {number} player 
- * @returns {{card: number, lancer: number}} card_id (int or null) and dice_roll_value
- */
-function rollDice(player){
-    let lancer1 = Math.ceil(Math.random() * 6);
-    let lancer2 = Math.ceil(Math.random() * 6);
+// /**
+//  * 
+//  * @param {number} player 
+//  * @returns {{card: number, lancer: number}} card_id (int or null) and dice_roll_value
+//  */
+// function rollDice(player){
+//     let lancer1 = Math.ceil(Math.random() * 6);
+//     let lancer2 = Math.ceil(Math.random() * 6);
 
-    let dice1 = document.getElementById("dice1");
-
-
-    switch (lancer1){
-        case 1:
-            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-1.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 2:
-            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-2.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 3:
-            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-3.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 4:
-            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-4.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 5:
-            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-5.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 6:
-            dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-6.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-    }
-
-    let dice2 = document.getElementById("dice2");
-
-    switch (lancer2){
-        case 1:
-            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-1.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 2:
-            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-2.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 3:
-            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-3.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 4:
-            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-4.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 5:
-            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-5.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-        case 6:
-            dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require('../assets/dice-6.svg') + "\" width=\"40\" height=\"40\"></object>";
-            break;
-    }
-
-    let lancer = lancer1 + lancer2;
-
-    let card = null;
-
-    if(users[player].in_prison === -1){
-
-        users[player].position = (users[player].position + lancer)  ;
-        if(users[player].position > 40){
-            users[player].position = (users[player].position - 40);
-            users[player].money += 200;
-        }
-
-        card = afterMove(player, lancer);
-
-    } else {
-
-        let message = document.getElementById('message');
-        let ok = document.getElementById('button_ok');
-        let cancel = document.getElementById('button_cancel');
+//     let dice1 = document.getElementById("dice1");
 
 
-        let game = document.getElementById('show_game');
-        game.style.display = "block";
-        let name = document.getElementById('name_case');
-        name.innerHTML = "<b> Prison </b>";
-        users[player].in_prison += 1;
-        if(lancer === 12 || users[player].in_prison === 3){
-            message.innerHTML =  "Vous sortez de prison !";
-            ok.innerHTML = "Ok";
-            users[player].in_prison = -1;
-            cancel.style.display = 'none';
-        } else {
-            message.innerHTML =  "Vous restez en prison. Il reste " + (3 - users[player].in_prison) + " tour(s) avant de pouvoir sortir.";
-            ok.innerHTML = "Ok";
-            cancel.style.display = 'none';
-        }
-    }
+//     let card = null;
 
-    return {
-        card,
-        lancer
-    }
+//         card = afterMove(player, lancer);
 
-}
+//     } else {
+
+//         let message = document.getElementById('message');
+//         let ok = document.getElementById('button_ok');
+//         let cancel = document.getElementById('button_cancel');
 
 
-function click_ok(player, card, lancer, cagnotte){
+//         let game = document.getElementById('show_game');
+//         game.style.display = "block";
+//         let name = document.getElementById('name_case');
+//         name.innerHTML = "<b> Prison </b>";
+//         users[player].in_prison += 1;
+//         if(lancer === 12 || users[player].in_prison === 3){
+//             message.innerHTML =  "Vous sortez de prison !";
+//             ok.innerHTML = "Ok";
+//             users[player].in_prison = -1;
+//             cancel.style.display = 'none';
+//         } else {
+//             message.innerHTML =  "Vous restez en prison. Il reste " + (3 - users[player].in_prison) + " tour(s) avant de pouvoir sortir.";
+//             ok.innerHTML = "Ok";
+//             cancel.style.display = 'none';
+//         }
+//     }
+
+//     return {
+//         card,
+//         lancer
+//     }
+
+// }
+
+
+function click_ok(users, player, card, lancer, cagnotte){
 
     let case1 = cases[users[player].position];
 
@@ -280,7 +214,8 @@ function click_ok(player, card, lancer, cagnotte){
                 users[player].position = card.move;
                 if(card.move !== 11){
                     block = true;
-                    afterMove(player, lancer);
+                    afterMove(users, player, lancer, users[player].position, card.id);
+                    
                 }
             }
         } else {
@@ -319,4 +254,4 @@ function click_ok(player, card, lancer, cagnotte){
     return {cagnotte, block};
 }
 
-export {rollDice, click_ok}
+export {afterMove, click_ok}

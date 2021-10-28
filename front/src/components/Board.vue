@@ -35,17 +35,17 @@
                   <span id="dice1"></span>
                   <span id="dice2"></span>
                 </div>
-                <div class="central_ui_header"><!--<h2 :class="{night: !day, neon_text_small: !day}" :style="'--neon-color: ' + users[player].color" id="player">C'est à {{users[player].name}} de jouer.</h2>--></div>
-                <div class="central_ui_buttons">
-                    <button class="button_ui" id="button_dice" :disabled='blockdice' v-on:click="dice(player)">Lancer les dés</button>
-                    <button class="button_ui" id="button_card" v-on:click="$refs.PropertiesModal.openModal()" :disabled="hasStarted">Voir mes cartes</button>
+                <div class="central_ui_header"><h2 :class="{night: !day, neon_text_small: !day}" :style="'--neon-color: ' + users[playingPlayerId].color" id="player">C'est à {{playingPlayerId != myId ? users[playingPlayerId].name : "vous"}} de jouer.</h2></div>
+                <div class="central_ui_buttons" v-if="myId === playingPlayerId">
+                    <button class="button_ui" id="button_dice" :disabled='blockdice' v-on:click="dice(playingPlayerId)">Lancer les dés</button>
+                    <button class="button_ui" id="button_card" v-on:click="$refs.PropertiesModal.openModal()">Voir mes cartes</button>
                 </div>
-                <div class="central_ui_display" id="show_game">
+                <div class="central_ui_display" id="show_game" :style="'--user-color: ' + users[playingPlayerId].color">
                     <h3 id="name_case"></h3>
                     <p id="message"></p>
                     <div class="central_ui_buttons">
-                      <button class="button_ui" id="button_cancel" v-on:click="cancel()">Refuser</button>
-                      <button class="button_ui" id="button_ok" v-on:click="ok(player, card, lancer, cagnotte)"></button>
+                      <button class="button_ui" id="button_cancel" v-on:click="makeAction('cancel', playingPlayerId)">Refuser</button>
+                      <button class="button_ui" id="button_ok" v-on:click="makeAction('ok', playingPlayerId)"></button>
                     </div>
                 </div>
             </div>
@@ -65,26 +65,17 @@
         <div :class="{night_text: !day}">Room <b>{{room_token}}</b></div>
         <div :class="{night_text: !day}">Montant de la cagnotte : {{cagnotte}}</div>
         <h2>{{ users.length }} joueurs</h2>
-        <!-- {{ users }} -->
         <div class="liste_joueurs">
-            <div class="joueur" v-for="user in users" :key="user.id" :class="{active: $data.player + 1 === user.id }" :style="'--user-color: ' + user.color">
-                <span class="user_icon"><svg aria-hidden="true" focusable="false" role="img" alt="User" style="height: 3.5ch" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path :fill="[user.id === player + 1 ? 'white' : user.in_prison === -1 ? user.color : 'black']" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg></span>
+            <div class="joueur" v-for="user in users" :key="user.id" :class="{active: user.id === playingPlayerId}" :style="'--user-color: ' + user.color">
+                <span class="user_icon"><svg aria-hidden="true" focusable="false" role="img" alt="User" style="height: 3.5ch" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path :fill="[user.id === playingPlayerId ? 'white' : user.in_prison === -1 ? user.color : 'black']" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg></span>
                 <span class="user_info">
                   <span class="user_name"><b>{{ user.name }}</b></span>
-                  <span class="user_money" v-if="winner === user.id - 1">Gagné !</span>
-                  <span class="user_money" v-else-if="!user.lost">{{user.money}} €</span>
-                  <span class="user_money" v-else>Perdu</span>
+                  <span class="user_money">{{user.money}} €</span>
                 </span>
             </div>
         </div>
-        <!-- <div class="player_buttons">
-            <button class="button_ui">Mettre en pause</button>
-            <button class="button_ui">Abandonner la partie</button>
-        </div> -->
     </div>
   </div>
-
-
 </template>
 
 <script>
@@ -92,7 +83,7 @@ import casesData from "@/assets/cases.json";
 import ListeCases from "@/components/ListeCases.vue";
 import DarkMode from "@/components/DarkMode.vue"
 // import axios from 'axios';
-import {click_ok} from "../js/utils.js"
+import {afterMove, click_ok} from "../js/utils.js"
 import Modal from "./Modal";
 
 export default {
@@ -102,7 +93,7 @@ export default {
         DarkMode,
         Modal,
     },
-    props: ['users', 'hasStarted'],
+    props: ['users', 'hasStarted', 'myId'],
     data() {
         return {
             cases: casesData,
@@ -121,12 +112,67 @@ export default {
             cagnotte : 0,
             day: true, // 0 if day 1 if night
             room_token: document.location.pathname.replace("/room/", ""),
-            winner: -1
+            winner: -1,
+            myTurn: false,
+            playingPlayerId: -1,
+            lancer1: 0,
+            lancer2: 0,
         }
     },
     methods: {
+      listen() {
+        this.$parent.socket.on('start_game', (playingPlayerId) => {
+          this.initPawns();
+          this.playingPlayerId = playingPlayerId
+          console.log(this.myId);
+          this.myTurn = playingPlayerId === this.myId;
+          console.log(this.users[this.myId]);
+        });
+        this.$parent.socket.on('rolled_dice', (data) => {
+          this.displayDices(data.lancer1, data.lancer2);
+          [this.lancer1, this.lancer2] = [data.lancer1, data.lancer2];
+          console.log(data.lancer1 + data.lancer2);
+        });
+        this.$parent.socket.on('move_player', (data) => {
+          console.log(data.new_pos);
+          this.movePawns(data.player_id, data.new_pos)
+          this.displayCard(data.player_id, data.new_pos, data.card_id, this.lancer1 + this.lancer2); // (player_id, case_id, card_id, lancer)
+        });
+        this.$parent.socket.on('made_action', (data) => {
+          console.log(`Tryin to click button_${data.action}`);
+
+          document.getElementById(`button_${data.action}`).style.border = `solid 5px ${this.users[this.playingPlayerId].color}`;
+          document.getElementById('show_game').style.display = 'none';
+          document.getElementById(`button_${data.action}`).style.border = `none`;
+          // console.log(data);
+          // GET RID OF PANEL AND/OR BUTTONS
+        });
+        this.$parent.socket.on('next_turn', () => {
+          console.log("next_turn event");
+          this.playingPlayerId =  (this.playingPlayerId + 1) % this.users.length;
+        })
+        
+      },
+      makeAction(action, player_id) {
+        this.$parent.socket.emit('make_action', {"player_id": player_id, "action": action})
+        if (action === "ok") {
+          this.ok(this.player, this.card, this.lancer, this.cagnotte);
+        } else {
+          this.cancel(this.player);
+        }
+      },
+      displayDices(lancer1, lancer2) {
+          let dice1 = document.getElementById("dice1");
+          let dice2 = document.getElementById("dice2");
+          dice1.innerHTML = "<object type=\"image/svg+xml\" data=\""+require(`../assets/dice-${lancer1}.svg`) + "\" width=\"40\" height=\"40\"></object>"
+          dice2.innerHTML = "<object type=\"image/svg+xml\" data=\""+require(`../assets/dice-${lancer2}.svg`) + "\" width=\"40\" height=\"40\"></object>"
+      },
+      displayCard(player_id, case_id, card_id, lancer) {
+          let displayed_card = afterMove(this.users, player_id, lancer, case_id, card_id);
+          console.log(displayed_card);
+      },
       start_game() {
-        console.log("Start the game !");
+        this.$parent.socket.emit('start_game');
       },
       toggleDarkMode() {
         let darkmode_checkbox = document.getElementById("toggleDarkMode");
@@ -145,21 +191,22 @@ export default {
             pawn_container.appendChild(pawn);
         });
       },
-      movePawns(new_pos, player){
-          let pawn = document.getElementById(`pawn_player_${player + 1}`);
+      movePawns(player_id, new_pos){
+          let pawn = document.getElementById(`pawn_player_${player_id}`);
           let pawn_container = document.getElementById(`case_${new_pos}`).getElementsByClassName("pawn_container")[0];
           pawn_container.appendChild(pawn);
       },
+      
       dice(player){
         this.$parent.socket.emit('roll_dice', player);
       },
-      ok: function(player, card, lancer, cagnotte) {
-        let resp = click_ok(player, card, lancer, cagnotte);
-        let new_pos = this.users[player].position
-        this.movePawns(new_pos, player);
+      ok: function(player_id, card, lancer, cagnotte) {
+        let resp = click_ok(this.users, player_id, card, lancer, cagnotte);
+        let new_pos = this.users[player_id].position
+        this.movePawns(player_id, new_pos);
         this.cagnotte = resp.cagnotte;
         this.blockdice = resp.block;
-        if(!resp.block){
+        if(!resp.block && player_id === this.playingPlayerId){
           let button_dice = document.getElementById('button_dice');
           button_dice.style.background = '#000F9F';
           let dice1 = document.getElementById("dice1");
@@ -177,14 +224,18 @@ export default {
           }
           if(loser === this.users.length - 1){
             this.winner = winner;
-            this.player = this.winner;
+            this.player_id = this.winner;
             this.win();
-          } else{
-            this.player = (this.player + 1) % 4;
-            while(this.users[this.player].lost){
-              this.player = (this.player + 1) % 4;
-            }
-          }
+          } 
+          // else{
+          //   this.player_id = (this.player_id + 1) % this.users.length;
+          //   console.log(this.users);
+          //   console.log(player_id);
+          //   console.log();
+          //   while(this.users[this.player_id].lost){
+          //     this.player_id = (this.player_id + 1) % this.users.length;
+          //   }
+          // }
 
         }
         this.card = null;
@@ -239,11 +290,7 @@ export default {
       }
     },
     mounted() {
-      console.log(this.users);
-      this.initPawns();
-    },
-    beforeUpdate(){
-      console.log(this.users);
+      this.listen()
     }
 }
 </script>
@@ -373,6 +420,7 @@ export default {
 
     .central_ui_display {
         background-color: var(--color-case);
+        border: solid 2px var(--user-color);
         grid-row: 4 / span 1;
         grid-column: 1 / span 6;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);

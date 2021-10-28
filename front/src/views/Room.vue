@@ -45,6 +45,8 @@ export default {
   methods: {
     connectToRoom: function() {
       this.socket.emit('enter_room', {room : this.room_token, pseudo : this.pseudo});
+      console.log({room : this.room_token, pseudo : this.pseudo});
+      console.log("c done kwa");
     },
     listenToEvents: function() {
       this.socket.on('updated_game_data', (data) => {
